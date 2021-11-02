@@ -1,0 +1,74 @@
+git init 
+npm init
+npm i react react-dom
+npm install @babel/core @babel/preset-env @babel/preset-react 
+npm install webpack webpack-cli webpack-dev-server
+npm install babel-loader html-loader html-webpack-plugin
+
+CREAR ARCHIVO .babelrc
+{
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  }
+
+CREAR ARCHIVO webpack.config.js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+module.exports = {
+    // ... Configuración de empaquetado
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+    },
+    mode: 'development',
+    resolve: {
+        extensions:['.js','.jsx']
+    },
+    module: {
+        // ... Lista de reglas respecto a los loaders	
+        rules : [
+            {
+				test: /\.js$|jsx/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader'
+				} 
+            }
+        ]
+    },
+    plugins: [
+	    //... Configuración de plugins
+        new HtmlWebpackPlugin(
+		{ 
+      		template: './public/index.html', 
+		filename: './index.html'   
+		}
+	)
+	]
+}
+
+EDITAR EL ARCHIVO PACKAGE.JSON
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open",
+    "build": "webpack --mode production"
+  },
+
+INSTALAR CSS Y SASS
+npm i mini-css-extract-plugin css-loader style-loader sass sass-loader -D
+
+Agregar al webpack en RULES 
+{
+                test: /\.s[ac]ss$/i,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader"
+                ]
+           }
+
+INSTALAR 
+npm install react-router-dom
