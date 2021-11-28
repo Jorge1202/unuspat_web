@@ -1,0 +1,77 @@
+@import './vars';
+
+/* SE MODIFICA ESTILOS DE BOOTSTRAP */
+/*#region*/
+input, textarea {
+    border-radius: 15px !important;
+    border: 2.3px solid #acacac !important;
+}
+input.is-invalid, textarea.is-invalid {
+    border: 1px solid !important;
+    border-color: $clr-invalid !important;
+}
+select {
+    border-radius: 15px !important;
+    border: 2.3px solid #acacac !important;
+}
+input:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: $color-1;
+    outline: 0;
+    box-shadow: 0 0 0 0.17rem rgb(0 175 170 /60%) !important;
+}
+/*#endregion*/
+
+
+/*#region*/
+
+// @media (min-width: 576px){
+//     .container, .container-sm {
+//         /* max-width: 100% !important; */
+//     }
+// }
+// @media (min-width: 768px){
+//     .container, .container-md, .container-sm {
+//         /* max-width: 100% !important; */
+//     }
+// }
+@media (min-width: 992px){
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 100% !important;
+        /* max-width: 100%!important; */
+    }
+}
+@media (min-width: 1200px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 100% !important;
+        /* max-width: 100% !important; */
+    }
+}
+@media (min-width: 1400px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 100% !important;
+        /* max-width: 100% !important; */
+    }
+}
+@media (min-width: 1650px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        /* max-width: 85% !important; */
+        max-width: 100% !important;
+    }
+}
+
+@media (min-width: 1700px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        /* max-width: 80% !important; */
+        max-width: 100% !important;
+    }
+}
+
+
+
+
+
+
+/*#endregion*/
+

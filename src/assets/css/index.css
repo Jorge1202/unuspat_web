@@ -1,0 +1,76 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css");
+
+@font-face {
+  font-family: 'DIN';
+  src: url('../topografia/D-DIN.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-Bold';
+  src: url('../topografia/D-DIN-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-Italic';
+  src: url('../topografia/D-DIN-Italic.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-DINCondensed';
+  src: url('../topografia/D-DINCondensed.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-Condensed-Bold';
+  src: url('../topografia/D-DINCondensed-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-Exp';
+  src: url('../topografia/D-DINExp.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-Exp-Bold';
+  src: url('../topografia/D-DINExp-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'DIN-Exp-Italic';
+  src: url('../topografia/D-DINExp-Italic.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+
+body {
+  font-family: 'DIN' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #899096 !important;
+}
+  
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+#app{
+  width: 100vw;
+  height: 100vh;
+  background-color: #e7e7e7;
+}
+.Layout{
+  height: 100%;
+}
+.pionter{
+  cursor: pointer;
+}
+
+/*--------- ALERT*/
+

@@ -1,23 +1,51 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Layout from '../containers/Layout';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
-import Hola from '../containers/Hola';
-import '../styles/global.scss'
+import Login from '../pages/Login';
+import Perfil from '../pages/Perfil';
+import FormHH from '../pages/FormHH';
+import FormAdmin from '../pages/FormAdmin';
+import FormDoctor from '../pages/FormDoctor';
+import ListAdmin from '../pages/ListAdmin';
+import ListasHH from '../pages/ListasHH';
+import ListDoctor from '../pages/ListDoctor';
+import Agenda from '../pages/Agenda';
+import AgendaPublic from '../pages/AgendaPublic';
+import Recovery from '../pages/Recovery';
+
+
+
+
+import '../assets/css/index.css'
+import '../assets/css/Bootstrap.scss'
 
 const App = () => {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Layout>
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route exact path="/hola" component={Hola} />
-                    <Route exact path="/login" component={Hola} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/agenda" component={AgendaPublic} />
+                    <Route exact path="/recovery" component={Recovery} />
+
+                    <Route exact path="/perfil" component={Perfil} />
+                    <Route exact path="/agenda-hh" component={Agenda} />
+                    <Route exact path="/formHH" component={FormHH} />
+                    <Route exact path="/headhunters" component={ListasHH} />
+                    <Route exact path="/formAdmin" component={FormAdmin} />
+                    <Route exact path="/administradores" component={ListAdmin} />
+                    <Route exact path="/formDoc" component={FormDoctor} />
+                    <Route exact path="/doctores" component={ListDoctor} />
+
                     <Route path="*" component={NotFound} />
                 </Switch>
             </Layout>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 export default App;

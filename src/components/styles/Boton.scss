@@ -1,0 +1,21 @@
+@import '../../assets/css/_vars.scss';
+/*--------- BUTTON*/
+.btn{
+    border-radius: 15px !important;
+    width: 200px;
+}
+.btn-check:focus+.btn, .btn:focus {
+    box-shadow: 0 0 0 0.17rem rgb(0 175 170 /60%) !important;
+}
+
+.btn_principal{
+    color: #fff !important;
+    background-color: $color-1 !important;
+    border-color: #fff !important;
+}
+.btn_principal:hover{
+    color: #5B6670;
+    background-color: #B1B5B9 !important;
+    border-color: #5B6670 !important;
+}
+

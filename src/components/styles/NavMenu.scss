@@ -1,0 +1,14 @@
+@import '../../assets/css/_vars.scss';
+
+.NavMenu{
+    padding: 0 20px 0 20px;
+}
+.ul-menu li a{
+    font-size: 25px;
+    font-weight: bold;
+    color: #899096;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: $color-1;
+}
