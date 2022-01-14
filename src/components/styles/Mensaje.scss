@@ -1,0 +1,10 @@
+@import '../../assets/css/_vars.scss';
+
+.mensaje{
+    text-align: center;
+    width: 100%;
+}
+.mensaje i {
+    font-size: 250px;
+    color: $color-1;
+}

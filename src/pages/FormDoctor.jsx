@@ -5,7 +5,7 @@ import Form_Doctor from '../containers/FormDoctor';
 const FormDoctor = () => {
     return (
         <Conteiner>
-            <Form_Doctor/>
+            <Form_Doctor title='Agregar prospecto' />
         </Conteiner>
     );
 };

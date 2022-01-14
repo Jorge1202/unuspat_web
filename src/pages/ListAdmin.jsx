@@ -6,10 +6,6 @@ const ListAdmin = () => {
     return (
         <Conteiner>
             <List_Admin/>
-
-            <div className="col-sm-10">
-      <input type="password" className="form-control" id="inputPassword" placeholder="Password"/>
-    </div>
         </Conteiner>
     );
 };

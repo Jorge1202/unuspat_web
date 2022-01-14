@@ -1,0 +1,31 @@
+.Contenedor{
+    width: 80%;
+    padding: 0 30px;
+    background-color: #efefef;
+    border-radius: 18px;
+    box-shadow: 0 0 12px 5px #ababab;
+}
+.modal .Contenedor{
+    width: 100%;
+    background-color: #ffffff00;
+    padding: 0 0;
+    box-shadow: 0 0 0px 0px #ababab;
+}
+
+
+@media (max-width: 1280px){
+    .Contenedor{
+        width: 85%;
+    }
+}
+
+@media (max-width: 992px){
+    .Contenedor{
+        width: 100%;
+        margin-top: 3rem;
+        height: 75%;
+        background-color: #fff0;
+        box-shadow: 0 0 #ababab;
+        padding: 0 0;
+    }
+}

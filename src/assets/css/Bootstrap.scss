@@ -14,6 +14,13 @@ select {
     border-radius: 15px !important;
     border: 2.3px solid #acacac !important;
 }
+.form-select:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+    border-bottom-right-radius: 0px!important;
+    border-bottom-left-radius: 0px!important;
+}
 input:focus {
     color: #212529;
     background-color: #fff;

@@ -1,0 +1,204 @@
+@import '../../assets/css/_vars.scss';
+
+.Container{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.nameTitle{
+    color: white;
+    font-size: 20px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.fondo{
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    height: 100%;
+    overflow: hidden;
+}
+
+.Container_content, .Container_menu{
+    height: 100%;
+}
+
+.Container_menu{
+    width: 11%;
+    float: left;
+    background-color: rgb(255 255 255 / 75%);
+}
+
+.Container_content{
+    width: 89%;
+    height: 100%;
+    background-color: rgb(226 226 226 / 75%);
+    padding: 5px 25px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+// #region menu button
+.Container_content header{
+    display: none;
+    background-color: $color-1;
+	padding: 10px 15px;
+	text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 3rem;
+    top: 1px;
+    z-index: 5;
+    right: 0;
+}
+.logo {
+	color: #fff;
+	display: inline-block;
+	font-size: 20px;
+	letter-spacing: 4px;
+	line-height: 30px;
+	text-transform: uppercase;
+	vertical-align: top;
+}
+
+.menuBtn {
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	left: 15px;
+	top: 10px;
+	z-index: 101;
+}
+.menuBtn span {
+    background-color: #fff;
+    border-radius: 1px;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -1px 0 0 -15px;
+    transition: height 100ms;
+}
+
+.menuBtn span:after, .menuBtn span:before {
+    content: '';
+    background-color: #fff;
+    border-radius: 1px;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    margin-left: -15px;
+    transition: all 200ms;
+}
+
+.menuBtn span:after {
+    top: -7px;
+}
+
+.menuBtn span:before {
+    bottom: -7px;
+}
+
+.menuBtn.activeMenu > span{
+    height: 0;
+}
+
+.menuBtn.activeMenu > span:after,
+.menuBtn.activeMenu > span:before{
+    background-color: #fff;
+    top: 1px;
+}
+
+.menuBtn.activeMenu > span:after{
+    transform: rotate(45deg);
+}
+
+.menuBtn.activeMenu > span:before{
+    transform: rotate(-45deg);
+}
+// #endregion
+
+
+@media (max-width: 1921px){
+    .Container_menu{
+        width: 20%;
+    }
+    
+    .Container_content{
+        width: 80%;
+    }
+}
+@media (max-width: 1680px){
+    .Container_menu{
+        width: 25%;
+    }
+    
+    .Container_content{
+        width: 75%;
+    }
+}
+
+@media (max-width: 1280px){
+    .Container_menu{
+        width: 20%;
+    }
+    .Container_content{
+        width: 80%;
+    }
+}
+@media (max-width: 1090px) and (min-height: 2330px){
+    .Container_menu.activeMenu{
+        width: 10px;
+    }
+    .Container_content.activeMenu{
+        // width: 80%;
+        display: none;
+    }
+}
+
+@media (max-width: 992px){
+    .Container_content header{
+        display: block;
+    }
+
+    .Container_menu{
+        width: 0%;
+    }
+    .Container_content{
+        width: 100%;
+    }
+    .Container_menu.activeMenu{
+        width: 40%;
+    }
+    .Container_content.activeMenu{
+        position: absolute;
+        // left: 40%;
+        // top: 1rem;
+    }
+    
+}
+
+@media (max-width: 767px){
+    .Container_menu.activeMenu{
+        width: 80%;
+    }
+    .Container_content.activeMenu{
+        position: absolute;
+        // left: 80%;
+        // top: 1rem;
+    }
+}
+
+@media (max-width: 360px){
+    .Container_menu.activeMenu{
+        width: 100%;
+    }
+    .Container_content.activeMenu{
+        left: 100%;
+        top: 1rem;
+    }
+}
+

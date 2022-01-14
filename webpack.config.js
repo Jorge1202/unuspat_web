@@ -33,10 +33,10 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/i, 
+                test: /\.(jpe?g|png|gif|svg|mp4)$/i, 
                 loader: 'file-loader',
                 options: {
-                  name: '/public/icons/[name].[ext]'
+                  name: 'public/assets/img/[name].[ext]'
                 }
             }
         ]

@@ -1,0 +1,44 @@
+
+@import '../../assets/css/vars';
+
+.contlineTime{
+    height: 18rem;
+    padding: 0px 70px 0 35px;
+    margin-top: 25px;
+}
+.fz-icon{
+    font-size: 19px;
+}
+.mg-icon{
+    margin: 0 10px 0 0;
+}
+.registro .nav-item{
+ cursor: pointer;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: $color-1;
+}
+
+@media (max-width: 992px){
+    .registro{
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .registro form{
+        height: 100%;
+    }
+    .registro form .row:first-child{
+        max-height: 90%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .modal .registro{
+        max-height: 80%;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}

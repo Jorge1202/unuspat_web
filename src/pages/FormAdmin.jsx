@@ -5,7 +5,7 @@ import Form_Admin from '../containers/FormAdmin';
 const FormAdmin = () => {
     return (
         <Conteiner>
-            <Form_Admin/>
+            <Form_Admin title="Agregar administrador"/>
         </Conteiner>
     );
 };

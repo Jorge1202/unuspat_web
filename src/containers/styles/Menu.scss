@@ -10,10 +10,70 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 30px;
 }
 .Menu_foto{
     width: 150px;
     height: 150px;
     background-color: $color-1;
     border-radius: 50%;
+}
+.Menu_foto img{
+    width: 100%;
+}
+
+.Menu_nombre{
+    text-align: center;
+    margin-top: 10px
+}
+.Menu_nombre a{
+    color: $color-2;
+}
+
+.contMenuResponsive {
+    display: none;
+    background-color: #00AFAA;
+    position: fixed;
+    left: 0;
+    top: 3rem;
+    z-index: 1;
+    width: 100%;
+    height: calc(100% - 3rem);
+}
+
+
+// @media (max-width: 1080px) and (max-height: 2340px){
+
+// }
+
+@media (max-width: 992px){
+    .Menu{
+        display: none;
+    }
+    .contMenuResponsive.activeMenu{
+        display: block;
+        box-shadow: 3px 0px 9px 3px #a7a7a7;
+    }
+    .contMenuResponsive.activeMenu{
+        display: block;
+    }
+    .Menu_nombre a{
+        color: white;
+        font-weight: bold;
+    }
+    .Menu_foto{
+        box-shadow: 1px 0px 12px 0px #545454;   
+    }
+}
+
+@media (min-width: 768px){
+    .contMenuResponsive{
+        width: 45%;
+    }
+}
+
+@media (min-width: 768px){
+    .contMenuResponsive{
+        width: 45%;
+    }
 }

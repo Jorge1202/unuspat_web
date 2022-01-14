@@ -54,23 +54,31 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #899096 !important;
+  overflow: hidden;
 }
   
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 #app{
   width: 100vw;
   height: 100vh;
-  background-color: #e7e7e7;
+  overflow: hidden;
 }
+
 .Layout{
   height: 100%;
 }
+
 .pionter{
   cursor: pointer;
 }
 
-/*--------- ALERT*/
+@media (max-width: 992px){
+  /* #app{
+    height: 93vh;
+  } */
+}
 

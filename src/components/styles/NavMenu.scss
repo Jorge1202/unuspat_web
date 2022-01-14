@@ -2,7 +2,32 @@
 
 .NavMenu{
     padding: 0 20px 0 20px;
+    margin-top: 3rem;
+    max-height: 40rem;
+    overflow-y: auto;
 }
+.NavMenu {
+    /*Estilos estándar experimentales (Principalmente Firefox)*/
+    scrollbar-color: rgba(0, 0, 0, .5) rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
+//Scroll
+.NavMenu::-webkit-scrollbar {
+    width: 4px;               /* width of the entire scrollbar */
+}
+
+// .NavMenu::-webkit-scrollbar-track {
+//     // background: $color-1;        /* color of the tracking area */
+// }
+
+.NavMenu::-webkit-scrollbar-thumb {
+    background-color: $color-1;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid $color-1;  /* creates padding around scroll thumb */
+}
+//Scroll
+
+
 .ul-menu li a{
     font-size: 25px;
     font-weight: bold;
@@ -11,4 +36,108 @@
 
 .nav-link:focus, .nav-link:hover {
     color: $color-1;
+}
+
+.active a{
+    color: $color-1 !important;
+}
+
+.ul-menu li button{
+    font-size: 25px;
+    font-weight: bold;
+    color: #899096;
+}
+.ul-menu .nav-link button:hover{
+    box-shadow: 0 0 0 0.17rem rgb(225 225 225 / 60%) !important
+}
+
+// .active button{
+//     color: $color-1 !important;
+// }
+
+
+// #region main menu block
+
+ol, ul {
+    list-style: none;
+}
+a {
+    color: rgb(255, 255, 255);
+	text-decoration: none;
+}
+
+.menuResponsive {
+    background-color: #00AFAA;
+    left: 0;
+    width: 100%;
+    overflow-y: auto;
+}
+
+//Scroll
+.menuResponsive::-webkit-scrollbar {
+    width: 0px;               /* width of the entire scrollbar */
+}
+.menuResponsive:hover::-webkit-scrollbar {
+    width: 6px;               /* width of the entire scrollbar */
+}
+
+// .menuResponsive::-webkit-scrollbar-track {
+//     // background: $color-1;        /* color of the tracking area */
+// }
+
+.menuResponsive::-webkit-scrollbar-thumb {
+    background-color: $color-5;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid $color-5;  /* creates padding around scroll thumb */
+}
+//Scroll
+
+// .menuResponsive ul {
+//     // margin-top: 30px;
+// }
+.menuResponsive li {
+    padding: 15px;
+}
+.menuResponsive li.act {
+    border-left: 3px solid #fff;
+}
+
+.menuResponsive li i, .menuResponsive li a {
+    font-size: 18px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.menuResponsive li i {
+    margin-right: 15px;
+}
+.menuResponsive a {
+    color: $color-9;
+    transition: all 750ms;
+    transform: translateX(50%);
+}
+.menuResponsive a {
+    opacity: 1;
+    transform: translateX(0);
+}
+// #endregion
+
+@media (max-height: 1024px){
+    .menuResponsive{
+        max-height: 44rem;  
+    }
+}
+@media (max-height: 813px){
+    .menuResponsive{
+        max-height: 30rem;  
+    }
+}
+@media (max-height: 732px){
+    .menuResponsive{
+        max-height: 25rem;  
+    }
+}
+@media (max-height: 640px){
+    .menuResponsive{
+        max-height: 20rem;  
+    }
 }

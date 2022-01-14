@@ -1,0 +1,81 @@
+.section{
+    float: left;
+    margin-right: 4px;
+    width: 24.5%;
+}
+.contline{
+    width: 100%;
+    margin-right: 6px;
+    display: flex;
+    align-items: center;
+}
+.line{
+    width: 80%;
+    float: left;
+    margin-right: 6px;
+}
+.line .progress{
+    height: 0.4rem !important;
+}
+.contIcon{
+    float: left;
+}
+.contIcon i{
+    font-size: 40px;
+      
+}
+.active i{
+    color: aqua; 
+}
+
+.dataline{
+    text-align: center;
+    width: 100%;
+}
+.conData{
+    width: 100%;
+    position: relative;
+    height: auto;
+    min-height: 6rem;
+}
+
+.conData__info{
+    position: absolute;
+    right: -3.5rem;
+    width: 10rem;
+}
+.conData__comentario{
+    width: 100%;
+    padding: 0 28px 0 0px;
+    position: relative;
+}
+.iconEdit{
+    position: absolute;
+    top: -7px;
+}
+.contIcon__comentario{
+    width: 100%;
+    text-align: right;
+    padding: 5px 10px;
+    
+}
+.contIcon__comentario i{
+    cursor: pointer;
+}
+.contIcon__comentario i:hover{
+    color: #00AFAA;
+}
+.conData .conData_div{
+    height: 3rem;
+}
+
+.input-group .btn.rigth{
+    border-radius: 0px !important;
+    border-bottom-right-radius: 15px!important;
+    border-top-right-radius: 15px!important;
+    width: 40px !important;
+}
+
+.input-group input{
+    border-radius: 0px !important;
+}

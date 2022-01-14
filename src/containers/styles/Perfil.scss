@@ -1,0 +1,45 @@
+@import '../../assets/css/vars';
+
+.profile{
+    max-height: 88%;
+    overflow-y: auto;
+}
+.profile .nav-link.active {
+    color: $color-1;
+}
+.nav-link {
+    color: $color-4;
+}
+.profile img {
+    max-width: 120px;
+}
+
+.profile h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: $color-4;
+    margin: 10px 0 0 0;
+}
+
+.profile h3 {
+    font-size: 18px;
+}
+
+.card-body {
+    padding: 0 20px 20px 20px;
+}
+
+.profile .profile-card .social-links a {
+    font-size: 20px;
+    display: inline-block;
+    color: $color-5;
+    line-height: 0;
+    margin-right: 10px; 
+    transition: 0.3s;
+}
+
+.accordion-button:not(.collapsed) {
+    color: $color-1;
+    // background-color: $color-10;
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
+}

@@ -5,7 +5,7 @@ import Form_HH from '../containers/FormHH'
 const FormHH = () => {
     return (
         <Conteiner>
-            <Form_HH/>
+            <Form_HH title="Agregar Headhunter"/>
         </Conteiner>
     );
 };

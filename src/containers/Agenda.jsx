@@ -1,10 +1,11 @@
 import React from 'react';
+import Contenedor from '../components/Contenedor';
 
 const Agenda = () => {
     return (
-        <div>
-            agenda
-        </div>
+        <Contenedor>
+            agenda menú
+        </Contenedor>
     );
 };
 

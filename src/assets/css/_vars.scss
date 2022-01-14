@@ -6,7 +6,16 @@ $color-3: #A7D5D3;
 $color-4: #5B6670;
 $color-5: #899096;
 $color-6: #B1B5B9;
+$color-7: #d0d0d0;
+$color-8: #000000;
+$color-9: #ffffff;
+$color-10: #e8f9f8;
 
-$clr-invalid: #dc3545
-
+$clr-invalid: #dc3545;
+$img-fondo: '../media/img/bg-login.png';
   
+
+.nombreClase{
+    --bs-bg-opacity: 1;
+    background-color: rgba($color-1, var(--bs-bg-opacity)) !important;
+}

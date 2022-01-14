@@ -8,6 +8,7 @@
     color: #5B6670 !important;
 }
 
+
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: rgb(225, 225, 225) !important;
     opacity: 1; /* Firefox */

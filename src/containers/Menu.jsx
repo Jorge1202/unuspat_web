@@ -1,32 +1,53 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './styles//Menu.scss'
+import Link from '../components/Link';
 import NavMenu from '../components/NavMenu';
 
-// import imgAdmin from '../assets/media/img/Equipo-unuspat.png';
-// import imgHH from '../assets/media/img/Headhunter.png';
-// import imgM from '../assets/media/img/Medico.png';
+import imgAdmin from '../assets/media/img/Equipo-unuspat.png';
+import imgHH from '../assets/media/img/Headhunter.png';
+import imgM from '../assets/media/img/Medico.png';
 
-// let tu = localStorage.getItem('tipoUser')
-// let tu = '1'
-// if(tu === '1' || tu === '2'){
-//     imgPerfil = imgAdmin;
-// }else if(tu === '3'){
-//     imgPerfil = imgHH;
-// } else if(tu === '4'){
-//     imgPerfil = imgM;
-// }
+// localStorage.setItem('_T_U', '2');
 
-const Menu = () => {
+const Menu = ({menuResponsive = false}) => {
+    
+    const [user, setUser] = useState('0');
+    const [dataUser, setDataUser] = useState('');
+    const [imagen, setMenu] = useState('');
+    useEffect(() => {
+        setUser(localStorage.getItem('_T_U'));
+        setDataUser(localStorage.getItem('_n'));
+        setMenu((user === '1' || user === '2') ? imgAdmin : (user === '3') ? imgHH : imgM);
+    });
+
     return (
-        <div className="Menu">
-            <div className="Menu_contfoto">
-                <div className="Menu_foto">
-                    {/* <img src={menu.imgPerfil} alt="Mi perfil"/> */}
+        <React.Fragment>
+            <div className="Menu">
+                <div className="Menu_contfoto">
+                    <div className="Menu_foto">
+                        <img src={imagen} alt="Mi perfil"/>
+                        <div className="Menu_nombre">
+                            <Link clase="nav-link" link="/perfil"><h4>{dataUser}</h4></Link>
+                        </div>
+                    </div>
                 </div>
+                <NavMenu/>
             </div>
-            <NavMenu/>
-        </div>
+
+            <div className={`contMenuResponsive ${menuResponsive ? 'activeMenu' : ''} `}>
+                <div className="Menu_contfoto">
+                    <div className="Menu_foto">
+                        <img src={imagen} alt="Mi perfil"/>
+                        <div className="Menu_nombre">
+                            <Link clase="nav-link" link="/perfil"><h4>Mi nombre</h4></Link>
+                        </div>
+                    </div>
+                </div>
+                <NavMenu pc={false} />
+            </div>
+        </React.Fragment>
     );
+ 
 };
 
 export default Menu;

@@ -1,0 +1,13 @@
+.dropdown-menu {
+    min-width: 9rem;
+}
+
+.dropdown-menu.show{
+    position: absolute;
+    inset: 0px auto auto 0px;
+    transform: translate(-50px, 40px) !important;
+}
+
+.dropdown .btn {
+    border-radius: 0px!important;
+}
