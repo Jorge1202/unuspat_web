@@ -20,7 +20,7 @@
     height: auto; 
     max-height: 45rem; /* Altura de ejemplo */
     overflow: auto;
-    min-height: 30%;
+    min-height: 84%;
   }
   
   .table-wrapper table {

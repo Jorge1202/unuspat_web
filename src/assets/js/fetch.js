@@ -23,25 +23,18 @@ const Fetch = {
 }
 export default Fetch;
 
-function ValidDispositivo() {
-  let arrTemLogin = localStorage.getItem('dispositivos') ? JSON.parse(localStorage.getItem('dispositivos')) : [];
-  let token = null;
-  let found = arrTemLogin.find(x => x[`${localStorage.getItem('idAuth')}`]);
-  if (found) { token = found[localStorage.getItem('idAuth')]} 
-  
-  return token ? `Bearer ${token}` : '' ;
-}
-
 async function _AJAX(url, type, parameters = null, login = false, async = true) {
   let token = '';
 
-  if (localStorage.getItem(localStorage.getItem('idAuth'))) {
+
+  if (!localStorage.getItem(localStorage.getItem('idAuth'))) {
+    let _token = localStorage.getItem('dispositivo')
+    token = _token ? `Bearer ${_token}` : '' ;
+  } else {
     let _token = localStorage.getItem(localStorage.getItem('idAuth'))
     token = _token ? `Bearer ${_token}` : '';
-  } else {
-    token = ValidDispositivo()
   }
-  //let sesion = null;
+
   let opcions = {
     async: async,
     crossDomain: true,
@@ -51,7 +44,7 @@ async function _AJAX(url, type, parameters = null, login = false, async = true) 
       'Content-Type': 'application/json;charset=utf-8'
     }
   };
-
+  
   if (type !== 'GET') {
     if (parameters) opcions.body = JSON.stringify(parameters)
   }

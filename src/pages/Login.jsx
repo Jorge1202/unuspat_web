@@ -36,9 +36,10 @@ const Login = () => {
         .then(async data =>{
             if(!data.error && data.status === 200){
                 localStorage.removeItem(localStorage.getItem('idAuth'));
-                localStorage.removeItem('_T_U') //tipo de usuario
-                localStorage.removeItem('_xid') //id de usuario 
-                localStorage.removeItem('_n') // nombre
+                localStorage.removeItem('idAuth') // autenticatio
+                localStorage.removeItem('_T_U') //tipo de usuario 
+                localStorage.removeItem('_iu') // usuario
+                localStorage.removeItem('_xid') // usuario
     
                 history.push('/login');
             } 
@@ -65,17 +66,15 @@ const Login = () => {
         Fetch.POST(objFetch)
         .then(data=>{
             if(!data.error && data.status === 200){
-
-                if(data.body.login){
+                if(data.body.session_token){
                     setEstado({
                         cargando: false,
                     });
-
                     // acceso a plataforma
                     localStorage.setItem('idAuth', data.body.idAuth);
-                    localStorage.setItem('_T_U', data.body.tipoUser); 
-                    localStorage.setItem('_xid', data.body.idUsuario); 
-                    localStorage.setItem(data.body.idAuth, data.body.login) 
+                    localStorage.setItem('_iu', JSON.stringify(data.body.user)); 
+                    localStorage.setItem('_T_U', data.body.user.idTipoUsuario); 
+                    localStorage.setItem(data.body.idAuth, data.body.session_token) 
                     
                     history.push('/perfil');
 

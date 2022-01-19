@@ -137,7 +137,7 @@ let dataCuentas = [
 
 const ListAdmin = () => {
     const [lista, setLista] = useState([]);
-    const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Modificar", "Eliminar"]);
+    const [ItemDropdoun, setItemDropdoun] = useState(["Modificar", "Eliminar"]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
     useEffect(async () => {
@@ -225,24 +225,24 @@ const ListAdmin = () => {
                                     <td>{item.email}</td>
                                     <td>{item.idTipoUsuario == 1 ? 'Administrador' : 'Maestro'}</td>
                                     <td>{item.dateCreate}</td>
-                                        <td>
+                                    <td>
                                         <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                             {
                                                 ItemDropdoun.map(itemDown => 
                                                     itemDown == 'Activar' 
                                                     ?   item.idEstatusUsuario<=4
-                                                        ?   <Dropdown.Item key={itemDown}  href={`/#/doctores?${itemDown}/user=${item.id}`} disabled={item.idEstatusUsuario!=4}>
+                                                        ?   <Dropdown.Item key={itemDown}  href={`/#/administradores?${itemDown}`} disabled={item.idEstatusUsuario!=3}>
                                                                 <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size='md' namebtnSave='Activar'>
                                                                     <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
                                                                     <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
                                                                 </Modal>
                                                             </Dropdown.Item> : ''
 
-                                                    :   <Dropdown.Item key={itemDown} href={`/#/administradores?${itemDown}/user=${item.id}`}>
+                                                    :   <Dropdown.Item key={itemDown} href={`/#/administradores?${itemDown}`}>
                                                             <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size={itemDown == 'Estatus' ? 'xl': itemDown == 'Modificar' ? 'lg': 'md'} namebtnSave={itemDown == 'Eliminar' ? 'Eliminar':''}>
                                                                 {
                                                                     itemDown == 'Modificar' 
-                                                                    ?   <DatosUser userShow='2' Data={item}/> 
+                                                                    ?   <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/>  
                                                                     :   itemDown == 'Eliminar' &&  `¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`
                                                                     
                                                                 } 

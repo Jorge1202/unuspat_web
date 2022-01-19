@@ -1,9 +1,10 @@
 import React from 'react';
+import AgendaPublica from '../containers/AgendaPublica';
 
 const AgendaPublic = () => {
     return (
         <div>
-            agenda publica
+            <AgendaPublica/>
         </div>
     );
 };

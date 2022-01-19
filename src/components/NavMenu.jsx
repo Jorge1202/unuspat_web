@@ -61,9 +61,10 @@ const NavMenu = ({pc = true}) => {
         .then(async data =>{
             if(!data.error && data.status === 200){
                 localStorage.removeItem(localStorage.getItem('idAuth'));
-                localStorage.removeItem('_T_U')
-                localStorage.removeItem('_xid')
-                localStorage.removeItem('_n')
+                localStorage.removeItem('idAuth') // autenticatio
+                localStorage.removeItem('_T_U') //tipo de usuario 
+                localStorage.removeItem('_iu') // usuario
+                localStorage.removeItem('_xid') // usuario
 
                 history.push('/login');
             } 
@@ -108,7 +109,7 @@ const NavMenu = ({pc = true}) => {
                             )
                         })
                     }
-                    <li className="nav-item">
+                    <li className="nav-item" onClick={handleClick}>
                         <Link clase="nav-link" link={`/login`}> 
                             {/* <i className="bi bi-alarm-fill"></i> */}
                             <span>Cerrar sesión</span>  

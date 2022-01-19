@@ -16,7 +16,8 @@ const Menu = ({menuResponsive = false}) => {
     const [imagen, setMenu] = useState('');
     useEffect(() => {
         setUser(localStorage.getItem('_T_U'));
-        setDataUser(localStorage.getItem('_n'));
+        let obj = JSON.parse(localStorage.getItem('_iu'));
+        setDataUser(`${obj.nombre} ${obj.apellidoPaterno}`);
         setMenu((user === '1' || user === '2') ? imgAdmin : (user === '3') ? imgHH : imgM);
     });
 
@@ -39,7 +40,7 @@ const Menu = ({menuResponsive = false}) => {
                     <div className="Menu_foto">
                         <img src={imagen} alt="Mi perfil"/>
                         <div className="Menu_nombre">
-                            <Link clase="nav-link" link="/perfil"><h4>Mi nombre</h4></Link>
+                            <Link clase="nav-link" link="/perfil"><h4>{dataUser}</h4></Link>
                         </div>
                     </div>
                 </div>

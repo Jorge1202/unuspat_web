@@ -44,16 +44,12 @@ const Code = () => {
                 console.log(data);
                 if (!data.error && data.status === 200) {
 
-                    localStorage.setItem('_T_U', data.body.tipoUser);
-                    localStorage.setItem('_xid', data.body.idUsuario); 
-                    localStorage.setItem(data.body.idAuth, data.body.login);
+                    localStorage.setItem('_T_U', data.body.user.idTipoUsuario);
+                    localStorage.setItem('_iu', JSON.stringify(data.body.user));
+                    localStorage.setItem(data.body.idAuth, data.body.session_token);
                     
                     if (data.body.dispositivo) {
-                        let arrTemDisp = localStorage.getItem('dispositivos')? JSON.parse(localStorage.getItem('dispositivos')) : [];
-                        let _dispositivo = {};
-                        _dispositivo[`${data.body.idAuth}`] = data.body.dispositivo;
-                        arrTemDisp.push(_dispositivo);
-                        localStorage.setItem('dispositivos', JSON.stringify(arrTemDisp));
+                        localStorage.setItem('dispositivo', data.body.dispositivo);
                     }
 
                     history.push('/perfil');

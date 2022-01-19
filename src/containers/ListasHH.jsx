@@ -38,7 +38,6 @@ const ListHH = () => {
         setEstado({
             done: false
         });
-
         Fetch.GET({ url: 'user/headhunter' })
         .then(data=>{
             if(!data.error && data.status === 200){
@@ -63,7 +62,7 @@ const ListHH = () => {
         })
     }
 
-    const getAction = () => {
+    const getAction = (item, e) => {
         setTimeout(() => {
             let url = window.location.hash.split('?')[1];
             let accion = url.split('/')[0];
@@ -73,7 +72,7 @@ const ListHH = () => {
             } else if(accion === 'Eliminar'){
                 handleClickDelete();
             } else if(accion === 'Activar'){
-                handleClickActive();
+                handleClickActive(item);
             } else if(accion === 'Estatus'){
                 console.log('Estatus');
             }
@@ -85,9 +84,41 @@ const ListHH = () => {
         
     }
     
-    const handleClickActive = ()=>{
+    const handleClickActive = async (item)=>{
         console.log('Activar');
+        console.log(item);
         
+        setEstado({
+            cargando: true,
+        });
+
+        Fetch.POST({
+            url: 'user/headhunter/aceptar',
+            obj: {idUsuario: item.id}
+        })
+        .then(async data =>{
+            debugger
+            if(!data.error && data.status === 200){
+                
+                await getDataList();
+            } else {
+                setEstado({
+                    done: true,
+                    success: true,
+                    items: data.body
+                });
+            }
+            setEstado({
+                done: true,
+                success: true,
+                cargando: false,
+            });
+        }).catch((e) => {
+            setEstado({
+                done: true,
+            })
+        })
+    
     }
     
     const handleClickDelete = ()=>{
@@ -105,12 +136,12 @@ const ListHH = () => {
                             <Link link="/formHH" clases="btn btn-secondary">Nuevo</Link>
                         </div>
                     </div>
-                    <Table listThead={['Nombre', 'Cédula', 'Estatus', 'Fecha de registro', '']}>
+                    <Table listThead={['Nombre', 'Correo', 'Estatus', 'Fecha de registro', '']}>
                         {
                                 lista.map(item =>
                                     <tr key={item.id}>
-                                        <td>{item.nombre}</td>
-                                        <td>{item.cedula}</td>
+                                        <td>{item.nombre} {item.apellidoPaterno}</td>
+                                        <td>{item.email}</td>
                                         <td>{item.idEstatusUsuario}</td>
                                         <td>{item.dateCreate}</td>
                                          <td>
@@ -118,19 +149,20 @@ const ListHH = () => {
                                                 {
                                                     ItemDropdoun.map(itemDown => 
                                                         itemDown == 'Activar' 
-                                                        ?   item.idEstatusUsuario<=4
-                                                            ? <Dropdown.Item key={itemDown}  href={`/#/headhunters?${itemDown}/user=${item.id}`} disabled={item.idEstatusUsuario!=4}>
-                                                                <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size='md' namebtnSave='Activar'>
+                                                        ?   item.idEstatusUsuario<=3
+                                                            ? <Dropdown.Item key={itemDown}  href={`/#/headhunters?${itemDown}`} disabled={item.idEstatusUsuario!=3}>
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown}  title={itemDown} size='md' namebtnSave='Activar'>
                                                                     <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
-                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
+                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre} {item.apellidoPaterno}</strong>?</div>
                                                                 </Modal>
                                                             </Dropdown.Item> : ''
 
-                                                        :   <Dropdown.Item key={itemDown} href={`/#/headhunters?${itemDown}/user=${item.id}`}>
+                                                        :   <Dropdown.Item key={itemDown} href={`/#/headhunters?${itemDown}`}>
                                                                 <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size={itemDown == 'Estatus' ? 'xl': itemDown == 'Modificar' ? 'lg': 'md'} namebtnSave={itemDown == 'Eliminar' ? 'Eliminar':''}>
                                                                     {
                                                                         itemDown == 'Modificar' 
-                                                                        ?   <DatosUser userShow='3' Data={item}/> 
+                                                                        ?  <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/>   
+                                                                        // <DatosUser userShow='3' Data={item}/> 
                                                                         :itemDown == 'Eliminar' 
                                                                         ?   `¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`
                                                                         :   ''

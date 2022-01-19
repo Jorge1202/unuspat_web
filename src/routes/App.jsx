@@ -21,7 +21,7 @@ import Code from '../pages/Code';
 import '../assets/css/index.css'
 import '../assets/css/Bootstrap.scss'
 import '../assets/css/Generales.scss'
-
+ 
 const App = () => {
     return (
         <HashRouter>
