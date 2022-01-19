@@ -152,7 +152,7 @@ const ListDoctor = () => {
                                         <td>{item.cedula}</td>
                                         <td className='tdEstatus'>
                                             {/* estatus de registro  */}
-                                            <ProsessLine status={item.EstatusRegistro}/> 
+                                            <ProsessLine status={item.EstatusProspecto}/> 
                                         </td>
                                         <td>{item.dateCreate}</td>
                                          <td>
