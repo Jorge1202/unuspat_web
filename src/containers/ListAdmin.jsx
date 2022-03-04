@@ -223,7 +223,7 @@ const ListAdmin = () => {
                                 <tr key={item.id}>
                                     <td>{item.nombre} {item.apellidoPaterno}</td>
                                     <td>{item.email}</td>
-                                    <td>{item.idTipoUsuario == 1 ? 'Administrador' : 'Maestro'}</td>
+                                    <td>{item.idTipoUsuario == 1 ? 'Admin principal' : 'Administrador'}</td>
                                     <td>{item.dateCreate}</td>
                                     <td>
                                         <DropdownButton id="dropdown-basic-button" title="" variant="principal">

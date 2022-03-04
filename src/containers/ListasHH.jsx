@@ -142,7 +142,7 @@ const ListHH = () => {
                                     <tr key={item.id}>
                                         <td>{item.nombre} {item.apellidoPaterno}</td>
                                         <td>{item.email}</td>
-                                        <td>{item.idEstatusUsuario}</td>
+                                        <td>{item.tipo}</td>
                                         <td>{item.dateCreate}</td>
                                          <td>
                                             <DropdownButton id="dropdown-basic-button" title="" variant="principal">

@@ -3,27 +3,27 @@ const URL = 'http://localhost:3002/';// DESARROLLO
 const Fetch = {
   // PETICIÓN GET
   async GET(obj) {
-    return await _AJAX(obj.url, 'GET');
+    return await _FETCH(obj.url, 'GET');
   },
 
   // PETICIÓN POST
   async POST(obj) {
-    return await _AJAX(obj.url, 'POST', obj.obj, obj.login);
+    return await _FETCH(obj.url, 'POST', obj.obj, obj.login);
   },
 
   // PETICIÓN PUT
   async PUT(obj) {
-    return await _AJAX(obj.url, 'PUT', obj.obj, obj.login);
+    return await _FETCH(obj.url, 'PUT', obj.obj, obj.login);
   },
 
   // PETICIÓN DELETE
   async DELETE(obj) {
-    return await _AJAX(obj.url, 'DELETE', obj.obj);
+    return await _FETCH(obj.url, 'DELETE', obj.obj);
   }
 }
 export default Fetch;
 
-async function _AJAX(url, type, parameters = null, login = false, async = true) {
+async function _FETCH(url, type, parameters = null, login = false, async = true) {
   let token = '';
 
 
@@ -54,4 +54,6 @@ async function _AJAX(url, type, parameters = null, login = false, async = true) 
   );
   let result = await response.json();
   return result;
+  // return  {body:'', error:false, code:200};
+ 
 }

@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import './styles/NavMenu.scss';
 import Link from '../components/Link';
 import Boton from '../components/Boton';
-
 import Fetch from '../assets/js/fetch';
 
 

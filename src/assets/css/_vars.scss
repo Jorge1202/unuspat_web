@@ -10,6 +10,7 @@ $color-7: #d0d0d0;
 $color-8: #000000;
 $color-9: #ffffff;
 $color-10: #e8f9f8;
+$color-11: #5B6872;
 
 $clr-invalid: #dc3545;
 $img-fondo: '../media/img/bg-login.png';
@@ -18,4 +19,14 @@ $img-fondo: '../media/img/bg-login.png';
 .nombreClase{
     --bs-bg-opacity: 1;
     background-color: rgba($color-1, var(--bs-bg-opacity)) !important;
+}
+
+@mixin background-opacity($color, $opacity) {
+    // background: $color;
+    background: rgba($color, $opacity) !important;
+    color: white;
+}
+
+@mixin color-opacity($color, $opacity) {
+    color: rgba($color, $opacity) !important;
 }

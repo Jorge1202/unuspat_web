@@ -1,0 +1,139 @@
+@import '../../assets/css/_vars.scss';
+
+.AgendaPublica{
+    width: 100%;
+    height: 100%;
+    padding: 5rem 2rem 2rem 2rem;
+    background-color: #fbfcfd;
+    color: $color-8;
+    display: flex;
+    justify-content: center;
+}
+
+.agenda__body{
+    width: 70%;
+    height: 80%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
+}
+
+
+//#region Datos de la agenda
+.agenga__contlogo {
+    text-align: center;
+}
+.agenga__contlogo img{
+    width: 10rem;
+}
+.agenda__body .nameDoctor{
+    color: $color-5;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 32px;
+}
+
+.agenda__motivo{
+    font-weight: bold;
+    line-height: 1.5;
+    letter-spacing: 2px;
+    font-size: 35px;
+}
+
+.agenda__{
+    padding: 0 1rem;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.agenda_icono{
+    float: left;
+    padding: 0 12px 0 0;
+    line-height: 1.1;
+    font-size: 22px;
+}
+.agenda_text{
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(0, 0, 0);
+}
+
+.time .agenda_icono, .time .agenda_text{
+    color: rgba(26, 26, 26, 0.6);
+}
+
+.agenda_text strong{
+    color: $color-1;
+}
+//#endregion
+
+
+//#region calendario react-calendar
+.agenda__calendario .react-calendar{
+    width: 100%;
+    margin-top: 5rem;
+    border: 1px solid #fff;
+}
+
+.agenda__calendario .react-calendar__month-view__weekdays abbr{
+    color: $color-4;
+}
+
+.react-calendar__tile--now {
+    // @include background-opacity($color-1, 0.7);
+    background:  $color-11 !important;
+    color: white;
+}
+.react-calendar__tile--active {
+    background: $color-1 !important;
+    color: white;
+}
+
+.react-calendar__tile--now:enabled:hover, .react-calendar__tile--now:enabled:focus {
+    @include background-opacity($color-11, 0.7);
+}
+
+.react-calendar__month-view__days__day--weekend {
+    color: #ffffff !important;
+    @include background-opacity($color-11, 0.5);
+}
+//#endregion
+
+
+//#region  Horas disponibles
+.agenda__Horas{
+    padding: 0 10px;
+    margin-top: 15px;
+    overflow: auto;
+    height: auto;
+    max-height: 85%;
+}
+
+.horas{
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 10px;
+    border: 1px solid $color-1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.horas.text{
+    font-size: 20px;
+    font-weight: bold;
+    color: $color-1;
+}
+
+.horas:hover{
+    cursor: pointer;
+    border: 3px solid $color-1;
+}
+.horas.active{
+    cursor: pointer;
+    border: 3px solid $color-1;
+}
+//#endregion
