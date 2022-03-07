@@ -1,0 +1,120 @@
+@import '../../assets/css/vars.scss';
+// @import '../../assets/css/font_face.css';
+
+
+input{
+    border-radius: 10px !important; 
+    font-family: 'Roboto-Regular';
+    font-size: 12px;
+} 
+
+.form-label{
+    color: $color-11;
+    font-size: 14px;
+} 
+.form-label .requered{
+    margin-right: 10px;
+}
+
+/*#region ############################################# PlaceHolder*/
+.login .input::-webkit-input-placeholder { color: $color-9; } 
+.login .input:-moz-placeholder { /* Firefox 18- */ color: $color-9; } 
+.login .input::-moz-placeholder { /* Firefox 19+ */ color: $color-9; } 
+.login .input:-ms-input-placeholder { color: $color-9; }
+/*#endregion*/
+
+/*#region ############################################# autocompletado*/
+/* Change the white to any color ;) */
+.login input:-webkit-autofill,
+.login input:-webkit-autofill:hover, 
+.login input:-webkit-autofill:focus, 
+.login input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px $color-2 inset !important;
+}
+.login input:-webkit-autofill {
+    -webkit-text-fill-color: $color-9 !important;
+}
+/*#endregion #############################################*/
+
+/*#region ############################################# DISABLED*/
+.input:disabled {
+    background-color: #ffffff;
+    opacity: 1;
+}
+/*#endregion #############################################*/
+
+
+/*#region ############################################# Formulario para el doctor*/
+.Formulario_input input{
+    border: 0px;
+    font-size: 14px;
+    color: $color-11;
+    border-top: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px !important;
+}
+.Formulario_input input:focus{
+    // background-color:$color-tabla-row;
+    box-shadow: 0px 3px 0 0rem rgb(0 175 170 / 60%) !important;
+}
+/*#endregion #############################################*/
+
+
+
+/*#region #############################################*/
+.formulario textarea{
+    // background-color: $color-tabla-row;
+    font-size: 14px;
+    height: 40px;
+    border-radius: 10px !important;
+}
+.formulario textarea:focus{
+    // background-color:$color-tabla-row;
+}
+/*#endregion #############################################*/
+
+/*#region #############################################*/
+.disable textarea{
+    border: 0px;
+    font-size: 14px;
+    color: $color-11;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px !important;
+}
+.disable textarea:disabled {
+    background-color:  $color-9;
+    opacity: 1;
+}
+/*#endregion #############################################*/
+
+
+
+
+
+
+
+
+
+
+/*#region #############################################*/
+.table_input {
+    width: 100%;
+    border-radius: 0px !important;
+    border-top: 0px !important;
+    border-right: 0px !important;
+    border-left: 0px !important;
+}
+.table_input:focus{
+    box-shadow: 0px 3px 0 0rem rgb(0 175 170 / 60%) !important;
+}
+/*#endregion #############################################*/
+
+/*#region #############################################*/
+.form-check-input[type=checkbox] {
+    border-radius: 0.25em !important;
+    height: 0.9rem;
+    width: 0.9rem;
+}
+/*#endregion #############################################*/

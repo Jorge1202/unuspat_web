@@ -17,6 +17,7 @@ import Agenda from '../pages/Agenda';
 import AgendaPublic from '../pages/AgendaPublic';
 import Recovery from '../pages/Recovery';
 import Code from '../pages/Code';
+import FormularioDoctor from '../pages/FormularioDoctor';
 
 import '../assets/css/index.css'
 import '../assets/css/Bootstrap.scss'
@@ -42,6 +43,7 @@ const App = () => {
                     <Route exact path="/doctores" component={ListDoctor} />
                     <Route exact path="/agenda-hh" component={Agenda} />
                     <Route exact path="/formDoc" component={FormDoctor} />
+                    <Route exact path="/Formulario" component={FormularioDoctor} />
                     
 
                     <Route path="*" component={NotFound} />

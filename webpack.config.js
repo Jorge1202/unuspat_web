@@ -12,7 +12,10 @@ module.exports = {
     },
     mode: 'development',
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx'],
+        alias:{
+            '@img': path.resolve(__dirname, 'src/assets/media/'),
+        }
     },
     module: {
         // ... Lista de reglas respecto a los loaders	
