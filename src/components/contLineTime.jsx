@@ -19,7 +19,7 @@ const constLineTime = ({item}) => {
             url: `estatusProspecto/${item.id}`
           })
         .then(data=>{
-          
+          debugger
             if(!data.error && data.status === 200){
                 var b = data.body;
                 b.estatus.forEach(x => {

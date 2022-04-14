@@ -25,7 +25,12 @@ let dataCuentas = [
 
 const ListHH = () => {
     const [lista, setLista] = useState([]);
-    const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Modificar", "Eliminar"]);
+    // const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Modificar", "Eliminar"]);
+    const [ItemDropdoun, setItemDropdoun] = useState([
+        {id:1,text:"Modificar", url:"modificar"},
+        {id:2,text:"Activar", url:"activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
+        {id:3,text:"Eliminar", url:"eliminar"}
+    ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
     useEffect(async () => {
@@ -148,27 +153,27 @@ const ListHH = () => {
                                             <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                                 {
                                                     ItemDropdoun.map(itemDown => 
-                                                        itemDown == 'Activar' 
-                                                        ?   item.idEstatusUsuario<=3
-                                                            ? <Dropdown.Item key={itemDown}  href={`/#/headhunters?${itemDown}`} disabled={item.idEstatusUsuario!=3}>
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown}  title={itemDown} size='md' namebtnSave='Activar'>
+                                                        <Dropdown.Item key={itemDown.id} href={`/#/headhunters?${itemDown.url}`}  disabled={item.idEstatusUsuario!=3 && itemDown.id == 2}>
+                                                            {
+                                                                itemDown.id == 1 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='lg' >
+                                                                    <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/> 
+                                                                </Modal>   
+                                                            }
+                                                            {
+                                                                itemDown.id == 2 && item.idEstatusUsuario!=4 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">
                                                                     <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
-                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre} {item.apellidoPaterno}</strong>?</div>
+                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
                                                                 </Modal>
-                                                            </Dropdown.Item> : ''
-
-                                                        :   <Dropdown.Item key={itemDown} href={`/#/headhunters?${itemDown}`}>
-                                                                <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size={itemDown == 'Estatus' ? 'xl': itemDown == 'Modificar' ? 'lg': 'md'} namebtnSave={itemDown == 'Eliminar' ? 'Eliminar':''}>
-                                                                    {
-                                                                        itemDown == 'Modificar' 
-                                                                        ?  <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/>   
-                                                                        // <DatosUser userShow='3' Data={item}/> 
-                                                                        :itemDown == 'Eliminar' 
-                                                                        ?   `¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`
-                                                                        :   ''
-                                                                    } 
+                                                            }
+                                                            {
+                                                                itemDown.id == 3 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
+                                                                    {`¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`}
                                                                 </Modal>
-                                                            </Dropdown.Item>
+                                                            }      
+                                                        </Dropdown.Item>
                                                     )
                                                 }
                                             </DropdownButton>

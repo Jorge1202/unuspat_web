@@ -20,17 +20,39 @@ import './styles/ListData.css';
 const ListDoctor = () => {
     const [user, setUser] = useState('0');
     const [lista, setLista] = useState([]);
-    const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Estatus","Modificar", "Eliminar"]);
+    // const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Estatus","Modificar", "Eliminar"]);
+    const [ItemDropdoun, setItemDropdoun] = useState([
+        {id:1,text:"Estatus", url:"Estatus"},
+        {id:2,text:"Modificar", url:"Modificar"},
+        {id:3,text:"Activar", url:"Activar"}, //mostrar al estatusRegistro sea 4 y se modifica el estatusUsuario a 3
+        {id:4,text:"Presentación finalizada", url:"presentacion"}, //mostrar al estar en estatusRegistro 2 se pasa a estatusRegistro 3 y se envia formulario 
+        {id:5,text:"Proyeccion Financiera", url:"proyeccion-financiera"}, //mostrar al estar en estatusRegistro 2 se pasa a estatusRegistro 3 y se envia formulario 
+        {id:6,text:"Eliminar", url:"Eliminar"}
+    ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
     useEffect(async () => {
         await getDataList();
+        // await getPruebaCorreo();
     },[]);
 
     useEffect(() => {
         setUser(localStorage.getItem('_T_U'));
     });
     
+    const getPruebaCorreo = () => {
+        console.log('getPruebaCorreo');
+ 
+        Fetch.GET({ url: 'user/doctores/pruebaCorreo' })
+        .then(data=>{
+            if(!data.error && data.status === 200){
+
+            } 
+        }).catch((e) => {
+          
+        })
+    }
+
     const getDataList = () => {
         console.log('get ListDoctor');
         setEstado({
@@ -63,7 +85,6 @@ const ListDoctor = () => {
 
     const getAction = (item, e) => {
         setTimeout(() => {
-            debugger
             let url = window.location.hash.split('?')[1];
             let accion = url.split('/')[0];
 
@@ -74,8 +95,11 @@ const ListDoctor = () => {
             } else if(accion === 'Activar'){
                 handleClickActive(item);
             } else if(accion === 'Estatus'){
-                debugger
                 handleClickStatus(item);
+            } else if(accion === 'presentacion'){
+                handleClickProceso_presentacion(item);
+            } else if(accion === 'proyeccion-financiera'){
+                handleClickProceso_pFinanciera(item);
             }
 
         },500);
@@ -131,6 +155,49 @@ const ListDoctor = () => {
         console.log(item);
         
     }
+    const handleClickProceso_presentacion = (item)=>{
+        console.log('handleClickProceso_presentacion');
+        console.log(item);
+        let data = {
+            id: item.id,
+            idUsuario: item.idUsuario,
+            userCreate: item.userCreate,
+        }
+
+        setEstado({
+            done: false
+        });
+
+        Fetch.POST({ url: 'user/doctores/presentacion', obj: data })
+        .then(async data=>{
+            if(!data.error && data.status === 200){
+                console.log(data);
+                // setLista(data.body);
+                setEstado({
+                    done: true,
+                    success: true,
+                });
+                await getDataList();
+
+            } else {
+                setEstado({
+                    done: true,
+                    success: true,
+                    items: data.body
+                });
+            }
+        }).catch((e) => {
+            setEstado({
+                done: true,
+            })
+        })
+        
+    }
+    const handleClickProceso_pFinanciera = (item)=>{
+        console.log('handleClickProceso_pFinanciera');
+        console.log(item);
+        
+    }
 
     if (estado.done) {
         return (
@@ -152,39 +219,57 @@ const ListDoctor = () => {
                                         <td>{item.cedula}</td>
                                         <td className='tdEstatus'>
                                             {/* estatus de registro  */}
-                                            <ProsessLine status={item.EstatusProspecto}/> 
+                                            <ProsessLine status={item.idEstatusRegistro}/> 
                                         </td>
                                         <td>{item.dateCreate}</td>
                                          <td>
-                                            <DropdownButton id="dropdown-basic-button" title="" variant="principal">
+                                         <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                                 {
                                                     ItemDropdoun.map(itemDown => 
-                                                        itemDown == 'Activar' 
-                                                        ?   item.idEstatusUsuario<=3
-                                                            ? <Dropdown.Item key={itemDown}  href={`/#/doctores?${itemDown}`} disabled={item.idEstatusUsuario!=3}>
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown}  title={itemDown} size='md' namebtnSave='Activar'>
+                                                        <Dropdown.Item key={itemDown.id} href={`/#/doctores?${itemDown.url}`}  disabled={item.idEstatusRegistro!=4 && itemDown.id == 3}>
+                                                            {   itemDown.id == 1 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='xl' >                                                                                
+                                                                    <ContLineTime item={item}/>
+                                                                </Modal>
+                                                            }
+                                                            {
+                                                                itemDown.id == 2 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='lg' >
+                                                                    <DatosUser  id={item.idUsuario} typeUser={item.idTipoUsuario}/>
+                                                                </Modal>   
+                                                            }
+                                                            {
+                                                                itemDown.id == 3 && item.idEstatusUsuario!=4 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">
                                                                     <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
                                                                     <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
                                                                 </Modal>
-                                                            </Dropdown.Item> : ''
-
-                                                        :   <Dropdown.Item key={itemDown} href={`/#/doctores?${itemDown}`}>
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown}  title={itemDown} size={itemDown == 'Estatus' ? 'xl': itemDown == 'Modificar' ? 'lg': 'md'} namebtnSave={itemDown == 'Eliminar' ? 'Eliminar':''}>
-                                                                    {
-                                                                        itemDown == 'Modificar'  ?
-                                                                        <DatosUser  id={item.idUsuario} typeUser={item.idTipoUsuario}/>
-                                                                            // <DatosUser userShow='4' Data={item}/> 
-                                                                 
-                                                                        :itemDown == 'Eliminar' 
-                                                                        ?   `¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`
-                                                                        :   <ContLineTime item={item}/>
-                                                                    } 
+                                                            }
+                                                            {
+                                                                itemDown.id == 4 && item.idEstatusRegistro==2 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Sí">
+                                                                    <div className='text-center'>Al aceptar confirmas que ha finalizado la  <strong>PRESENTACIÓN</strong></div>
+                                                                    <div className='text-center'>¿Quíeres pasar al siguiente proceso?</div>
                                                                 </Modal>
-                                                            </Dropdown.Item>
+                                                            }
+                                                            {
+                                                                itemDown.id == 5 && item.idEstatusRegistro==3 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Sí">
+                                                                    <div className='text-center'>Al aceptar confirmas que se ha hecho la <strong>proyección financiera </strong> al prospecto</div>
+                                                                    <div className='text-center'>¿Quíeres pasar al siguiente proceso?</div>
+                                                                </Modal>
+                                                            }
+                                                            {
+                                                                itemDown.id == 6 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
+                                                                    <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
+                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
+                                                                </Modal>
+                                                            }      
+                                                        </Dropdown.Item>
                                                     )
                                                 }
                                             </DropdownButton>
-                                            
                                         </td>
                                     </tr>
                                 )
@@ -215,6 +300,8 @@ const ListDoctor = () => {
 };
 
 export default ListDoctor;
+
+
 
 /**
  *        // ?   <Formulario Data={item} title={item.nombre.toLocaleUpperCase()} namebtn='Guardar' edicion={true}/>

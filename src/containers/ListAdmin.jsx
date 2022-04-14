@@ -137,7 +137,12 @@ let dataCuentas = [
 
 const ListAdmin = () => {
     const [lista, setLista] = useState([]);
-    const [ItemDropdoun, setItemDropdoun] = useState(["Modificar", "Eliminar"]);
+    // const [ItemDropdoun, setItemDropdoun] = useState(["Modificar", "Eliminar"]);
+    const [ItemDropdoun, setItemDropdoun] = useState([
+        {id:1,text:"Modificar", url:"modificar"},
+        {id:2,text:"Activar", url:"activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
+        {id:3,text:"Eliminar", url:"eliminar"}
+    ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
     useEffect(async () => {
@@ -229,25 +234,27 @@ const ListAdmin = () => {
                                         <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                             {
                                                 ItemDropdoun.map(itemDown => 
-                                                    itemDown == 'Activar' 
-                                                    ?   item.idEstatusUsuario<=4
-                                                        ?   <Dropdown.Item key={itemDown}  href={`/#/administradores?${itemDown}`} disabled={item.idEstatusUsuario!=3}>
-                                                                <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size='md' namebtnSave='Activar'>
-                                                                    <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
-                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
-                                                                </Modal>
-                                                            </Dropdown.Item> : ''
-
-                                                    :   <Dropdown.Item key={itemDown} href={`/#/administradores?${itemDown}`}>
-                                                            <Modal handleClick={getAction} nameBtn={itemDown}  title={itemDown} size={itemDown == 'Estatus' ? 'xl': itemDown == 'Modificar' ? 'lg': 'md'} namebtnSave={itemDown == 'Eliminar' ? 'Eliminar':''}>
-                                                                {
-                                                                    itemDown == 'Modificar' 
-                                                                    ?   <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/>  
-                                                                    :   itemDown == 'Eliminar' &&  `¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`
-                                                                    
-                                                                } 
+                                                    <Dropdown.Item key={itemDown.id} href={`/#/administradores?${itemDown.url}`}  disabled={item.idEstatusUsuario!=3 && itemDown.id == 2}>
+                                                        {
+                                                            itemDown.id == 1 &&
+                                                            <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='lg' >
+                                                                <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/>  
+                                                            </Modal>   
+                                                        }
+                                                        {
+                                                            itemDown.id == 2 && item.idEstatusUsuario!=4 &&
+                                                            <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">
+                                                                <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
+                                                                <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
                                                             </Modal>
-                                                        </Dropdown.Item>
+                                                        }
+                                                        {
+                                                            itemDown.id == 3 &&
+                                                            <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
+                                                                {`¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`}
+                                                            </Modal>
+                                                        }      
+                                                    </Dropdown.Item>
                                                 )
                                             }
                                         </DropdownButton>
@@ -262,7 +269,7 @@ const ListAdmin = () => {
                 <Contenedor>
                     <Mensaje icono="emoji-frown" mensaje="No se encontraron registros..." />
                     <div className="text-center">
-                        <Link link="/formDoc" clases="btn btn-secondary">Nuevo</Link>
+                        <Link link="/formadmin" clases="btn btn-secondary">Nuevo</Link>
                     </div>
                 </Contenedor>              
             )

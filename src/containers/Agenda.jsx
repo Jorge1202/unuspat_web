@@ -7,7 +7,7 @@ import Fetch from '../assets/js/fetch';
 import './styles/Agenda.css';
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.38/system.js"></script>
 
-let date = moment().subtract(30, 'days');;
+let date = moment().subtract(31, 'days');;
 const AgendaComponent = () => {
 
     const [data, setData] = useState([]);
