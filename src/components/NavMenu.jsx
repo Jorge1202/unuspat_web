@@ -26,6 +26,8 @@ const HH = [
 ];
 const DOC = [
     {name: 'Home Doctor', link:'pagos'},
+    {name: 'Dashboard', link:'pagos'},
+    {name: 'Repostes', link:'pagos'},
     // {name: '', link:''},
 ]
             

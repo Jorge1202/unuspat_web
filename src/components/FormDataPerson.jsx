@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FormDataPerson = ({user, registro, handleChange}) => {
+const FormDataPerson = ({edicion=false, user, registro, handleChange}) => {
     return (
         <React.Fragment>
             <div className="row mb-3">
@@ -28,9 +28,9 @@ const FormDataPerson = ({user, registro, handleChange}) => {
                 </div>
             </div>
             <div className="row mb-3">
-                <label htmlFor="email" className="col-md-4 col-lg-3 col-form-label">Correo electrónico *</label>
+                <label htmlFor="email" className="col-md-4 col-lg-3 col-form-label">Correo electrónico </label>
                 <div className="col-md-8 col-lg-9">
-                <input value={registro.email} name="email" onChange={(e) => {handleChange(e)}} type="email" className="form-control" id="email" required/>
+                    <input value={registro.email} name="email" onChange={(e) => {handleChange(e)}} type="email" className="form-control" id="email" disabled={edicion} required/>
                 </div>
             </div>
 

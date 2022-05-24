@@ -19,8 +19,8 @@ const constLineTime = ({item}) => {
             url: `estatusProspecto/${item.id}`
           })
         .then(data=>{
-          debugger
             if(!data.error && data.status === 200){
+                console.log(data);
                 var b = data.body;
                 b.estatus.forEach(x => {
                     let e = b.linetime.find(z => x.id === z.idEstatusRegistro);

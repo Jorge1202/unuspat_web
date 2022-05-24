@@ -3,6 +3,7 @@ import { Tabs, Tab, Accordion } from 'react-bootstrap';
 import Boton from '../components/Boton';
 import RowContainer from './RowContainer';
 import Fetch from '../assets/js/fetch';
+import fechas from '../assets/js/fechas';
 // import FormDireccion from './FormDireccion';
 import FormDataPerson from './FormDataPerson';
 
@@ -14,18 +15,18 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
     -user: tipo de usuario logueado
     */
    const [key, setKey] = useState('home'); //se usa para el cambio de tabs
-    const [user, setUser] = useState('0');
-    const [DataUser, setDataUser] = useState({});
-    const [DataDireccion, setDataDireccion] = useState({});
-    const [Datalaboral, setDataLaboral] = useState({});
-    const [listaEstados, setListaEstados] = useState([]);
-    const [listaMunicipios, setListaMunicipios] = useState([]);
-    const [listaColonias, setListaColonias] = useState([]);
-    
-    useEffect(() => {
-        setUser(localStorage.getItem('_T_U'));
+   const [user, setUser] = useState('0');
+   const [DataUser, setDataUser] = useState({});
+   const [DataDireccion, setDataDireccion] = useState({});
+   const [Datalaboral, setDataLaboral] = useState({});
+   const [listaEstados, setListaEstados] = useState([]);
+   const [listaMunicipios, setListaMunicipios] = useState([]);
+   const [listaColonias, setListaColonias] = useState([]);
+   
+   useEffect(() => {
+       setUser(localStorage.getItem('_T_U'));
     });
-
+    
     useEffect(async () => {
         await handleGET();
         await getEstados();
@@ -49,6 +50,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
             url: `user/perfil?id=${id}&tipo=${typeUser}`,
         })
         .then(async data=>{
+            debugger
             if(!data.error && data.status === 200){
                 console.log(data);
                 setDataUser(data.body.user); 
@@ -58,6 +60,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     await handleChangeEstados(data.body.direcciones.estado)
                     await handleChangeMunicipios(data.body.direcciones.municipio) 
                 }
+                
                 if(data.body.laboral){
                     setDataLaboral(data.body.laboral); 
                 }
@@ -138,29 +141,94 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
 
 
     //#region Envio de datos submit segun el tipo de usuario
+    const handleSubmitEditPerfil = e => {
+        e.preventDefault();
+        console.log('change handleSubmitEditPerfil');
+        Fetch.PUT({
+            url: `user/perfil/actualizar/usuario`,
+            obj: DataUser
+        })
+        .then(async data=>{
+            console.log(data);
+            if(!data.error && data.status === 200){
+               
+            } else {
+
+            }
+        }).catch((e) => {
+            console.log(e);
+
+        });
+    }
+    const handleSubmitEditDireccion = e => {
+        e.preventDefault();
+        console.log('change handleSubmitEditDireccion');
+
+        Fetch.PUT({
+            url: `user/perfil/actualizar/direccion`,
+            obj: DataDireccion
+        })
+        .then(async data=>{
+            console.log(data);
+            if(!data.error && data.status === 200){
+               
+            } else {
+
+            }
+        }).catch((e) => {
+            console.log(e);
+
+        });
+    }
+    const handleSubmitEditlaboralHH = e => {
+        e.preventDefault();
+        console.log('change handleSubmitEditlaboralHH');
+
+        Fetch.PUT({
+            url: `user/perfil/actualizar/headHunter`,
+            obj: Datalaboral
+        })
+        .then(async data=>{
+            console.log(data);
+            if(!data.error && data.status === 200){
+               
+            } else {
+
+            }
+        }).catch((e) => {
+            console.log(e);
+
+        });
+    }
+    const handleSubmitEditlaboralDoc = e => {
+        e.preventDefault();
+        console.log('change handleSubmitEditlaboralDoc');
+
+        Fetch.PUT({
+            url: `user/perfil/actualizar/doctor`,
+            obj: Datalaboral
+        })
+        .then(async data=>{
+            console.log(data);
+            if(!data.error && data.status === 200){
+               
+            } else {
+
+            }
+        }).catch((e) => {
+            console.log(e);
+
+        });
+    }
+    //#endregion
+    
+    //#region Seguridad
     const handleSubmitChangePasswors = e => {
         e.preventDefault();
         console.log('change contraseña');
     }
-    const handleSubmitEditPerfil = e => {
-        e.preventDefault();
-        console.log('change contraseña');
-    }
-    const handleSubmitEditDireccion = e => {
-        e.preventDefault();
-        console.log('change contraseña');
-        console.log(DataDireccion);
-    }
-    const handleSubmitEditlaboralHH = e => {
-        e.preventDefault();
-        console.log('change contraseña');
-    }
-    const handleSubmitEditlaboralDoc = e => {
-        e.preventDefault();
-        console.log('change contraseña');
-    }
     //#endregion
-    
+   
     return (
         <Tabs
             id="controlled-tab-example"
@@ -170,121 +238,117 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
         >
             <Tab eventKey="home" title="Información">
 
-                <>
-                    <RowContainer nameSubtitle="Datos de perfil">
-                        <div className="row">
-                            <div className="col-lg-3 col-md-4 label ">Nombre completo</div>
-                            <div className="col-lg-9 col-md-8">{DataUser.nombre} {DataUser.apellidoPaterno} {DataUser.apellidoMaterno}</div>
+                <RowContainer nameSubtitle="Datos de perfil">
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 label ">Nombre completo</div>
+                        <div className="col-lg-9 col-md-8">{DataUser.nombre} {DataUser.apellidoPaterno} {DataUser.apellidoMaterno}</div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Teléfono</div>
+                        <div className="col-lg-9 col-md-8">{DataUser.telefono}</div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Correo electrónico</div>
+                        <div className="col-lg-9 col-md-8">{DataUser.email}</div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Genero</div>
+                        <div className="col-lg-9 col-md-8">{DataUser.genero?'Hombre':'Mujer'}</div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Estatus </div>
+                        <div className="col-lg-9 col-md-8">{DataUser.estatuusuario}</div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 label ">Dirección</div>
+                        
+                        <div className="col-lg-9 col-md-8"> 
+                            calle {DataDireccion.calle} {DataDireccion.no_ext?`#${DataDireccion.no_ext}`:'s/n'} {DataDireccion.no_int?`int. ${DataDireccion.no_int}`:''}, 
+                            col. {DataDireccion.n_colonia}, {DataDireccion.ciudad? `ciudad ${DataDireccion.ciudad}` : ''} <br />   {DataDireccion.n_municipio}, {DataDireccion.n_estado} C.P. {DataDireccion.codigo_postal} 
                         </div>
-                        <div className="row">
-                            <div className="col-lg-3 col-md-4 label">Teléfono</div>
-                            <div className="col-lg-9 col-md-8">{DataUser.telefono}</div>
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-3 col-md-4 label">Correo electrónico</div>
-                            <div className="col-lg-9 col-md-8">{DataUser.email}</div>
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-3 col-md-4 label">Genero</div>
-                            <div className="col-lg-9 col-md-8">{DataUser.genero?'Hombre':'Mujer'}</div>
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-3 col-md-4 label">Estatus </div>
-                            <div className="col-lg-9 col-md-8">{DataUser.estatuusuario}</div>
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-3 col-md-4 label ">Dirección</div>
-                            <div className="col-lg-9 col-md-8"> 
-                                calle {DataDireccion.calle} {DataDireccion.no_ext?`#${DataDireccion.no_ext}`:'s/n'} {DataDireccion.no_int?`int. ${DataDireccion.no_int}`:''}, 
-                                col. {DataDireccion.n_colonia}, {DataDireccion.ciudad? `ciudad ${DataDireccion.ciudad}` : ''} <br />   {DataDireccion.n_municipio}, {DataDireccion.n_estado} C.P. {DataDireccion.codigo_postal} 
-                            </div>
-                        </div>
-                    </RowContainer>
-                </>
+                    </div>
+                </RowContainer>                
 
                 {
                     typeUser == '3' &&
-                    <>
-                        <RowContainer nameSubtitle="Datos laborales">
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Profesion</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.profesion}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">CURP</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.curp}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">RFC</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.rfc}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Razón Social</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.razonSocial}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Despacho</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.despacho}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Marca</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.marca}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Telefono Oficina</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.telefonoOficina}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Tipo Persona</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.idTipoPersona == 1 ? 'Física' : 'Moral'}</div>
-                            </div>
-                        </RowContainer>
-                    </>
+                    <RowContainer nameSubtitle="Datos laborales">
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Profesion</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.profesion}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">CURP</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.curp}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">RFC</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.rfc}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Razón Social</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.razonSocial}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Despacho</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.despacho}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Marca</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.marca}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Telefono Oficina</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.telefonoOficina}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Tipo Persona</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.idTipoPersona == 1 ? 'Física' : 'Moral'}</div>
+                        </div>
+                    </RowContainer>                    
                 }
 
                 {
                     typeUser == '4' &&
-                    <>
-                        <RowContainer nameSubtitle="Datos laborales">
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Cédula</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.cedula}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Clave</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.clave}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Especialidad</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.especialidad}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">RFC</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.rfc}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Razón Social</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.razonSocial}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Despacho Marca</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.despachoMarca}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Telefono de Oficina</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.telefonoOficina}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Página Web</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.paginaWeb}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Tipo Persona</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.idTipoPersona == 1 ? 'Física' : 'Moral'}</div>
-                            </div>
-                        </RowContainer>
-                    </>
+                    <RowContainer nameSubtitle="Datos laborales">
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Cédula</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.cedula}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Clave</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.clave}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Especialidad</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.especialidad}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">RFC</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.rfc}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Razón Social</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.razonSocial}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Despacho Marca</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.despachoMarca}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Telefono de Oficina</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.telefonoOficina}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Página Web</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.paginaWeb}</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-3 col-md-4 label ">Tipo Persona</div>
+                            <div className="col-lg-9 col-md-8">{Datalaboral.idTipoPersona == 1 ? 'Física' : 'Moral'}</div>
+                        </div>
+                    </RowContainer>
                 }
+
                 <RowContainer>
                     <div className='row'>
                         <div className="col-lg-3 col-md-4 label ">Creado por</div>
@@ -292,7 +356,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     </div>
                     <div className='row'>
                         <div className="col-lg-3 col-md-4 label ">Fecha de creación</div>
-                        <div className="col-lg-9 col-md-8">{DataUser.dateCreate}</div>
+                        <div className="col-lg-9 col-md-8">{fechas.local(DataUser.dateCreate, 8)}</div>
                     </div>
                     <div className='row'>
                         <div className="col-lg-3 col-md-4 label ">Modificado por</div>
@@ -300,7 +364,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     </div>
                     <div className='row'>
                         <div className="col-lg-3 col-md-4 label ">Fecha de modificación</div>
-                        <div className="col-lg-9 col-md-8">{DataUser.dateUpdate}</div>
+                        <div className="col-lg-9 col-md-8">{!DataUser.dateUpdate ? '----': fechas.local(DataUser.dateUpdate, 8)}</div>
                     </div>
                 </RowContainer>
             </Tab>
@@ -312,7 +376,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                         <Accordion.Header>Datos de perfil</Accordion.Header>
                         <Accordion.Body>
                             <form onSubmit={handleSubmitEditPerfil}>
-                                <FormDataPerson user={user} registro={DataUser} handleChange={handleChangeUser}/>
+                                <FormDataPerson edicion={true} user={typeUser} registro={DataUser} handleChange={handleChangeUser}/>
 
                                 <div className='text-end'>
                                     <Boton type="submit" clases="btn_principal">Guargar</Boton>

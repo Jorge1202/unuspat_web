@@ -13,23 +13,41 @@ import Fetch from '../assets/js/fetch';
 import './styles/form.scss';
 
 let objAgregar = {
-  "nombre": '',
-  "telefono": '',
-  "email": '',
-  "estado": "DEFAULT",
-  "municipio": "DEFAULT",
-  "colonia": "DEFAULT",
+  p:{  
+    "idTipoUsuario": 2,
+  },
+  a:{
+    "estado": "DEFAULT",
+    "municipio": "DEFAULT",
+    "colonia": "DEFAULT",
+    "calle":"",
+    "no_ext":"",
+    "no_int":"",
+  },
+  j:{}
 }
 
 const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
   let history = useHistory();
 
-  const [registro, setAdd] = useState(Data);
   const [estado, setEstado] = useState({ done: true, success: true, mensaje: 'esto es un mensaje', form: true });
+  const [activeKey, setactiveKey] = useState('person');
+  const [disabled, setdisabled] = useState({disabledPerson: true, disabledDireccion: true, disabledLaboral:true});
+  const [registroPerson, setRegistroPerson] = useState(Data.p);
+  const [registroAddress, setRegistroAddress] = useState(Data.a);
+  const [registroJob, setRegistroJob] = useState(Data.j);
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setAdd({ ...registro, [name]: value });
+  const handleChangePerson = e => {
+      const { name, value } = e.target;
+      setRegistroPerson({ ...registroPerson, [name]: value });
+  };
+  const handleChangeAddress = e => {
+      const { name, value } = e.target;
+      setRegistroAddress({ ...registroAddress, [name]: value });
+  };
+  const handleChangeJob = e => {
+      const { name, value } = e.target;
+      setRegistroJob({ ...registroJob, [name]: value });
   };
 
   const backFormulario = () => {
@@ -44,6 +62,18 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     }
   };
 
+  const handleSubmitPerson = e => {
+    e.preventDefault();
+    setdisabled({...disabled, statusDireccion: false})
+    setactiveKey('address')
+  }
+  const handleSubmitDireccion = e => {
+    e.preventDefault();
+    setdisabled({...disabled, statusDireccion: false})
+    
+    setactiveKey('job')
+  }
+
   const handleSubmit = e => {
     e.preventDefault();
     // setEstado({
@@ -51,11 +81,17 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     // });
 
     console.log('agregar');
-    console.log(registro);
+    setdisabled({...disabled, disabledLaboral: false})
+    let objeto = {
+      person: registroPerson,
+      address: registroAddress,
+      job: registroJob
+    }
+    console.log(objeto);
 
     Fetch.POST({
       url: 'user/headhunter/agregar',
-      obj: registro
+      obj: objeto
     })
     .then(data=>{
       debugger
@@ -88,6 +124,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     })
   }
 
+
   if (estado.done) {
     return (
       <React.Fragment>
@@ -95,19 +132,19 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
           estado.form ? (
             <Contenedor title={title}>
               <div className="registro">
-                <form onSubmit={handleSubmit}>
-                  <Tab.Container id="left-tabs-example" defaultActiveKey="person">
+                
+                  <Tab.Container id="left-tabs-example" activeKey={activeKey} defaultActiveKey="person">
                     <RowContainer>
                       <ColumContainer m="3" x="3">
                         <Nav variant="pills" className="flex-column">
                           <Nav.Item>
-                            <Nav.Link eventKey="person">Datos personales</Nav.Link>
+                            <Nav.Link disabled={disabled.disabledPerson} eventKey="person">Datos personales</Nav.Link>
                           </Nav.Item>
                           <Nav.Item>
-                            <Nav.Link eventKey="address">Dirección</Nav.Link>
+                            <Nav.Link disabled={disabled.disabledDireccion} eventKey="address">Dirección</Nav.Link>
                           </Nav.Item>
                           <Nav.Item>
-                            <Nav.Link eventKey="job">Datos Laborales</Nav.Link>
+                            <Nav.Link disabled={disabled.disabledLaboral} eventKey="job">Datos Laborales</Nav.Link>
                           </Nav.Item>
                         </Nav>
                       </ColumContainer>
@@ -115,73 +152,30 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                         <Tab.Content>
 
                           <Tab.Pane eventKey="person">
-                            <FormDataPerson user="3" registro={registro} handleChange={handleChange}/>
+                            <form onSubmit={handleSubmitPerson}>
+                              <FormDataPerson perfil={true} user="3" registro={registroPerson} handleChange={handleChangePerson}/>
+                              <div className='text-end'>
+                                  <Boton type="submit" clases="btn_principal">Siguiente</Boton>
+                              </div>
+                            </form>
                           </Tab.Pane>
 
                           <Tab.Pane eventKey="address">
-                            <FormDireccion registro={registro} handleChange={handleChange}/>
+                            <form onSubmit={handleSubmitDireccion}>
+                              <FormDireccion registro={registroAddress} handleChange={handleChangeAddress}/>
+                              <div className='text-end'>
+                                  <Boton type="submit" clases="btn_principal">Siguiente</Boton>
+                              </div>
+                            </form>
                           </Tab.Pane>
 
                           <Tab.Pane eventKey="job">
-                            <div className="row mb-3">
-                              <label htmlFor="curp" className="col-md-4 col-lg-3 col-form-label">CURP</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.curp} name="curp" onChange={handleChange} type="text" className="form-control" id="curp" />
+                            <form onSubmit={handleSubmit}>
+                              <FormularioLaboral registro={registroJob} handleChange={handleChangeJob}/>
+                              <div className='text-end'>
+                                  <Boton type="submit" clases="btn_principal">Guardar</Boton>
                               </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="profesion" className="col-md-4 col-lg-3 col-form-label">Profesión</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.profesion} name="profesion" onChange={handleChange} type="text" className="form-control" id="profesion" />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.rfc} name="rfc" onChange={handleChange} type="text" className="form-control" id="rfc" />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="razonSocial" className="col-md-4 col-lg-3 col-form-label">Razón Social</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.razonSocial} name="razonSocial" onChange={handleChange} type="text" className="form-control" id="razonSocial" />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="despacho" className="col-md-4 col-lg-3 col-form-label">Despacho</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.despacho} name="despacho" onChange={handleChange} type="text" className="form-control" id="despacho" />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="marca" className="col-md-4 col-lg-3 col-form-label">Marca</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.marca} name="marca" onChange={handleChange} type="text" className="form-control" id="marca" />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="telefonoOficina" className="col-md-4 col-lg-3 col-form-label">Teléfono Oficina</label>
-                              <div className="col-md-8 col-lg-9">
-                                <input value={registro.telefonoOficina} name="telefonoOficina" onChange={handleChange} type="text" className="form-control" id="telefonoOficina" />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label htmlFor="idTipoPersona" className="col-md-4 col-lg-3 col-form-label">Tipo Persona</label>
-                              <div className="col-md-8 col-lg-9">
-                                <div className="form-check">
-                                  <input value={registro.idTipoPersona} name="idTipoPersona" onChange={handleChange} className="form-check-input" type="radio" id="idTipoPersona1" checked />
-                                  <label className="form-check-label" htmlFor="idTipoPersona1">
-                                    Física
-                                  </label>
-                                </div>
-                                <div className="form-check">
-                                  <input value={registro.idTipoPersona} name="idTipoPersona" onChange={handleChange} className="form-check-input" type="radio" id="idTipoPersona2" />
-                                  <label className="form-check-label" htmlFor="idTipoPersona2">
-                                    Moral
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
+                            </form>
                           </Tab.Pane>
 
                         </Tab.Content>
@@ -193,13 +187,8 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                   </Tab.Container>
 
 
-                  <div className="row">
-                    <ColumContainer x="12" m="12" x_class="text-end">
-                      <Boton type="submit" clases="btn_principal">{namebtn}</Boton>
-                    </ColumContainer>
-                  </div>
+          
 
-                </form>
               </div>
             </Contenedor>
 
@@ -230,3 +219,68 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
 }
 
 export default FormHH;
+
+
+const FormularioLaboral = ({registro, handleChange}) => {
+  return <>
+   <div className="row mb-3">
+      <label htmlFor="curp" className="col-md-4 col-lg-3 col-form-label">CURP</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.curp} name="curp" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="curp" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="profesion" className="col-md-4 col-lg-3 col-form-label">Profesión</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.profesion} name="profesion" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="profesion" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="razonSocial" className="col-md-4 col-lg-3 col-form-label">Razón Social</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.razonSocial} name="razonSocial" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="razonSocial" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="despacho" className="col-md-4 col-lg-3 col-form-label">Despacho</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.despacho} name="despacho" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="despacho" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="marca" className="col-md-4 col-lg-3 col-form-label">Marca</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.marca} name="marca" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="marca" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="telefonoOficina" className="col-md-4 col-lg-3 col-form-label">Teléfono Oficina</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.telefonoOficina} name="telefonoOficina" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="telefonoOficina" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="idTipoPersona" className="col-md-4 col-lg-3 col-form-label">Tipo Persona</label>
+      <div className="col-md-8 col-lg-9">
+        <div className="form-check">
+          <input value={registro.idTipoPersona} name="idTipoPersona" onChange={(e)=>{handleChange(e)}} className="form-check-input" type="radio" id="idTipoPersona1" checked />
+          <label className="form-check-label" htmlFor="idTipoPersona1">
+            Física
+          </label>
+        </div>
+        <div className="form-check">
+          <input value={registro.idTipoPersona} name="idTipoPersona" onChange={(e)=>{handleChange(e)}} className="form-check-input" type="radio" id="idTipoPersona2" />
+          <label className="form-check-label" htmlFor="idTipoPersona2">
+            Moral
+          </label>
+        </div>
+      </div>
+    </div>
+  </>
+}

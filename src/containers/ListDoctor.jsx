@@ -5,29 +5,28 @@ import Link from '../components/Link';
 import Table from '../components/Table';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import Modal from '../components/Modal';
-// import Itemlinetime from '../components/itemlinetime';
 import ContLineTime from '../components/contLineTime';
 import ProsessLine from '../components/ProsessLine';
 import DatosUser from '../components/DatosUser';
-// import Formulario from '../containers/FormDoctor';
+import ViewFormulario from './ViewFormulario';
+import fechas from '../assets/js/fechas';
 
 import Fetch from '../assets/js/fetch';
 import '../components/styles/Dropdown.css'
 import './styles/ListData.css';
-
-
 
 const ListDoctor = () => {
     const [user, setUser] = useState('0');
     const [lista, setLista] = useState([]);
     // const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Estatus","Modificar", "Eliminar"]);
     const [ItemDropdoun, setItemDropdoun] = useState([
+        {id:7,text:"Datos medico", url:"Formato"},
         {id:1,text:"Estatus", url:"Estatus"},
         {id:2,text:"Modificar", url:"Modificar"},
         {id:3,text:"Activar", url:"Activar"}, //mostrar al estatusRegistro sea 4 y se modifica el estatusUsuario a 3
+        {id:6,text:"Eliminar", url:"Eliminar"},
         {id:4,text:"Presentación finalizada", url:"presentacion"}, //mostrar al estar en estatusRegistro 2 se pasa a estatusRegistro 3 y se envia formulario 
         {id:5,text:"Proyeccion Financiera", url:"proyeccion-financiera"}, //mostrar al estar en estatusRegistro 2 se pasa a estatusRegistro 3 y se envia formulario 
-        {id:6,text:"Eliminar", url:"Eliminar"}
     ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
@@ -100,6 +99,8 @@ const ListDoctor = () => {
                 handleClickProceso_presentacion(item);
             } else if(accion === 'proyeccion-financiera'){
                 handleClickProceso_pFinanciera(item);
+            } else if(accion === 'Formato'){
+                handleClickFormato(item);
             }
 
         },500);
@@ -107,11 +108,11 @@ const ListDoctor = () => {
 
     const handleClickUpdate = ()=>{
         console.log('editar');
-        
     }
 
     const handleClickDelete = async (item)=>{
         console.log('eliminar');
+        // console.log(item); 
     }
     
     const handleClickActive = (item)=>{
@@ -152,9 +153,14 @@ const ListDoctor = () => {
     
     const handleClickStatus = (item)=>{
         console.log('Estatus');
-        console.log(item);
-        
+        // console.log(item); 
     }
+
+    const handleClickFormato = (item)=>{
+        console.log('Formato');
+        // console.log(item); 
+    }
+
     const handleClickProceso_presentacion = (item)=>{
         console.log('handleClickProceso_presentacion');
         console.log(item);
@@ -193,10 +199,10 @@ const ListDoctor = () => {
         })
         
     }
+
     const handleClickProceso_pFinanciera = (item)=>{
         console.log('handleClickProceso_pFinanciera');
         console.log(item);
-        
     }
 
     if (estado.done) {
@@ -221,7 +227,7 @@ const ListDoctor = () => {
                                             {/* estatus de registro  */}
                                             <ProsessLine status={item.idEstatusRegistro}/> 
                                         </td>
-                                        <td>{item.dateCreate}</td>
+                                        <td>{fechas.local(item.dateCreate, 8) }</td>
                                          <td>
                                          <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                                 {
@@ -239,6 +245,13 @@ const ListDoctor = () => {
                                                                 </Modal>   
                                                             }
                                                             {
+                                                                itemDown.id == 6 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
+                                                                    <div className='text-center'>Al eliminar ya no se tendrá acceso a los datos del usuario </div>
+                                                                    <div className='text-center'>¿Aún deseas eliminar a <strong>{item.nombre}</strong>?</div>
+                                                                </Modal>
+                                                            } 
+                                                                 {
                                                                 itemDown.id == 3 && item.idEstatusUsuario!=4 &&
                                                                 <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">
                                                                     <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
@@ -253,19 +266,18 @@ const ListDoctor = () => {
                                                                 </Modal>
                                                             }
                                                             {
-                                                                itemDown.id == 5 && item.idEstatusRegistro==3 &&
+                                                                itemDown.id == 5 && item.idEstatusRegistro==3 && item.statusFormulario==1 &&
                                                                 <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Sí">
                                                                     <div className='text-center'>Al aceptar confirmas que se ha hecho la <strong>proyección financiera </strong> al prospecto</div>
                                                                     <div className='text-center'>¿Quíeres pasar al siguiente proceso?</div>
                                                                 </Modal>
                                                             }
                                                             {
-                                                                itemDown.id == 6 &&
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
-                                                                    <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
-                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
-                                                                </Modal>
-                                                            }      
+                                                                itemDown.id == 7 && item.statusFormulario==1 &&
+                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='lg' >
+                                                                    <ViewFormulario idUser={item.idUsuario}/>
+                                                                </Modal>   
+                                                            }   
                                                         </Dropdown.Item>
                                                     )
                                                 }

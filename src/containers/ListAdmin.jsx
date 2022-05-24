@@ -8,6 +8,7 @@ import Modal from '../components/Modal';
 import DatosUser from '../components/DatosUser';
 // import Formulario from '../containers/FormAdmin';
 
+import fechas from '../assets/js/fechas';
 import Fetch from '../assets/js/fetch';
 import '../components/styles/Dropdown.css'
 import './styles/ListData.css';
@@ -229,7 +230,7 @@ const ListAdmin = () => {
                                     <td>{item.nombre} {item.apellidoPaterno}</td>
                                     <td>{item.email}</td>
                                     <td>{item.idTipoUsuario == 1 ? 'Admin principal' : 'Administrador'}</td>
-                                    <td>{item.dateCreate}</td>
+                                    <td>{fechas.local(item.dateCreate, 8) }</td>
                                     <td>
                                         <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                             {

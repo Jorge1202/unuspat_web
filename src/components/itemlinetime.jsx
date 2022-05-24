@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Fetch from '../assets/js/fetch';
 import './styles/itemlinetime.css'
 
 const itemlinetime = ({data}) => { 
@@ -47,39 +48,38 @@ const itemlinetime = ({data}) => {
     }
     
     function handleClick_send() {
-        // if(txtComentario.comentario.trim().length !== 0){
-        //     let obj = {
-        //         id: data.idlineTime,
-        //         comentario: txtComentario.comentario,
-        //     }
-        //     let valores = {
-        //         done: false,
-        //     };
-        //     setEstado(valores);
+        if(txtComentario.comentario.trim().length !== 0){
+            let obj = {
+                id: data.idlineTime,
+                comentario: txtComentario.comentario,
+            }
+            let valores = {
+                done: false,
+            };
+            setEstado(valores);
 
-        //     let fetch = new Fetch();
-        //     let objFetch = {
-        //         url: 'estatusProspecto',
-        //         obj: obj
-        //     }
-        //     fetch.PUT(objFetch)
-        //     .then(data=>{
-        //         if(!data.error && data.status === 200){
-        //             let valores = {
-        //                 done: true,
-        //             };
-        //             setEstado(valores);
-        //             handleClick_cancel();
-        //         } else {
+            let objFetch = {
+                url: 'estatusProspecto',
+                obj: obj
+            }
+            Fetch.PUT(objFetch)
+            .then(data=>{
+                if(!data.error && data.status === 200){
+                    let valores = {
+                        done: true,
+                    };
+                    setEstado(valores);
+                    handleClick_cancel();
+                } else {
                   
-        //         }
-        //     }).catch((e) => {
-        //         console.log(e);
-        //     })
-        // } else {
-        //     // document.getElementById(`comentari_${data.idlineTime}`).classList.toggle('is-invalid');
-        //     document.getElementById(`comentari_${data.idlineTime}`).classList.add('is-invalid');
-        // }
+                }
+            }).catch((e) => {
+                console.log(e);
+            })
+        } else {
+            // document.getElementById(`comentari_${data.idlineTime}`).classList.toggle('is-invalid');
+            document.getElementById(`comentari_${data.idlineTime}`).classList.add('is-invalid');
+        }
     }
 
     return (

@@ -8,6 +8,7 @@ import Modal from '../components/Modal';
 // import Formulario from '../containers/FormHH';
 import DatosUser from '../components/DatosUser';
 
+import fechas from '../assets/js/fechas';
 import Fetch from '../assets/js/fetch';
 import '../components/styles/Dropdown.css'
 import './styles/ListData.css';
@@ -148,7 +149,8 @@ const ListHH = () => {
                                         <td>{item.nombre} {item.apellidoPaterno}</td>
                                         <td>{item.email}</td>
                                         <td>{item.tipo}</td>
-                                        <td>{item.dateCreate}</td>
+                                        <td>{fechas.local(item.dateCreate, 8) }</td>
+                                        {/* <td>{item.dateCreate}</td> */}
                                          <td>
                                             <DropdownButton id="dropdown-basic-button" title="" variant="principal">
                                                 {
