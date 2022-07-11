@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-bootstrap';
 import './styles/Alert.scss';
-
 /**
  * primary
  * secondary 
@@ -12,18 +10,12 @@ import './styles/Alert.scss';
  * light
  * dark 
  */
-
-const AlertExample = ({children, color="success", visible=false}) => {
-    const [show, setShow] = useState(false);
-    useEffect(()=>{
-        setShow(visible)
-    });
-        
+const Alert = ({children, color="success", visible=false}) => {
     return (
-        <Alert show={show} variant={color}>
+        visible &&
+        <div className={`alert alert-${color}`}  role="alert">
             {children}
-        </Alert>
+        </div>
     );
 }
-
-export default AlertExample;
+export default Alert;

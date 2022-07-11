@@ -28,7 +28,7 @@ const FormDataPerson = ({edicion=false, user, registro, handleChange}) => {
                 </div>
             </div>
             <div className="row mb-3">
-                <label htmlFor="email" className="col-md-4 col-lg-3 col-form-label">Correo electrónico </label>
+                <label htmlFor="email" className="col-md-4 col-lg-3 col-form-label">Correo electrónico *</label>
                 <div className="col-md-8 col-lg-9">
                     <input value={registro.email} name="email" onChange={(e) => {handleChange(e)}} type="email" className="form-control" id="email" disabled={edicion} required/>
                 </div>
@@ -38,13 +38,13 @@ const FormDataPerson = ({edicion=false, user, registro, handleChange}) => {
                 <label htmlFor="genero" className="col-md-4 col-lg-3 col-form-label">Genero</label>
                 <div className="col-md-8 col-lg-9">
                     <div className="form-check">
-                        <input value="0" checked={registro.genero=="0"} name="genero" onChange={(e) => {handleChange(e)}} className="form-check-input" type="radio" id="flexRadioDefault1" />
+                        <input value='0' checked={registro.genero==0} name="genero" onChange={(e) => {handleChange(e)}} className="form-check-input" type="radio" id="flexRadioDefault1" />
                         <label className="form-check-label" htmlFor="flexRadioDefault1">
                             Mujer
                         </label>
                     </div>
                     <div className="form-check">
-                        <input value="1" checked={registro.genero=="1"} name="genero"  onChange={(e) => {handleChange(e)}} className="form-check-input" type="radio" id="flexRadioDefault2" />
+                        <input value='1' checked={registro.genero==1} name="genero"  onChange={(e) => {handleChange(e)}} className="form-check-input" type="radio" id="flexRadioDefault2" />
                         <label className="form-check-label" htmlFor="flexRadioDefault2">
                             Hombre
                         </label>

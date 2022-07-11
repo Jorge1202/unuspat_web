@@ -8,6 +8,8 @@ import Boton from '../components/Boton';
 import Mensaje from '../components/Mensaje';
 import FormDataPerson from '../components/FormDataPerson';
 import FormDireccion from '../components/FormDireccion';
+import Load from '../components/Load'
+import Alert from '../components/Alert';
 
 import Fetch from '../assets/js/fetch';
 import './styles/form.scss';
@@ -44,10 +46,17 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
         const { name, value } = e.target;
         setRegistroPerson({ ...registroPerson, [name]: value });
     };
-    const handleChangeAddress = e => {
-        const { name, value } = e.target;
-        setRegistroAddress({ ...registroAddress, [name]: value });
-    };
+    const handleChangeAddress = (e, json = false) => {
+
+        if(json){
+          console.log(e);
+          setRegistroAddress(e);
+        } else {
+          const { name, value } = e.target;
+          setRegistroAddress({ ...registroAddress, [name]: value });
+    
+        }
+      };
     const handleChangeJob = e => {
         const { name, value } = e.target;
         setRegistroJob({ ...registroJob, [name]: value });
@@ -67,14 +76,42 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
 
     const handleSubmitPerson = e => {
         e.preventDefault();
-        setdisabled({...disabled, disabledPerson: false})
-        setactiveKey('address')
+        setSowload(true)
+        Fetch.GET({
+        url: `user/perfil/validEmail?email=${registroPerson.email}`
+        })
+        .then(data=>{
+            if(!data.error && data.status === 200){
+            setactiveKey('address')
+            } else {
+            setShowAlert({ show: true, mesagge: data.body, color: `info` });
+            setTimeout(() => {
+                setShowAlert({ show: false });
+            }, 3000);
+            }
+        }).catch((e) => {
+        let valores = {
+            done: true,
+            form: false,
+            success: false,
+            mensaje: 'Error 500',
+        };
+        setEstado(valores);
+        }).finally(()=>{
+        setSowload(false)
+        })
     }
 
     const handleSubmitDireccion = e => {
         e.preventDefault();
-        setdisabled({...disabled, disabledDireccion: false})
-        setactiveKey('job')
+        if(!registroAddress.codigo_postal){
+            setShowAlert({ show: true, mesagge: 'Completa tu dirección', color: `info` });
+            setTimeout(() => {
+                setShowAlert({ show: false });
+            }, 3000);
+        } else {
+            setactiveKey('job')
+        }
     }
 
     const handleSubmit = e => {
@@ -82,7 +119,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
         // setEstado({
         //   done: false
         // });
-        
+        setSowload(true)
         setdisabled({...disabled, disabledLaboral: false})
         console.log('agregar');
         let objeto = {
@@ -125,12 +162,18 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
           };
           setEstado(valores);
         })
-
+        setSowload(false)
     }
+
+    const backTo = (type) => {
+        setactiveKey(type)
+      }
 
     if (estado.done) {
         return (
             <React.Fragment>
+                <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
+                <Load show={sowload}/>
                 {
                     estado.form ? (
                         <Contenedor title={title}>
@@ -164,6 +207,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
                                                     <form onSubmit={handleSubmitDireccion}>
                                                         <FormDireccion registro={registroAddress} handleChange={handleChangeAddress}/>
                                                         <div className='text-end'>
+                                                        <Boton handleClick={()=>{backTo('person')}} type="button" clases="btn_principal">Regresar</Boton>
                                                             <Boton type="submit" clases="btn_principal">Siguiente</Boton>
                                                         </div>
                                                     </form>
@@ -172,6 +216,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
                                                     <form onSubmit={handleSubmit}>
                                                         <FormularioLaboral registro={registroJob} handleChange={handleChangeJob}/>
                                                         <div className='text-end'>
+                                                        <Boton handleClick={()=>{backTo('address')}} type="button" clases="btn_principal">Regresar</Boton>
                                                             <Boton type="submit" clases="btn_principal">Guardar</Boton>
                                                         </div>
                                                     </form>
@@ -231,9 +276,9 @@ const FormularioLaboral = ({registro, handleChange}) => {
             </div>
         </div>
         <div className="row mb-3">
-            <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC</label>
+            <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC *</label>
             <div className="col-md-8 col-lg-9">
-                <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" />
+                <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" required/>
             </div>
         </div>
         <div className="row mb-3">

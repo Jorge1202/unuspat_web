@@ -8,7 +8,8 @@ import Boton from '../components/Boton';
 import Mensaje from '../components/Mensaje';
 import FormDataPerson from '../components/FormDataPerson';
 import FormDireccion from '../components/FormDireccion';
-
+import Load from '../components/Load';
+import Alert from '../components/Alert';
 
 import Fetch from '../assets/js/fetch';
 import './styles/form.scss';
@@ -33,9 +34,9 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
   // const frmLogin = { username:'', password:''};
 
   const [user, setUser] = useState('0');
-  useEffect(() => {
-      setUser(localStorage.getItem('_T_U'));
-  },[]);
+
+  const [sowload, setSowload] = useState(false);
+  const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
 
   const [activeKey, setactiveKey] = useState('person');
   const [estado, setEstado] = useState({ done: true, success: true, mensaje: '', form: true });
@@ -43,13 +44,26 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
   const [registroPerson, setRegistroPerson] = useState(Data.p);
   const [registroAddress, setRegistroAddress] = useState(Data.a);
 
+
+  useEffect(() => {
+    setUser(localStorage.getItem('_T_U'));
+  },[]); 
+
   const handleChangePerson = e => {
       const { name, value } = e.target;
       setRegistroPerson({ ...registroPerson, [name]: value });
   };
-  const handleChangeAddress = e => {
+
+  const handleChangeAddress = (e, json = false) => {
+
+    if(json){
+      console.log(e);
+      setRegistroAddress(e);
+    } else {
       const { name, value } = e.target;
       setRegistroAddress({ ...registroAddress, [name]: value });
+
+    }
   };
 
   const backFormulario = () => {
@@ -67,63 +81,99 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
   //#region Datos personales
   const saveFormPerson = (e)=>{
     e.preventDefault();
-    setdisabled({...disabled, statusDireccion: false})
-    setactiveKey('address')
+    
+    Fetch.GET({
+      url: `user/perfil/validEmail?email=${registroPerson.email}`
+    })
+    .then(data=>{
+        if(!data.error && data.status === 200){
+          setactiveKey('address')
+        } else {
+          setShowAlert({ show: true, mesagge: data.body, color: `info` });
+          setTimeout(() => {
+              setShowAlert({ show: false });
+          }, 3000);
+        }
+    }).catch((e) => {
+      let valores = {
+        done: true,
+        form: false,
+        success: false,
+        mensaje: 'Error 500',
+      };
+      setEstado(valores);
+    }).finally(()=>{
+    })
   }
 
   const handleSubmit = e => {
     e.preventDefault();
-    // setEstado({
-    //   done: false
-    // });
 
-    console.log('agregar');
-    let objeto = {
-      person: registroPerson,
-      address: registroAddress
+    console.log(registroAddress);
+    debugger
+    if(!registroAddress.codigo_postal){
+      setShowAlert({ show: true, mesagge: 'Completa tu dirección', color: `info` });
+      setTimeout(() => {
+          setShowAlert({ show: false });
+      }, 3000);
+
+    } else {
+      setSowload(true)
+      let objeto = {
+        person: registroPerson,
+        address: registroAddress
+      }
+      console.log(objeto);
+  
+      // Fetch.POST({
+      //   url: 'user/admin/agregar',
+      //   obj: objeto
+      // })
+      // .then(data=>{
+      //   if(!data.error && data.status === 200){
+      //     let valores = {
+      //         done: true,
+      //         success: true,
+      //         form: false,
+      //         mensaje: data.body,
+      //     };
+      //     setEstado(valores);
+
+      //   } else {
+      //     let valores = {
+      //         done: true,
+      //         success: false,
+      //         form: false,
+      //         mensaje: data.body,
+      //     };
+      //     setEstado(valores);
+      //   }
+      // }).catch((e) => {
+      //   let valores = {
+      //       done: true,
+      //       form: false,
+      //       success: false,
+      //       mensaje: 'Error 500',
+      //   };
+      //   setEstado(valores);
+      // })
+      setSowload(false)
     }
-    console.log(objeto);
 
-    Fetch.POST({
-      url: 'user/admin/agregar',
-      obj: objeto
-    })
-    .then(data=>{
-      debugger
-        if(!data.error && data.status === 200){
-          let valores = {
-              done: true,
-              success: true,
-              form: false,
-              mensaje: data.body,
-          };
-          setEstado(valores);
 
-        } else {
-          let valores = {
-              done: true,
-              success: false,
-              form: false,
-              mensaje: data.body,
-          };
-          setEstado(valores);
-        }
-    }).catch((e) => {
-      let valores = {
-          done: true,
-          form: false,
-          success: false,
-          mensaje: 'Error 500',
-      };
-      setEstado(valores);
-    })
 
   }
   //#endregion
 
+  const backTo = (type) => {
+    setactiveKey(type)
+  }
+
   if (estado.done) {
     return (
       <React.Fragment>
+        <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
+        <Load show={sowload}/>
         {
           estado.form ? (
             <Contenedor title={title}>
@@ -154,8 +204,9 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
                           </Tab.Pane>
                           <Tab.Pane eventKey="address">
                             <form onSubmit={handleSubmit}>
-                              <FormDireccion registro={registroAddress} handleChange={handleChangeAddress}/>
+                              <FormDireccion registro={registroAddress} handleChange={(e, json)=>{handleChangeAddress(e, json)}}/>
                               <div className='text-end'>
+                                  <Boton handleClick={()=>{backTo('person')}} type="button" clases="btn_principal">Regresar</Boton>
                                   <Boton type="submit" clases="btn_principal">Guardar</Boton>
                               </div>
                             </form>

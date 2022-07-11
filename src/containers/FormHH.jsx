@@ -8,6 +8,8 @@ import Boton from '../components/Boton';
 import Mensaje from '../components/Mensaje';
 import FormDataPerson from '../components/FormDataPerson';
 import FormDireccion from '../components/FormDireccion';
+import Load from '../components/Load'
+import Alert from '../components/Alert';
 
 import Fetch from '../assets/js/fetch';
 import './styles/form.scss';
@@ -15,6 +17,7 @@ import './styles/form.scss';
 let objAgregar = {
   p:{  
     "idTipoUsuario": 2,
+    genero:0
   },
   a:{
     "estado": "DEFAULT",
@@ -24,11 +27,14 @@ let objAgregar = {
     "no_ext":"",
     "no_int":"",
   },
-  j:{}
+  j:{idTipoPersona:1}
 }
 
 const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
   let history = useHistory();
+  
+  const [sowload, setSowload] = useState(false);
+  const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
 
   const [estado, setEstado] = useState({ done: true, success: true, mensaje: 'esto es un mensaje', form: true });
   const [activeKey, setactiveKey] = useState('person');
@@ -41,9 +47,16 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
       const { name, value } = e.target;
       setRegistroPerson({ ...registroPerson, [name]: value });
   };
-  const handleChangeAddress = e => {
+  const handleChangeAddress = (e, json = false) => {
+
+    if(json){
+      console.log(e);
+      setRegistroAddress(e);
+    } else {
       const { name, value } = e.target;
       setRegistroAddress({ ...registroAddress, [name]: value });
+
+    }
   };
   const handleChangeJob = e => {
       const { name, value } = e.target;
@@ -64,14 +77,42 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
 
   const handleSubmitPerson = e => {
     e.preventDefault();
-    setdisabled({...disabled, statusDireccion: false})
-    setactiveKey('address')
+    setSowload(true)
+    Fetch.GET({
+      url: `user/perfil/validEmail?email=${registroPerson.email}`
+    })
+    .then(data=>{
+        if(!data.error && data.status === 200){
+          setactiveKey('address')
+        } else {
+          setShowAlert({ show: true, mesagge: data.body, color: `info` });
+          setTimeout(() => {
+              setShowAlert({ show: false });
+          }, 3000);
+        }
+    }).catch((e) => {
+      let valores = {
+        done: true,
+        form: false,
+        success: false,
+        mensaje: 'Error 500',
+      };
+      setEstado(valores);
+    }).finally(()=>{
+      setSowload(false)
+    })
   }
+
   const handleSubmitDireccion = e => {
     e.preventDefault();
-    setdisabled({...disabled, statusDireccion: false})
-    
-    setactiveKey('job')
+    if(!registroAddress.codigo_postal){
+      setShowAlert({ show: true, mesagge: 'Completa tu dirección', color: `info` });
+      setTimeout(() => {
+          setShowAlert({ show: false });
+      }, 3000);
+    } else {
+      setactiveKey('job')
+    }
   }
 
   const handleSubmit = e => {
@@ -79,9 +120,9 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     // setEstado({
     //   done: false
     // });
+    setSowload(true)
 
     console.log('agregar');
-    setdisabled({...disabled, disabledLaboral: false})
     let objeto = {
       person: registroPerson,
       address: registroAddress,
@@ -94,7 +135,6 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
       obj: objeto
     })
     .then(data=>{
-      debugger
         if(!data.error && data.status === 200){
           let valores = {
               done: true,
@@ -121,13 +161,21 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
           mensaje: 'Error 500',
       };
       setEstado(valores);
+    }).finally((e) =>{
+      console.log(e);
     })
+
+    setSowload(false)
   }
 
+  const backTo = (type) => {
+    setactiveKey(type)
+  }
 
   if (estado.done) {
     return (
       <React.Fragment>
+        <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
         {
           estado.form ? (
             <Contenedor title={title}>
@@ -164,6 +212,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                             <form onSubmit={handleSubmitDireccion}>
                               <FormDireccion registro={registroAddress} handleChange={handleChangeAddress}/>
                               <div className='text-end'>
+                                  <Boton handleClick={()=>{backTo('person')}} type="button" clases="btn_principal">Regresar</Boton>
                                   <Boton type="submit" clases="btn_principal">Siguiente</Boton>
                               </div>
                             </form>
@@ -173,6 +222,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                             <form onSubmit={handleSubmit}>
                               <FormularioLaboral registro={registroJob} handleChange={handleChangeJob}/>
                               <div className='text-end'>
+                                  <Boton handleClick={()=>{backTo('address')}} type="button" clases="btn_principal">Regresar</Boton>
                                   <Boton type="submit" clases="btn_principal">Guardar</Boton>
                               </div>
                             </form>
@@ -185,9 +235,6 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                       </div>
                     </RowContainer>
                   </Tab.Container>
-
-
-          
 
               </div>
             </Contenedor>
@@ -207,6 +254,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
             </Contenedor>
           )
         }
+        <Load show={sowload}/>
       </React.Fragment>
     )
   } else {
@@ -223,6 +271,12 @@ export default FormHH;
 
 const FormularioLaboral = ({registro, handleChange}) => {
   return <>
+    <div className="row mb-3">
+      <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC *</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" required />
+      </div>
+    </div>
    <div className="row mb-3">
       <label htmlFor="curp" className="col-md-4 col-lg-3 col-form-label">CURP</label>
       <div className="col-md-8 col-lg-9">
@@ -233,12 +287,6 @@ const FormularioLaboral = ({registro, handleChange}) => {
       <label htmlFor="profesion" className="col-md-4 col-lg-3 col-form-label">Profesión</label>
       <div className="col-md-8 col-lg-9">
         <input value={registro.profesion} name="profesion" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="profesion" />
-      </div>
-    </div>
-    <div className="row mb-3">
-      <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC</label>
-      <div className="col-md-8 col-lg-9">
-        <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" />
       </div>
     </div>
     <div className="row mb-3">
@@ -269,13 +317,13 @@ const FormularioLaboral = ({registro, handleChange}) => {
       <label htmlFor="idTipoPersona" className="col-md-4 col-lg-3 col-form-label">Tipo Persona</label>
       <div className="col-md-8 col-lg-9">
         <div className="form-check">
-          <input value={registro.idTipoPersona} name="idTipoPersona" onChange={(e)=>{handleChange(e)}} className="form-check-input" type="radio" id="idTipoPersona1" checked />
+          <input value='1' checked={registro.idTipoPersona==1} name="idTipoPersona" onChange={(e)=>{handleChange(e)}} className="form-check-input" type="radio" id="idTipoPersona1"/>
           <label className="form-check-label" htmlFor="idTipoPersona1">
             Física
           </label>
         </div>
         <div className="form-check">
-          <input value={registro.idTipoPersona} name="idTipoPersona" onChange={(e)=>{handleChange(e)}} className="form-check-input" type="radio" id="idTipoPersona2" />
+          <input value='2' checked={registro.idTipoPersona==2} name="idTipoPersona" onChange={(e)=>{handleChange(e)}} className="form-check-input" type="radio" id="idTipoPersona2" />
           <label className="form-check-label" htmlFor="idTipoPersona2">
             Moral
           </label>

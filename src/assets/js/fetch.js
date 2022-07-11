@@ -1,5 +1,5 @@
-// const URL = "http://localhost:3002/"; // DESARROLLO
-const URL = "https://sandbox-unuspat.azurewebsites.net/"; // sandbox
+const URL = "http://localhost:3002/"; // DESARROLLO
+// const URL = "https://sandbox-unuspat.azurewebsites.net/"; // sandbox
 // const URL = "https://app-unuspat.azurewebsites.net/"; // produccion
 
 const Fetch = {

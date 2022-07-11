@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles/Load.scss';
+
 const Load = ({show=false}) => {
     return(
         show &&
@@ -10,4 +11,4 @@ const Load = ({show=false}) => {
         </div>
     )
 }
-export default Load;
+export default Load; 
