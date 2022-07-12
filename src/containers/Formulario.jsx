@@ -70,12 +70,10 @@ const Formulario = () => {
             consultorio: consultorio,
             usuario: usuario
         }
-        console.log(datos);
         await Fetch.POST({
             url: `user/doctores/formulario`,
             obj: datos
         }).then(data =>{
-            console.log(data);
             if(!data.error && data.status === 200){
                 setEstado({
                     done: false,
@@ -88,11 +86,10 @@ const Formulario = () => {
                     success: false,
                     mensaje: 'Se ha producido error al guardar los datos'
                 })
-                console.log(data);
             }
-        }).catch(e =>{
-            console.log(e);
-        })
+        }).catch((error) => {
+            console.warn(error);
+        });
     }
 
     return ( 

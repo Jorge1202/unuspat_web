@@ -151,8 +151,6 @@ const ListAdmin = () => {
     },[]);
 
     const getDataList = () => {
-        console.log('get ListAdmin');
-
         setEstado({
             done: false
         });
@@ -160,7 +158,6 @@ const ListAdmin = () => {
         Fetch.GET({ url: 'user/admin' })
         .then(data=>{
             if(!data.error && data.status === 200){
-                console.log(data);
                 setLista(data.body);
                 setEstado({
                     done: true,
@@ -174,11 +171,12 @@ const ListAdmin = () => {
                     items: data.body
                 });
             }
-        }).catch((e) => {
+        }).catch((error) => {
+            console.warn(error);
             setEstado({
                 done: true,
             })
-        })
+        });
     }
 
     const getAction = () => {
@@ -193,7 +191,7 @@ const ListAdmin = () => {
             } else if(accion === 'Activar'){
                 handleClickActive();
             } else if(accion === 'Estatus'){
-                console.log('Estatus');
+                // console.log('Estatus');
             }
         },500);
     }

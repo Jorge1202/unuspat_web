@@ -49,7 +49,6 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
     const handleChangeAddress = (e, json = false) => {
 
         if(json){
-          console.log(e);
           setRegistroAddress(e);
         } else {
           const { name, value } = e.target;
@@ -121,13 +120,11 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
         // });
         setSowload(true)
         setdisabled({...disabled, disabledLaboral: false})
-        console.log('agregar');
         let objeto = {
             person: registroPerson,
             address: registroAddress,
             job: registroJob
         }
-        console.log(objeto);
 
         Fetch.POST({
           url: 'user/doctores/agregar',
@@ -153,15 +150,16 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
               setEstado(valores);
 
             }
-        }).catch((e) => {
-          let valores = {
-              done: true,
-              form: false,
-              success: false,
-              mensaje: 'Error 500',
-          };
-          setEstado(valores);
-        })
+        }).catch((error) => {
+            console.warn(error);
+            let valores = {
+                done: true,
+                form: false,
+                success: false,
+                mensaje: 'Error 500',
+            };
+            setEstado(valores);
+        }); 
         setSowload(false)
     }
 

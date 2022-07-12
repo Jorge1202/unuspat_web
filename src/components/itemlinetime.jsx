@@ -73,9 +73,9 @@ const itemlinetime = ({data}) => {
                 } else {
                   
                 }
-            }).catch((e) => {
-                console.log(e);
-            })
+            }).catch((error) => {
+                console.warn(error);
+            });
         } else {
             // document.getElementById(`comentari_${data.idlineTime}`).classList.toggle('is-invalid');
             document.getElementById(`comentari_${data.idlineTime}`).classList.add('is-invalid');

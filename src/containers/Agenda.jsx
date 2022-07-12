@@ -16,21 +16,18 @@ const AgendaComponent = () => {
     },[]);
 
     const handleClick = () => {
-        console.log('Entro');
         Fetch.GET({
             url: `agenda/data`,
         })
         .then(async data => {
-            debugger
             if(!data.error && data.status === 200){
-                console.log(data.body);
                 setData(data.body);      
             }else{
 
             }
-        }).catch((e) => {
-            console.log(e);
-        })
+        }).catch((error) => {
+            console.warn(error);
+        });
     }
 
     return (

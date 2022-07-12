@@ -28,11 +28,12 @@ const FormDireccion = ({registro, handleChange}) => {
             if(!data.error && data.status === 200){
                 setListaEstados(data.body);
             }
-        }).catch((e) => {
+        }).catch((error) => {
+            console.warn(error);
             setEstado({
                 done: true,
             })
-        })
+        });
     };
 
     const handleChangeEstados = async e => {
@@ -63,8 +64,8 @@ const FormDireccion = ({registro, handleChange}) => {
                 
             }
         }).catch((error) => {
-            console.log(error);
-        })
+            console.warn(error);
+        });
 
     };
 
@@ -98,12 +99,10 @@ const FormDireccion = ({registro, handleChange}) => {
                         }, true)
                     }
                 }
-                
-    
             }
         }).catch((error) => {
-            console.log(error);
-        })
+            console.warn(error);
+        });
     };
 
 

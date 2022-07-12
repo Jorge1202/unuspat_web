@@ -25,18 +25,15 @@ const ViewFormulario = ({idUser}) => {
             url: `user/doctores/getDataFormulario?id=${idUser}`,
         })
         .then(async data => {
-            debugger
             if(!data.error && data.status === 200){
-                console.log(data.body);
                 setUser(data.body.usuarios)
                 setdoctor(data.body.doctor)
                 setconsulta(data.body.consulta)
                 setconsultorio(data.body.consultorio)
             }
-
-        }).catch((e) => {
-            console.log(e);
-        })
+        }).catch((error) => {
+            console.warn(error);
+        });
     }
 
     const exportPDF = () => {

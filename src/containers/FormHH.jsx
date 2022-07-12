@@ -50,7 +50,6 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
   const handleChangeAddress = (e, json = false) => {
 
     if(json){
-      console.log(e);
       setRegistroAddress(e);
     } else {
       const { name, value } = e.target;
@@ -121,14 +120,11 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     //   done: false
     // });
     setSowload(true)
-
-    console.log('agregar');
     let objeto = {
       person: registroPerson,
       address: registroAddress,
       job: registroJob
     }
-    console.log(objeto);
 
     Fetch.POST({
       url: 'user/headhunter/agregar',
@@ -153,7 +149,8 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
           };
           setEstado(valores);
         }
-    }).catch((e) => {
+    }).catch((error) => {
+      console.warn(error);
       let valores = {
           done: true,
           form: false,

@@ -37,9 +37,9 @@ const AgendaPublica = () => {
             }else{
                 history.push('error404');
             }
-        }).catch((e) => {
-            console.log(e);
-        })
+        }).catch((error) => {
+            console.warn(error);
+        });
     }
 
     const carga = (reclutador) => {
@@ -47,7 +47,6 @@ const AgendaPublica = () => {
         setFecha(new Date().toDateString());
         let fecha = new Date().constructor()
         if(fecha.includes('Sat') || fecha.includes('Sun')){
-            console.log('Entro');
             setHoras([]);
             setShowAlert({visible:true});
             setTimeout(()=>{
@@ -59,7 +58,6 @@ const AgendaPublica = () => {
             })
             .then(data => {
                 if(!data.error && data.status === 200){
-                    console.log(data.body);
                     setHoras(data.body)
                     if(data.body.length == 0){
                         setShowAlert({visible:true});
@@ -68,9 +66,9 @@ const AgendaPublica = () => {
                         },2000);
                     }
                 }
-            }).catch((e) => {
-                console.log(e);
-            })
+            }).catch((error) => {
+                console.warn(error);
+            });
         
         }
     }
@@ -81,7 +79,6 @@ const AgendaPublica = () => {
         let fecha = e.toString();
         setHora({horaFin: "",horaInicio: "", idHora: 0})
         if(fecha.includes('Sat') || fecha.includes('Sun')){
-            console.log('Entro');
             setHoras([]);
         } else {
             Fetch.GET({
@@ -89,7 +86,6 @@ const AgendaPublica = () => {
             })
             .then(data => {
                 if(!data.error && data.status === 200){
-                    console.log(data.body);
                     setHoras(data.body);
                     if(data.body.length == 0){
                         setShowAlert({visible:true});
@@ -100,9 +96,9 @@ const AgendaPublica = () => {
                 } else {
                     console.log(data);
                 }
-            }).catch((e) => {
-                console.log(e);
-            })
+            }).catch((error) => {
+                console.warn(error);
+            });
         }
     }
 
@@ -114,10 +110,8 @@ const AgendaPublica = () => {
             StartTime: idhora.StartTime, 
         }
         setHora(hora)
-        console.log(hora);
     }
     const handleClick = () => {
-        console.log('confirmar fecha');
         setEstado({cargando:true})
         if(hora.idHora != 0){
             let datos = {...usuario, ...hora};
@@ -129,7 +123,6 @@ const AgendaPublica = () => {
             .then(data => {
                 
                 if(!data.error && data.status === 200){
-                    console.log(data.body);
 
                     setShowAlert({visible:true, mensaje:data.body});
                     setTimeout(()=>{
@@ -139,9 +132,9 @@ const AgendaPublica = () => {
                     setEstado({cargando:false})
                     history.push('/');
                 } 
-            }).catch((e) => {
-                console.log(e);
-            })
+            }).catch((error) => {
+                console.warn(error);
+            });
         } else {
             setShowAlert({visible:true, mensaje:'Selecciona una hora'});
             setTimeout(()=>{

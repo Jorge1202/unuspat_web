@@ -31,7 +31,6 @@ let objAgregar = {
 
 const FormAdmin = ({ title, Data = objAgregar}) => {
   let history = useHistory();
-  // const frmLogin = { username:'', password:''};
 
   const [user, setUser] = useState('0');
 
@@ -57,7 +56,6 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
   const handleChangeAddress = (e, json = false) => {
 
     if(json){
-      console.log(e);
       setRegistroAddress(e);
     } else {
       const { name, value } = e.target;
@@ -94,7 +92,8 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
               setShowAlert({ show: false });
           }, 3000);
         }
-    }).catch((e) => {
+    }).catch((error) => {
+      console.warn(error);
       let valores = {
         done: true,
         form: false,
@@ -108,9 +107,6 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    console.log(registroAddress);
-    debugger
     if(!registroAddress.codigo_postal){
       setShowAlert({ show: true, mesagge: 'Completa tu dirección', color: `info` });
       setTimeout(() => {
@@ -123,45 +119,42 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
         person: registroPerson,
         address: registroAddress
       }
-      console.log(objeto);
   
-      // Fetch.POST({
-      //   url: 'user/admin/agregar',
-      //   obj: objeto
-      // })
-      // .then(data=>{
-      //   if(!data.error && data.status === 200){
-      //     let valores = {
-      //         done: true,
-      //         success: true,
-      //         form: false,
-      //         mensaje: data.body,
-      //     };
-      //     setEstado(valores);
+      Fetch.POST({
+        url: 'user/admin/agregar',
+        obj: objeto
+      })
+      .then(data=>{
+        if(!data.error && data.status === 200){
+          let valores = {
+              done: true,
+              success: true,
+              form: false,
+              mensaje: data.body,
+          };
+          setEstado(valores);
 
-      //   } else {
-      //     let valores = {
-      //         done: true,
-      //         success: false,
-      //         form: false,
-      //         mensaje: data.body,
-      //     };
-      //     setEstado(valores);
-      //   }
-      // }).catch((e) => {
-      //   let valores = {
-      //       done: true,
-      //       form: false,
-      //       success: false,
-      //       mensaje: 'Error 500',
-      //   };
-      //   setEstado(valores);
-      // })
+        } else {
+          let valores = {
+              done: true,
+              success: false,
+              form: false,
+              mensaje: data.body,
+          };
+          setEstado(valores);
+        }
+      }).catch((error) => {
+        console.warn(error);
+        let valores = {
+            done: true,
+            form: false,
+            success: false,
+            mensaje: 'Error 500',
+        };
+        setEstado(valores);
+      });
       setSowload(false)
     }
-
-
-
   }
   //#endregion
 

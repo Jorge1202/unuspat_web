@@ -63,8 +63,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
         })
         .then(async data=>{
             if(!data.error && data.status === 200){
-
-                console.log(data);
                 setDataUser(data.body.user); 
                 setDataUserPerfil(data.body.user); 
                 
@@ -73,7 +71,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                 }
 
                 if(Object.keys(data.body.direcciones).length !== 0){
-                    console.log('Entro');
                     await handleChangeEstados(data.body.direcciones.estado)
                     await handleChangeMunicipios(data.body.direcciones.municipio) 
                     setDataDireccion(data.body.direcciones); 
@@ -82,9 +79,8 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
             } else {
                console.log(data);
             }
-        }).catch((e) => {
-            console.log(e);
-
+        }).catch((error) => {
+            console.warn(error);
         });
         setshowLoad(false)
 
@@ -95,15 +91,10 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
         Fetch.GET({ url: 'ema/estados' })
         .then(async data=>{
             if(!data.error && data.status === 200){
-         
-                // let _cero = {
-                //     id:0,
-                //     nombre: 'Estados'
-                // }
-                // let array = data.body.unshift(_cero)
                 setListaEstados(data.body);
             }
-        }).catch((e) => {
+        }).catch((error) => {
+            console.warn(error);
             setEstado({
                 done: true,
             })
@@ -139,8 +130,8 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
 
             }
         }).catch((error) => {
-            console.log(error);
-        })
+            console.warn(error);
+        });
 
     };
 
@@ -180,8 +171,8 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
     
             }
         }).catch((error) => {
-            console.log(error);
-        })
+            console.warn(error);
+        });
 
     };
 
@@ -223,17 +214,14 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     setShowAlert({ show: false });
                 }, 3000);
             }
-        }).catch((e) => {
-            console.log(e);
-
+        }).catch((error) => {
+            console.warn(error);
         });
         setshowLoad(false)
     }
     const handleSubmitEditDireccion = async e => {
         e.preventDefault();
         setshowLoad(true)
-        console.log(DataDireccion);
-        // debugger
         if(!DataDireccion){
             setShowAlert({ show: true, mesagge: `Dirección incompleta`, color: `info` });
             setTimeout(() => {
@@ -251,7 +239,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     obj: DataDireccion
                 })
                 .then(async data=>{
-                    console.log(data);
                     if(!data.error && data.status === 200){
                         await handleGET();
                         setShowAlert({ show: true, mesagge: data.body, color: `success` });
@@ -264,9 +251,8 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                             setShowAlert({ show: false });
                         }, 3000);
                     }
-                }).catch((e) => {
-                    console.log(e);
-        
+                }).catch((error) => {
+                    console.warn(error);
                 });
             }
         }
@@ -275,14 +261,12 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
     const handleSubmitEditlaboralHH = async e => {
         e.preventDefault();
         setshowLoad(true)
-        console.log('change handleSubmitEditlaboralHH');
 
         await Fetch.PUT({
             url: `user/perfil/actualizar/headHunter`,
             obj: Datalaboral
         })
         .then(async data=>{
-            console.log(data);
             if(!data.error && data.status === 200){
                 await handleGET();
                 setShowAlert({ show: true, mesagge: data.body, color: `success` });
@@ -295,23 +279,20 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     setShowAlert({ show: false });
                 }, 3000);
             }
-        }).catch((e) => {
-            console.log(e);
-
+        }).catch((error) => {
+            console.warn(error);
         });
         setshowLoad(false)
     }
     const handleSubmitEditlaboralDoc = async e => {
         e.preventDefault();
         setshowLoad(true)
-        console.log('change handleSubmitEditlaboralDoc');
 
         await Fetch.PUT({
             url: `user/perfil/actualizar/doctor`,
             obj: Datalaboral
         })
         .then(async data=>{
-            console.log(data);
             if(!data.error && data.status === 200){
                 await handleGET();
                 setShowAlert({ show: true, mesagge: data.body, color: `success` });
@@ -324,8 +305,8 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                     setShowAlert({ show: false });
                 }, 3000);
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch((error) => {
+            console.log(error);
 
         });
         setshowLoad(false)

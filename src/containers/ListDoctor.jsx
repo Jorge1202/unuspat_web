@@ -40,8 +40,6 @@ const ListDoctor = () => {
     });
     
     const getPruebaCorreo = () => {
-        console.log('getPruebaCorreo');
- 
         Fetch.GET({ url: 'user/doctores/pruebaCorreo' })
         .then(data=>{
             if(!data.error && data.status === 200){
@@ -53,7 +51,6 @@ const ListDoctor = () => {
     }
 
     const getDataList = () => {
-        console.log('get ListDoctor');
         setEstado({
             done: false
         });
@@ -61,7 +58,6 @@ const ListDoctor = () => {
         Fetch.GET({ url: 'user/doctores' })
         .then(data=>{
             if(!data.error && data.status === 200){
-                console.log(data);
                 setLista(data.body);
                 setEstado({
                     done: true,
@@ -112,12 +108,10 @@ const ListDoctor = () => {
 
     const handleClickDelete = async (item)=>{
         console.log('eliminar');
-        // console.log(item); 
     }
     
     const handleClickActive = (item)=>{
         console.log('Activar');
-        console.log(item);
         setEstado({
             cargando: true,
         });
@@ -127,7 +121,6 @@ const ListDoctor = () => {
             obj: {idUsuario: item.idUsuario}
         })
         .then(async data =>{
-            debugger
             if(!data.error && data.status === 200){
                 
                 await getDataList();
@@ -153,17 +146,13 @@ const ListDoctor = () => {
     
     const handleClickStatus = (item)=>{
         console.log('Estatus');
-        // console.log(item); 
     }
 
     const handleClickFormato = (item)=>{
         console.log('Formato');
-        // console.log(item); 
     }
 
     const handleClickProceso_presentacion = (item)=>{
-        console.log('handleClickProceso_presentacion');
-        console.log(item);
         let data = {
             id: item.id,
             idUsuario: item.idUsuario,
@@ -177,8 +166,6 @@ const ListDoctor = () => {
         Fetch.POST({ url: 'user/doctores/presentacion', obj: data })
         .then(async data=>{
             if(!data.error && data.status === 200){
-                console.log(data);
-                // setLista(data.body);
                 setEstado({
                     done: true,
                     success: true,
@@ -192,17 +179,17 @@ const ListDoctor = () => {
                     items: data.body
                 });
             }
-        }).catch((e) => {
+        }).catch((error) => {
+            console.warn(error);
             setEstado({
                 done: true,
             })
-        })
+        });
         
     }
 
     const handleClickProceso_pFinanciera = (item)=>{
         console.log('handleClickProceso_pFinanciera');
-        console.log(item);
     }
 
     if (estado.done) {

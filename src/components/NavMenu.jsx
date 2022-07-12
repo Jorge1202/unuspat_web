@@ -69,9 +69,9 @@ const NavMenu = ({pc = true}) => {
 
                 history.push('/login');
             } 
-        }).catch((e) => {
-            console.log(e);
-        })
+        }).catch((error) => {
+            console.warn(error);
+        });
     }
 
     if(pc){

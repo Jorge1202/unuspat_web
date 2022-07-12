@@ -39,15 +39,12 @@ const ListHH = () => {
     },[]);
 
     const getDataList = () => {
-        console.log('get ListHH');
-
         setEstado({
             done: false
         });
         Fetch.GET({ url: 'user/headhunter' })
         .then(data=>{
             if(!data.error && data.status === 200){
-                console.log(data);
                 setLista(data.body);
                 setEstado({
                     done: true,
@@ -80,7 +77,7 @@ const ListHH = () => {
             } else if(accion === 'Activar'){
                 handleClickActive(item);
             } else if(accion === 'Estatus'){
-                console.log('Estatus');
+                // console.log('Estatus');
             }
         },500);
     }
@@ -92,7 +89,6 @@ const ListHH = () => {
     
     const handleClickActive = async (item)=>{
         console.log('Activar');
-        console.log(item);
         
         setEstado({
             cargando: true,
@@ -103,7 +99,6 @@ const ListHH = () => {
             obj: {idUsuario: item.id}
         })
         .then(async data =>{
-            debugger
             if(!data.error && data.status === 200){
                 
                 await getDataList();
@@ -119,17 +114,17 @@ const ListHH = () => {
                 success: true,
                 cargando: false,
             });
-        }).catch((e) => {
+        }).catch((error) => {
+            console.warn(error);
             setEstado({
                 done: true,
             })
-        })
+        });
     
     }
     
     const handleClickDelete = ()=>{
         console.log('eliminar');
-
     }
 
 
