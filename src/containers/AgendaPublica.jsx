@@ -17,14 +17,11 @@ const AgendaPublica = () => {
     },[]);
     const [value, onChange] = useState(new Date());
     const [fecha, setFecha] = useState('');
-    const [showAlert, setShowAlert] = useState({visible: false, mensaje:'No hay horas disponibles en este día.'});
+    const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
     const [hora, setHora] = useState({horaFin: "",horaInicio: "", idHora: 0});
     const [usuario, setUser] = useState({});
     const [horas, setHoras] = useState([]);
     const [estado,setEstado] = useState({ cargando:false});
-
-
-
 
     const ValidUser = () => {
         Fetch.GET({
@@ -48,10 +45,7 @@ const AgendaPublica = () => {
         let fecha = new Date().constructor()
         if(fecha.includes('Sat') || fecha.includes('Sun')){
             setHoras([]);
-            setShowAlert({visible:true});
-            setTimeout(()=>{
-                setShowAlert({visible:false});
-            },2000);
+
         } else {
             Fetch.GET({
                 url: `agenda/hours?reclutador=${reclutador}&fecha=${new Date().toISOString()}`,
@@ -59,13 +53,10 @@ const AgendaPublica = () => {
             .then(data => {
                 if(!data.error && data.status === 200){
                     setHoras(data.body)
-                    if(data.body.length == 0){
-                        setShowAlert({visible:true});
-                        setTimeout(()=>{
-                            setShowAlert({visible:false});
-                        },2000);
-                    }
+                } else {
+                    console.log(data);
                 }
+
             }).catch((error) => {
                 console.warn(error);
             });
@@ -87,12 +78,6 @@ const AgendaPublica = () => {
             .then(data => {
                 if(!data.error && data.status === 200){
                     setHoras(data.body);
-                    if(data.body.length == 0){
-                        setShowAlert({visible:true});
-                        setTimeout(()=>{
-                            setShowAlert({visible:false});
-                        },2000);
-                    }
                 } else {
                     console.log(data);
                 }
@@ -111,41 +96,43 @@ const AgendaPublica = () => {
         }
         setHora(hora)
     }
-    const handleClick = () => {
+
+    const handleClick = async () => {
         setEstado({cargando:true})
         if(hora.idHora != 0){
             let datos = {...usuario, ...hora};
             datos.Date = new Date(fecha).toJSON().split('T')[0];
-            Fetch.POST({
+            await Fetch.POST({
                 url: `agenda/meeting`,
                 obj: datos
             })
             .then(data => {
-                
+                debugger
                 if(!data.error && data.status === 200){
 
-                    setShowAlert({visible:true, mensaje:data.body});
-                    setTimeout(()=>{
-                        setShowAlert({visible:false});
-                    },3000);
+                    setShowAlert({ show: true, mesagge: data.body, color: `success` });
                     
-                    setEstado({cargando:false})
-                    history.push('/');
+                    setTimeout(() => {
+                        setShowAlert({ show: false });
+                        history.push('/');
+                        setEstado({cargando:false})
+                    }, 3000);
+                    
                 } 
             }).catch((error) => {
                 console.warn(error);
             });
         } else {
-            setShowAlert({visible:true, mensaje:'Selecciona una hora'});
-            setTimeout(()=>{
-                setShowAlert({visible:false});
-            },2000);
+            setShowAlert({ show: true, mensaje:'Selecciona una hora', color: `warning` });
+            setTimeout(() => {
+                setShowAlert({ show: false });
+            }, 3000);
         }
     }
     
     return (
         <>
-            <Alert visible={showAlert.visible} color='warning'>{showAlert.mensaje}</Alert>
+            <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
             <div className='AgendaPublica'>
                 <div className='agenda__body'>
                     <div className='row h-100'>

@@ -17,6 +17,7 @@ import './styles/form.scss';
 let objAgregar = {
   p:{  
     "idTipoUsuario": 2,
+    genero:0
   },
   a:{
     "estado": "DEFAULT",
@@ -77,10 +78,10 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
   };
 
   //#region Datos personales
-  const saveFormPerson = (e)=>{
+  const saveFormPerson = async (e)=>{
     e.preventDefault();
     
-    Fetch.GET({
+    await Fetch.GET({
       url: `user/perfil/validEmail?email=${registroPerson.email}`
     })
     .then(data=>{
@@ -105,8 +106,9 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
     })
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+
     if(!registroAddress.codigo_postal){
       setShowAlert({ show: true, mesagge: 'Completa tu dirección', color: `info` });
       setTimeout(() => {
@@ -114,18 +116,21 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
       }, 3000);
 
     } else {
+
       setSowload(true)
+
       let objeto = {
         person: registroPerson,
         address: registroAddress
       }
   
-      Fetch.POST({
+      await Fetch.POST({
         url: 'user/admin/agregar',
         obj: objeto
       })
       .then(data=>{
         if(!data.error && data.status === 200){
+
           let valores = {
               done: true,
               success: true,
@@ -135,6 +140,7 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
           setEstado(valores);
 
         } else {
+
           let valores = {
               done: true,
               success: false,
@@ -142,6 +148,7 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
               mensaje: data.body,
           };
           setEstado(valores);
+
         }
       }).catch((error) => {
         console.warn(error);
@@ -153,6 +160,7 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
         };
         setEstado(valores);
       });
+
       setSowload(false)
     }
   }
@@ -162,89 +170,85 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
     setactiveKey(type)
   }
 
-  if (estado.done) {
-    return (
-      <React.Fragment>
-        <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
-        <Load show={sowload}/>
-        {
-          estado.form ? (
-            <Contenedor title={title}>
-              <div className="registro">
-                {/* <form onSubmit={handleSubmit}> */}
-                  <Tab.Container id="left-tabs-example" activeKey={activeKey} defaultActiveKey="person">
-                    <RowContainer>
-                      <ColumContainer m="3" x="3">
-                        <Nav variant="pills" className="flex-column">
-                          <Nav.Item>
-                            <Nav.Link eventKey="person" disabled={disabled.disabledPerson}>Datos personales</Nav.Link>
-                          </Nav.Item>
-                          <Nav.Item>
-                            <Nav.Link eventKey="address" disabled={disabled.disabledDireccion}>Dirección</Nav.Link>
-                          </Nav.Item>
-                        </Nav>
-                      </ColumContainer>        
-                      <ColumContainer  m="9" x="9">
-                        <Tab.Content>
-                          <Tab.Pane eventKey="person">
-                            <form onSubmit={saveFormPerson}>
-                              <FormDataPerson user={user} registro={registroPerson} handleChange={handleChangePerson}/>
-                              <div className='text-end'>
-                                  <Boton type="submit" clases="btn_principal">Siguiente</Boton>
-                              </div>
-                            </form>
-                            
-                          </Tab.Pane>
-                          <Tab.Pane eventKey="address">
-                            <form onSubmit={handleSubmit}>
-                              <FormDireccion registro={registroAddress} handleChange={(e, json)=>{handleChangeAddress(e, json)}}/>
-                              <div className='text-end'>
-                                  <Boton handleClick={()=>{backTo('person')}} type="button" clases="btn_principal">Regresar</Boton>
-                                  <Boton type="submit" clases="btn_principal">Guardar</Boton>
-                              </div>
-                            </form>
-                          </Tab.Pane>
-                        </Tab.Content>
-                      </ColumContainer>
-                      <div>
-                        Datos obligatorios *
-                      </div>
-                    </RowContainer>
-                  </Tab.Container>
-
-                  {/* <div className="row">
-                      <ColumContainer x="12" m="12" x_class="text-end">
-                        <Boton type="submit" clases="btn_principal">{ namebtn }</Boton>
-                      </ColumContainer>
-                  </div>
-                </form> */}
-              </div>
-            </Contenedor>
-
-          ) : (
-            <Contenedor>
-              {estado.success
-                ?
-                <Mensaje icono="check-circle" mensaje="Registro de Administrador, realizado con éxito">
-                  <button onClick={backFormulario} type="button" className="btn btn-primary btn-sm">Ir a Administrador</button>
-                </Mensaje>
-                :
-                <Mensaje icono="emoji-frown" mensaje={estado.mensaje}>
-                  <button onClick={backFormulario} type="button" className="btn btn-primary btn-sm">Regresar</button>
-                </Mensaje>
-              }
-            </Contenedor>
-          )
-        }
-      </React.Fragment>
-    )
-  } else {
-    return (
-      <Contenedor>
-        <Mensaje icono="arrow-clockwise" mensaje="Cargando contenidos..." />
-      </Contenedor>
-    )
-  }
+  return (
+    <React.Fragment>
+      <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
+      <Load show={sowload}/>
+      
+      {
+        estado.done ? 
+        <>
+          {
+              estado.form ? (
+              <Contenedor title={title}>
+                <div className="registro">
+                  {/* <form onSubmit={handleSubmit}> */}
+                    <Tab.Container id="left-tabs-example" activeKey={activeKey} defaultActiveKey="person">
+                      <RowContainer>
+                        <ColumContainer m="3" x="3">
+                          <Nav variant="pills" className="flex-column">
+                            <Nav.Item>
+                              <Nav.Link eventKey="person" disabled={disabled.disabledPerson}>Datos personales</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                              <Nav.Link eventKey="address" disabled={disabled.disabledDireccion}>Dirección</Nav.Link>
+                            </Nav.Item>
+                          </Nav>
+                        </ColumContainer>        
+                        <ColumContainer  m="9" x="9">
+                          <Tab.Content>
+                            <Tab.Pane eventKey="person">
+                              <form onSubmit={saveFormPerson}>
+                                <FormDataPerson user={user} registro={registroPerson} handleChange={handleChangePerson}/>
+                                <div className='text-end'>
+                                    <Boton type="submit" clases="btn_principal">Siguiente</Boton>
+                                </div>
+                              </form>
+                              
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="address">
+                              <form onSubmit={handleSubmit}>
+                                <FormDireccion registro={registroAddress} handleChange={(e, json)=>{handleChangeAddress(e, json)}}/>
+                                <div className='text-end'>
+                                    <Boton handleClick={()=>{backTo('person')}} type="button" clases="btn_principal">Regresar</Boton>
+                                    <Boton type="submit" clases="btn_principal">Guardar</Boton>
+                                </div>
+                              </form>
+                            </Tab.Pane>
+                          </Tab.Content>
+                        </ColumContainer>
+                        <div>
+                          Datos obligatorios *
+                        </div>
+                      </RowContainer>
+                    </Tab.Container>
+                </div>
+              </Contenedor>
+  
+            ) : (
+              <Contenedor>
+                {estado.success
+                  ?
+                  <Mensaje icono="check-circle" mensaje="Registro de Administrador, realizado con éxito">
+                    <button onClick={backFormulario} type="button" className="btn btn-primary btn-sm">Ir a Administrador</button>
+                  </Mensaje>
+                  :
+                  <Mensaje icono="emoji-frown" mensaje={estado.mensaje}>
+                    <button onClick={backFormulario} type="button" className="btn btn-primary btn-sm">Regresar</button>
+                  </Mensaje>
+                }
+              </Contenedor>
+            )
+          }
+        </>
+        :
+        <Contenedor>
+          <Mensaje icono="arrow-clockwise" mensaje="Cargando contenidos..." />
+        </Contenedor>
+        
+      }
+    </React.Fragment>
+  )
 }
 
 export default FormAdmin;

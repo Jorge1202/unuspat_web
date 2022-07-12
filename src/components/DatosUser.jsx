@@ -148,11 +148,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
         await Fetch.GET({ url: `ema/colonias?id=${id}` })
         .then(async data=>{
             if(!data.error && data.status === 200){
-                // let _cero = {
-                //     id:0,
-                //     nombre: 'colonias'
-                // }
-                // let array = data.body.unshift(_cero)
                 await setListaColonias(data.body);
 
                 if(e.target){
@@ -425,8 +420,12 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                                 <div className="col-lg-9 col-md-8">{Datalaboral.razonSocial}</div>
                             </div>
                             <div className="row">
-                                <div className="col-lg-3 col-md-4 label ">Despacho Marca</div>
-                                <div className="col-lg-9 col-md-8">{Datalaboral.despachoMarca}</div>
+                                <div className="col-lg-3 col-md-4 label ">Consultorio</div>
+                                <div className="col-lg-9 col-md-8">{Datalaboral.consultorio}</div>
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-3 col-md-4 label ">Marca</div>
+                                <div className="col-lg-9 col-md-8">{Datalaboral.marca}</div>
                             </div>
                             <div className="row">
                                 <div className="col-lg-3 col-md-4 label ">Telefono de Oficina</div>
@@ -705,15 +704,15 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                                                             </div>
                                                         </div>
                                                         <div className="row mb-3">
-                                                            <label htmlFor="despachoMarca1" className="col-md-4 col-lg-3 col-form-label">Despacho</label>
+                                                            <label htmlFor="consultorio" className="col-md-4 col-lg-3 col-form-label">Consultorio</label>
                                                             <div className="col-md-8 col-lg-9">
-                                                                <input value={Datalaboral.despachoMarca} name="despachoMarca" onChange={handleChangeLaboral} type="text" className="form-control" id="despachoMarca1" />
+                                                                <input value={Datalaboral.consultorio} name="consultorio" onChange={handleChangeLaboral} type="text" className="form-control" id="despachoMarca1" />
                                                             </div>
                                                         </div>
                                                         <div className="row mb-3">
-                                                            <label htmlFor="despachoMarca2" className="col-md-4 col-lg-3 col-form-label">Marca</label>
+                                                            <label htmlFor="marca" className="col-md-4 col-lg-3 col-form-label">Marca</label>
                                                             <div className="col-md-8 col-lg-9">
-                                                                <input value={Datalaboral.despachoMarca} name="despachoMarca" onChange={handleChangeLaboral} type="text" className="form-control" id="despachoMarca2" />
+                                                                <input value={Datalaboral.marca} name="marca" onChange={handleChangeLaboral} type="text" className="form-control" id="despachoMarca2" />
                                                             </div>
                                                         </div>
                                                         <div className="row mb-3">

@@ -16,7 +16,6 @@ import './styles/form.scss';
 
 let objAgregar = {
   p:{  
-    "idTipoUsuario": 2,
     genero:0
   },
   a:{
@@ -74,10 +73,10 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     }
   };
 
-  const handleSubmitPerson = e => {
+  const handleSubmitPerson = async e => {
     e.preventDefault();
-    setSowload(true)
-    Fetch.GET({
+    // setSowload(true)
+    await Fetch.GET({
       url: `user/perfil/validEmail?email=${registroPerson.email}`
     })
     .then(data=>{
@@ -98,7 +97,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
       };
       setEstado(valores);
     }).finally(()=>{
-      setSowload(false)
+      // setSowload(false)
     })
   }
 
@@ -114,11 +113,9 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
     }
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // setEstado({
-    //   done: false
-    // });
+
     setSowload(true)
     let objeto = {
       person: registroPerson,
@@ -126,7 +123,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
       job: registroJob
     }
 
-    Fetch.POST({
+    await Fetch.POST({
       url: 'user/headhunter/agregar',
       obj: objeto
     })
@@ -268,28 +265,28 @@ export default FormHH;
 
 const FormularioLaboral = ({registro, handleChange}) => {
   return <>
-    <div className="row mb-3">
-      <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC *</label>
-      <div className="col-md-8 col-lg-9">
-        <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" required />
-      </div>
-    </div>
-   <div className="row mb-3">
+     <div className="row mb-3">
       <label htmlFor="curp" className="col-md-4 col-lg-3 col-form-label">CURP</label>
       <div className="col-md-8 col-lg-9">
         <input value={registro.curp} name="curp" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="curp" />
       </div>
     </div>
     <div className="row mb-3">
-      <label htmlFor="profesion" className="col-md-4 col-lg-3 col-form-label">Profesión</label>
+      <label htmlFor="rfc" className="col-md-4 col-lg-3 col-form-label">RFC *</label>
       <div className="col-md-8 col-lg-9">
-        <input value={registro.profesion} name="profesion" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="profesion" />
+        <input value={registro.rfc} name="rfc" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="rfc" required />
       </div>
     </div>
     <div className="row mb-3">
       <label htmlFor="razonSocial" className="col-md-4 col-lg-3 col-form-label">Razón Social</label>
       <div className="col-md-8 col-lg-9">
         <input value={registro.razonSocial} name="razonSocial" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="razonSocial" />
+      </div>
+    </div>
+    <div className="row mb-3">
+      <label htmlFor="profesion" className="col-md-4 col-lg-3 col-form-label">Profesión</label>
+      <div className="col-md-8 col-lg-9">
+        <input value={registro.profesion} name="profesion" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="profesion" />
       </div>
     </div>
     <div className="row mb-3">

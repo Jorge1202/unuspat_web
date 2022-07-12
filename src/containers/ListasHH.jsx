@@ -5,8 +5,9 @@ import Link from '../components/Link';
 import Table from '../components/Table';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import Modal from '../components/Modal';
-// import Formulario from '../containers/FormHH';
 import DatosUser from '../components/DatosUser';
+import Load from '../components/Load'
+import Alert from '../components/Alert';
 
 import fechas from '../assets/js/fechas';
 import Fetch from '../assets/js/fetch';
@@ -25,8 +26,10 @@ let dataCuentas = [
 ];
 
 const ListHH = () => {
+
+    const [sowload, setSowload] = useState(false);
+    const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
     const [lista, setLista] = useState([]);
-    // const [ItemDropdoun, setItemDropdoun] = useState(["Activar","Modificar", "Eliminar"]);
     const [ItemDropdoun, setItemDropdoun] = useState([
         {id:1,text:"Modificar", url:"modificar"},
         {id:2,text:"Activar", url:"activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
@@ -67,16 +70,18 @@ const ListHH = () => {
 
     const getAction = (item, e) => {
         setTimeout(() => {
+            debugger
             let url = window.location.hash.split('?')[1];
             let accion = url.split('/')[0];
+            accion = accion.toLocaleLowerCase()
 
-            if(accion === 'Modificar'){
+            if(accion === 'modificar'){
                 handleClickUpdate();
-            } else if(accion === 'Eliminar'){
+            } else if(accion === 'eliminar'){
                 handleClickDelete();
-            } else if(accion === 'Activar'){
+            } else if(accion === 'activar'){
                 handleClickActive(item);
-            } else if(accion === 'Estatus'){
+            } else if(accion === 'estatus'){
                 // console.log('Estatus');
             }
         },500);
@@ -89,7 +94,7 @@ const ListHH = () => {
     
     const handleClickActive = async (item)=>{
         console.log('Activar');
-        
+        debugger
         setEstado({
             cargando: true,
         });
@@ -102,12 +107,21 @@ const ListHH = () => {
             if(!data.error && data.status === 200){
                 
                 await getDataList();
+                setShowAlert({ show: true, mesagge: data.body, color: `success` });
+                setTimeout(() => {
+                    setShowAlert({ show: false });
+                }, 3000);
             } else {
                 setEstado({
                     done: true,
                     success: true,
                     items: data.body
                 });
+
+                setShowAlert({ show: true, mesagge: data.body, color: `warning` });
+                setTimeout(() => {
+                    setShowAlert({ show: false });
+                }, 3000);
             }
             setEstado({
                 done: true,
@@ -119,7 +133,8 @@ const ListHH = () => {
             setEstado({
                 done: true,
             })
-        });
+        }).finally(()=>{
+        })
     
     }
     
@@ -130,67 +145,73 @@ const ListHH = () => {
 
     if (estado.done) {
         return (
-            lista.length != 0 && estado.success ? (
-                <Contenedor title="Headhunters">
-                    <div className='seccionBtn'>
-                        <div className="btn-group">
+            <React.Fragment>
+                <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
+                <Load show={sowload}/>
+            {
+                lista.length != 0 && estado.success ? (
+                    <Contenedor title="Headhunters">
+                        <div className='seccionBtn'>
+                            <div className="btn-group">
+                                <Link link="/formHH" clases="btn btn-secondary">Nuevo</Link>
+                            </div>
+                        </div>
+                        <Table listThead={['Nombre', 'Correo', 'Estatus', 'Fecha de registro', '']}>
+                            {
+                                    lista.map(item =>
+                                        <tr key={item.id}>
+                                            <td>{item.nombre} {item.apellidoPaterno}</td>
+                                            <td>{item.email}</td>
+                                            <td>{item.tipo}</td>
+                                            <td>{fechas.local(item.dateCreate, 8) }</td>
+                                            {/* <td>{item.dateCreate}</td> */}
+                                             <td>
+                                                <DropdownButton id="dropdown-basic-button" title="" variant="principal">
+                                                    {
+                                                        ItemDropdoun.map(itemDown => 
+                                                            <Dropdown.Item key={itemDown.id} href={`/#/headhunters?${itemDown.url}`}  disabled={item.idEstatusUsuario!=3 && itemDown.id == 2}>
+                                                                {
+                                                                    itemDown.id == 1 &&
+                                                                    <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='lg' >
+                                                                        <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/> 
+                                                                    </Modal>   
+                                                                }
+                                                                {
+                                                                    itemDown.id == 2 && item.idEstatusUsuario!=4 &&
+                                                                    <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">
+                                                                        <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
+                                                                        <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
+                                                                    </Modal>
+                                                                }
+                                                                {
+                                                                    itemDown.id == 3 &&
+                                                                    <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
+                                                                        {`¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`}
+                                                                    </Modal>
+                                                                }      
+                                                            </Dropdown.Item>
+                                                        )
+                                                    }
+                                                </DropdownButton>
+                                                
+                                            </td>
+                                        </tr>
+                                    )
+                                }
+                        </Table>
+    
+                        
+                    </Contenedor>
+                ) : (
+                    <Contenedor>
+                        <Mensaje icono="emoji-frown" mensaje="No se encontraron registros..." />
+                        <div className="text-center">
                             <Link link="/formHH" clases="btn btn-secondary">Nuevo</Link>
                         </div>
-                    </div>
-                    <Table listThead={['Nombre', 'Correo', 'Estatus', 'Fecha de registro', '']}>
-                        {
-                                lista.map(item =>
-                                    <tr key={item.id}>
-                                        <td>{item.nombre} {item.apellidoPaterno}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.tipo}</td>
-                                        <td>{fechas.local(item.dateCreate, 8) }</td>
-                                        {/* <td>{item.dateCreate}</td> */}
-                                         <td>
-                                            <DropdownButton id="dropdown-basic-button" title="" variant="principal">
-                                                {
-                                                    ItemDropdoun.map(itemDown => 
-                                                        <Dropdown.Item key={itemDown.id} href={`/#/headhunters?${itemDown.url}`}  disabled={item.idEstatusUsuario!=3 && itemDown.id == 2}>
-                                                            {
-                                                                itemDown.id == 1 &&
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='lg' >
-                                                                    <DatosUser  id={item.id} typeUser={item.idTipoUsuario}/> 
-                                                                </Modal>   
-                                                            }
-                                                            {
-                                                                itemDown.id == 2 && item.idEstatusUsuario!=4 &&
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">
-                                                                    <div className='text-center'>Al activar se le dará aceso al sistema <strong>UNUSPAT</strong></div>
-                                                                    <div className='text-center'>¿Aún deseas activar a <strong>{item.nombre}</strong>?</div>
-                                                                </Modal>
-                                                            }
-                                                            {
-                                                                itemDown.id == 3 &&
-                                                                <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
-                                                                    {`¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`}
-                                                                </Modal>
-                                                            }      
-                                                        </Dropdown.Item>
-                                                    )
-                                                }
-                                            </DropdownButton>
-                                            
-                                        </td>
-                                    </tr>
-                                )
-                            }
-                    </Table>
-
-                    
-                </Contenedor>
-            ) : (
-                <Contenedor>
-                    <Mensaje icono="emoji-frown" mensaje="No se encontraron registros..." />
-                    <div className="text-center">
-                        <Link link="/formHH" clases="btn btn-secondary">Nuevo</Link>
-                    </div>
-                </Contenedor>
-            )
+                    </Contenedor>
+                )
+            }
+            </React.Fragment>
         );
     } else {
         return (

@@ -16,6 +16,7 @@ import './styles/form.scss';
 
 let objAgregar = {
     p:{  
+        genero:0
     },
     a:{
         "estado": "DEFAULT",
@@ -33,6 +34,9 @@ let objAgregar = {
 const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
 
     let history = useHistory();
+
+    const [sowload, setSowload] = useState(false);
+    const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
 
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '', form: true });
     const [activeKey, setactiveKey] = useState('person'); 
@@ -73,20 +77,20 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
         }
     };
 
-    const handleSubmitPerson = e => {
+    const handleSubmitPerson = async e => {
         e.preventDefault();
-        setSowload(true)
-        Fetch.GET({
+        // setSowload(true)
+        await Fetch.GET({
         url: `user/perfil/validEmail?email=${registroPerson.email}`
         })
         .then(data=>{
             if(!data.error && data.status === 200){
             setactiveKey('address')
             } else {
-            setShowAlert({ show: true, mesagge: data.body, color: `info` });
-            setTimeout(() => {
-                setShowAlert({ show: false });
-            }, 3000);
+                setShowAlert({ show: true, mesagge: data.body, color: `info` });
+                setTimeout(() => {
+                    setShowAlert({ show: false });
+                }, 3000);
             }
         }).catch((e) => {
         let valores = {
@@ -97,7 +101,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
         };
         setEstado(valores);
         }).finally(()=>{
-        setSowload(false)
+        // setSowload(false)
         })
     }
 
@@ -113,7 +117,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
         }
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         // setEstado({
         //   done: false
@@ -126,7 +130,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
             job: registroJob
         }
 
-        Fetch.POST({
+        await Fetch.POST({
           url: 'user/doctores/agregar',
           obj: objeto
         })
@@ -286,21 +290,22 @@ const FormularioLaboral = ({registro, handleChange}) => {
             </div>
         </div>
         <div className="row mb-3">
-            <label htmlFor="despachoMarca1" className="col-md-4 col-lg-3 col-form-label">Despacho</label>
+            <label htmlFor="despachoMarca1" className="col-md-4 col-lg-3 col-form-label">Consultorio</label>
             <div className="col-md-8 col-lg-9">
-                <input value={registro.despachoMarca} name="despachoMarca" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="despachoMarca1" />
-            </div>
-        </div>
-        <div className="row mb-3">
-            <label htmlFor="despachoMarca2" className="col-md-4 col-lg-3 col-form-label">Marca</label>
-            <div className="col-md-8 col-lg-9">
-                <input value={registro.despachoMarca} name="despachoMarca" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="despachoMarca2" />
+                <input value={registro.consultorio} name="consultorio" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="despachoMarca1" />
             </div>
         </div>
         <div className="row mb-3">
             <label htmlFor="telefonoOficina" className="col-md-4 col-lg-3 col-form-label">Telefono de Oficina </label>
             <div className="col-md-8 col-lg-9">
                 <input value={registro.telefonoOficina} name="telefonoOficina" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="telefonoOficina" />
+            </div>
+        </div>
+
+        <div className="row mb-3">
+            <label htmlFor="despachoMarca2" className="col-md-4 col-lg-3 col-form-label">Marca</label>
+            <div className="col-md-8 col-lg-9">
+                <input value={registro.marca} name="marca" onChange={(e)=>{handleChange(e)}} type="text" className="form-control" id="despachoMarca2" />
             </div>
         </div>
         <div className="row mb-3">

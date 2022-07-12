@@ -16,6 +16,6 @@ const Alert = ({children, color="success", visible=false}) => {
         <div className={`alert alert-${color}`}  role="alert">
             {children}
         </div>
-    );
+    )
 }
 export default Alert;
