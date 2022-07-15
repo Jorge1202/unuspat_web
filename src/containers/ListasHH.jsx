@@ -31,9 +31,9 @@ const ListHH = () => {
     const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
     const [lista, setLista] = useState([]);
     const [ItemDropdoun, setItemDropdoun] = useState([
-        {id:1,text:"Modificar", url:"modificar"},
-        {id:2,text:"Activar", url:"activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
-        {id:3,text:"Eliminar", url:"eliminar"}
+        {id:1,text:"Informacion", url:"informacion"},
+        {id:2,text:"Activar", url:"Activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
+        {id:3,text:"Desactivar", url:"Desactivar"}
     ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
@@ -75,11 +75,11 @@ const ListHH = () => {
             let accion = url.split('/')[0];
             accion = accion.toLocaleLowerCase()
 
-            if(accion === 'modificar'){
+            if(accion === 'informacion'){
                 handleClickUpdate();
-            } else if(accion === 'eliminar'){
+            } else if(accion === 'Desactivar'){
                 handleClickDelete();
-            } else if(accion === 'activar'){
+            } else if(accion === 'Activar'){
                 handleClickActive(item);
             } else if(accion === 'estatus'){
                 // console.log('Estatus');
@@ -185,8 +185,9 @@ const ListHH = () => {
                                                                 }
                                                                 {
                                                                     itemDown.id == 3 &&
-                                                                    <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">
-                                                                        {`¿Está seguro de que desea eliminar el registro de ${item.nombre.toLocaleUpperCase()}?`}
+                                                                    <Modal handleClick={(e)=> {getAction(item, e)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
+                                                                        <div className='text-center'>Al desactivar al usuario ya no tendrá acceso a UNUSPAT </div>
+                                                                        <div className='text-center'>¿Queres DESACTIVAR a <strong>{item.nombre}</strong>?</div>
                                                                     </Modal>
                                                                 }      
                                                             </Dropdown.Item>

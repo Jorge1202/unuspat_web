@@ -39,7 +39,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
     
     useEffect(async () => {
         await handleGET();
-        await getEstados();
     }, [])
    
     //#region 
@@ -63,6 +62,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
         })
         .then(async data=>{
             if(!data.error && data.status === 200){
+                await getEstados();
                 setDataUser(data.body.user); 
                 setDataUserPerfil(data.body.user); 
                 
