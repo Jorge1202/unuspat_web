@@ -4,6 +4,7 @@ import ContainerLog from '../containers/ContainerLogin';
 import Boton from '../components/Boton';
 
 import Fetch from '../assets/js/fetch';
+import Funciones from '../assets/js/Funciones';
 import './styles/Login.css'
 
 const Login = () => {
@@ -12,10 +13,27 @@ const Login = () => {
     const [estado,setEstado] = useState({ done:false, cargando:false, mensaje:'Mensaje 1'});
     
     useEffect(()=>{
+        validLogin_ON()
+    },[]);
+
+    const validLogin_ON = async () => {
+        console.log('Valid login open');
         if(localStorage.getItem(localStorage.getItem('idAuth')) && localStorage.getItem('_T_U')){
-            history.push('/perfil');
+            let objFetch = {
+                url: `auth/validLogin_ON/?idAuth=${localStorage.getItem('idAuth')}`
+            }
+            await Fetch.GET(objFetch)
+            .then(data=>{
+                debugger
+                if(!data.error && data.status === 200){
+                    localStorage.setItem('_iu', JSON.stringify(data.body.user));
+                    history.push('/perfil');
+                } 
+            }).catch((e) => {
+                console.log(e);
+            });
         } 
-    });
+    }
 
     const Redirect = ()=>{
         history.push('/recovery');
@@ -26,30 +44,6 @@ const Login = () => {
         setlogin({...login,[name]:value}); 
     };
 
-    async function handleChangeLogout (e) { 
-
-        let objFetch = {
-            url: `auth/logout`,
-            login: true
-        }
-        Fetch.PUT(objFetch)
-        .then(async data =>{
-            if(!data.error && data.status === 200){
-                localStorage.removeItem(localStorage.getItem('idAuth'));
-                localStorage.removeItem('idAuth') // autenticatio
-                localStorage.removeItem('_T_U') //tipo de usuario 
-                localStorage.removeItem('_iu') // usuario
-                localStorage.removeItem('_xid') // usuario
-    
-                history.push('/login');
-            } 
-        }).catch((e) => {
-            console.log(e);
-        }).finally(()=>{
-            console.log();
-        })
-    };
-
     async function handleSubmit (e){
         e.preventDefault();
 
@@ -57,56 +51,44 @@ const Login = () => {
             cargando: true,
         });
 
-        if(localStorage.getItem('login')){
-           await handleChangeLogout();
-        }
-
         let objFetch = {
             url: 'auth/login',
             obj: login,
         }
         Fetch.POST(objFetch)
         .then(data=>{
-            if(!data.error && data.status === 200){
+            if(!data){
+                setEstado({
+                    done: true,
+                    mensaje: 'Problemas de conexión'
+                });
+            } else if(!data.error && data.status === 200){
                 if(data.body.session_token){
                     setEstado({
                         cargando: false,
                     });
                     // acceso a plataforma
-                    localStorage.setItem('idAuth', data.body.idAuth);
-                    localStorage.setItem('_iu', JSON.stringify(data.body.user)); 
-                    localStorage.setItem('_T_U', data.body.user.idTipoUsuario); 
-                    localStorage.setItem(data.body.idAuth, data.body.session_token) 
-                    
+                    Funciones.addLocationStorage_login(data);                  
                     history.push('/perfil');
 
                 } else{
                     //nuevo dispositivo, debe autenticar el dispositivo
-             
                     localStorage.setItem('idAuth', data.body.idAuth);
                     setEstado({
                         done: true,
                         mensaje: data.body.mensaje
                     });
                     history.push('/code');
-
                 }
 
             } else {
+                console.log(data);
                 setEstado({
                     done: true,
                     mensaje: data.body
                 });
             }
-        }).catch((e) => {
-
-            setEstado({
-                done: false,
-                mensaje: 'Error interno'
-            });
-
-        });
-        
+        })
     }
     
     return (

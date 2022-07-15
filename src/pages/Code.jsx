@@ -6,21 +6,10 @@ import Fetch from '../assets/js/fetch';
 
 import './styles/Login.css'
 
-const obj = {
-    "appName": navigator.appName,
-    "appVersion": navigator.appVersion,
-    "appCodeName": navigator.appCodeName,
-    "platform": navigator.platform,
-    "cookieEnabled": navigator.cookieEnabled,
-    "userAgent": navigator.userAgent,
-    "zonaHoraria": Intl.DateTimeFormat().resolvedOptions().timeZone,
-    "gmt": new Date().toString().split(' ')[5]
-}
-
 const Code = () => {
     let history = useHistory();
     let idAuth = localStorage.getItem('idAuth');
-    const [code, setCode] = useState({ codigo: '', dispositivo: obj, idAuth: idAuth });
+    const [code, setCode] = useState({ codigo: '', idAuth: idAuth });
     const [estado, setEstado] = useState({ done: false, success: false, mensaje: '' });
 
     const Redirect = ()=>{
@@ -49,7 +38,7 @@ const Code = () => {
                     localStorage.setItem(data.body.idAuth, data.body.session_token);
                     
                     if (data.body.dispositivo) {
-                        localStorage.setItem('dispositivo', data.body.dispositivo);
+                        localStorage.setItem('navegador', data.body.dispositivo);
                     }
 
                     history.push('/perfil');

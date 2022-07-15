@@ -4,6 +4,7 @@ import './styles/NavMenu.scss';
 import Link from '../components/Link';
 import Boton from '../components/Boton';
 import Fetch from '../assets/js/fetch';
+import Funciones from '../assets/js/Funciones';
 
 
 const ADMIN_master = [
@@ -52,21 +53,16 @@ const NavMenu = ({pc = true}) => {
         }
     });
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
         let objFetch = {
             url: `auth/logout`,
-            login: true
         }
-        Fetch.PUT(objFetch)
+
+        await Fetch.PUT(objFetch)
         .then(async data =>{
             if(!data.error && data.status === 200){
-                localStorage.removeItem(localStorage.getItem('idAuth'));
-                localStorage.removeItem('idAuth') // autenticatio
-                localStorage.removeItem('_T_U') //tipo de usuario 
-                localStorage.removeItem('_iu') // usuario
-                localStorage.removeItem('_xid') // usuario
-
+                Funciones.deleteSession()
                 history.push('/login');
             } 
         }).catch((error) => {
