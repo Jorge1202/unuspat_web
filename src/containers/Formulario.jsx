@@ -44,7 +44,6 @@ const Formulario = () => {
             setconsultorio({...consultorio,[name]:value}); 
         } 
     };
-
     const ValidUser = () => {
         Fetch.GET({
             url: `user/doctores/verifyUser?id=${location.hash.split('?')[1]}`,
@@ -60,7 +59,6 @@ const Formulario = () => {
             console.log(e);
         })
     }
-
     async function handleSubmit (e){
         e.preventDefault();
 

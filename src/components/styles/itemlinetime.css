@@ -49,10 +49,21 @@
     padding: 0 28px 0 0px;
     position: relative;
 }
+.contIntp__text{
+    right: -74px;
+    position: absolute;
+}
+
+.conData__textcomentario{
+    position: absolute;
+    width: 80%;
+    right: -65px;
+}
 .iconEdit{
     position: absolute;
     top: -7px;
 }
+
 .contIcon__comentario{
     width: 100%;
     text-align: right;

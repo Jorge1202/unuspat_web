@@ -36,7 +36,7 @@ const FormularioDoctor = ({disabled=false, usuario, doctor, consulta, consultori
                     <ColumContainer m='12' x='12'>
                         <div className='row'>
                             <ColumContainer m='12' x='12'>
-                                Favor de marcar con una “X” el tipo de consultorio en el que presta su servicio:
+                                Favor de marcar el tipo de consultorio en el que presta su servicio:
                             </ColumContainer>
                             <ColumContainer m='12' x='12'>
                                 <div className="form-check">
@@ -57,7 +57,7 @@ const FormularioDoctor = ({disabled=false, usuario, doctor, consulta, consultori
                     <ColumContainer m='12' x='12' x_class='f_line'>                                
                         <div className='row'>
                             <ColumContainer m='6' x='6'>
-                                Favor de marcar con una “X” la opción que sea aplicable a su consultorio:
+                                Favor de marcar la opción que sea aplicable a su consultorio:
                             </ColumContainer>
                             <ColumContainer m='12' x='12'>
                                 <div className="form-check">
@@ -228,7 +228,7 @@ const FormularioDoctor = ({disabled=false, usuario, doctor, consulta, consultori
             <Formulario_seccion title='INGRESOS POR INTERVENCIONES EN HOSPITALES U OTROS'>
                 <div className='row'>
                     <ColumContainer m='12' x='12'>
-                        En caso de realizar intervenciones, favor de señalar con una “X” el lugar donde presta el servicio, pudiendo ser mas de uno
+                        En caso de realizar intervenciones, favor de señalar el lugar donde presta el servicio, pudiendo ser mas de uno
                     </ColumContainer>
                     <ColumContainer m='12' x='12'>
                         <div className="form-check">
@@ -259,7 +259,7 @@ const FormularioDoctor = ({disabled=false, usuario, doctor, consulta, consultori
             <Formulario_seccion title='RÉGIMEN FISCAL'>
                 <div className='row'>
                     <ColumContainer m='12' x='12'>
-                        Favor de indicar con una “X” el Régimen Fiscal en el que tributa
+                        Favor de indicar el Régimen Fiscal en el que tributa
                     </ColumContainer>
                     <ColumContainer m='12' x='12'>
                         <div className="form-check">

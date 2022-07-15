@@ -118,12 +118,12 @@ const itemlinetime = ({data}) => {
                                 estado.done
                                 ?   data.activo && !coment.boton
                                     ?  !coment.editar 
-                                        ? <>
+                                        ? <div className='conData__textcomentario'>
                                             <div className="contIcon__comentario iconEdit"><i onClick={handleClick_edit} className="bi-pencil-fill"></i></div>
                                             <div className="text-start">
                                                 {txtComentario.comentario}
                                             </div>
-                                        </>
+                                        </div>
                                         : <>
                                             <div className="contIntp__text">
                                                 <form className="row g-3">

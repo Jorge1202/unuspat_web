@@ -238,7 +238,7 @@ const FormDoctor = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) 
                         <Contenedor>
                             {estado.success
                                 ?
-                                <Mensaje icono="check-circle" mensaje="Registro de prospecto, realizado con éxito">
+                                <Mensaje icono="check-circle" mensaje="Ha registrado un nuevo prospecto y se le ha enviado un correo electrónico con la agenda.">
                                     <button onClick={backFormulario} type="button" className="btn btn-primary btn-sm">Ir a la lista</button>
                                 </Mensaje>
                                 :
