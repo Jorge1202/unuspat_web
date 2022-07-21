@@ -26,10 +26,14 @@ const HH = [
     {name: 'Agenda', link:'agenda-hh'},
 ];
 const DOC = [
-    {name: 'Home Doctor', link:'pagos'},
-    {name: 'Dashboard', link:'pagos'},
-    {name: 'Repostes', link:'pagos'},
-    // {name: '', link:''},
+    {name: 'Dashboard', link:'dashboard'},
+    {name: 'Ingresos', link:'ingresos'},
+    {name: 'Egresos', link:'egresos'},
+    {name: 'Agenda', link:'calendario'},
+    {name: 'Catálogos', link:'catalogos'},
+    {name: 'Colaboradores', link:'colaboradores'},
+    {name: 'Proveedores', link:'proveedores'},
+    {name: 'Reportes', link:'reportes'},
 ]
             
 const NavMenu = ({pc = true}) => {

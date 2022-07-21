@@ -185,7 +185,7 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
                   {/* <form onSubmit={handleSubmit}> */}
                     <Tab.Container id="left-tabs-example" activeKey={activeKey} defaultActiveKey="person">
                       <RowContainer>
-                        <ColumContainer m="3" x="3">
+                        <ColumContainer m="3" x="2">
                           <Nav variant="pills" className="flex-column">
                             <Nav.Item>
                               <Nav.Link eventKey="person" disabled={disabled.disabledPerson}>Datos personales</Nav.Link>
@@ -195,7 +195,7 @@ const FormAdmin = ({ title, Data = objAgregar}) => {
                             </Nav.Item>
                           </Nav>
                         </ColumContainer>        
-                        <ColumContainer  m="9" x="9">
+                        <ColumContainer  m="9" x="10">
                           <Tab.Content>
                             <Tab.Pane eventKey="person">
                               <form onSubmit={saveFormPerson}>

@@ -24,7 +24,7 @@ const ListDoctor = () => {
         {id:1,text:"Estatus", url:"Estatus"},
         {id:7,text:"Datos medico", url:"Formato"},
         {id:3,text:"Activar", url:"Activar"}, //mostrar al estatusRegistro sea 4 y se modifica el estatusUsuario a 3
-        {id:6,text:"Desactivar", url:"Desactivar"},
+        // {id:6,text:"Desactivar", url:"Desactivar"},
         {id:4,text:"Enviar contrato", url:"presentacion"}, //mostrar al estar en estatusRegistro 2 se pasa a estatusRegistro 3 y se envia formulario 
         {id:5,text:"Proyeccion Financiera", url:"proyeccion-financiera"}, //mostrar al estar en estatusRegistro 2 se pasa a estatusRegistro 3 y se envia formulario 
     ]);
@@ -82,20 +82,21 @@ const ListDoctor = () => {
         setTimeout(() => {
             let url = window.location.hash.split('?')[1];
             let accion = url.split('/')[0];
+            accion = accion.toLocaleLowerCase()
 
-            if(accion === 'Informacion'){
+            if(accion === 'informacion'){
                 handleClickUpdate();
-            } else if(accion === 'Desactivar'){
+            } else if(accion === 'desactivar'){
                 handleClickDelete(item);
-            } else if(accion === 'Activar'){
+            } else if(accion === 'activar'){
                 handleClickActive(item);
-            } else if(accion === 'Estatus'){
+            } else if(accion === 'estatus'){
                 handleClickStatus(item);
             } else if(accion === 'presentacion'){
                 handleClickProceso_presentacion(item);
             } else if(accion === 'proyeccion-financiera'){
                 handleClickProceso_pFinanciera(item);
-            } else if(accion === 'Formato'){
+            } else if(accion === 'formato'){
                 handleClickFormato(item);
             }
 
@@ -121,6 +122,7 @@ const ListDoctor = () => {
             obj: {idUsuario: item.idUsuario}
         })
         .then(async data =>{
+            debugger
             if(!data.error && data.status === 200){
                 
                 await getDataList();

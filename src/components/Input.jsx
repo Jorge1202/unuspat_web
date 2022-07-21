@@ -11,7 +11,7 @@ const Input = ({textarea= false, name, handleChange, valor, type='text', label='
                 </label>
                 {
                     textarea ?
-                    <textarea value={valor} type={type} name={name} onChange={(e)=>{handleChange(e)}} disabled={disabled} class="form-control" id={name} placeholder={placeholder} required={required} rows="3"></textarea>
+                    <textarea value={valor} type={type} name={name} onChange={(e)=>{handleChange(e)}} disabled={disabled} className="form-control" id={name} placeholder={placeholder} required={required} rows="3"></textarea>
                     :
                     <input value={valor} type={type} name={name} onChange={(e)=>{handleChange(e)}} disabled={disabled} className="form-control input" id={name} placeholder={placeholder} required={required}/>
                 }

@@ -34,7 +34,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
    const [showLoad, setshowLoad] = useState(false);
    
    useEffect(() => {
-       setUser(localStorage.getItem('_T_U'));
     });
     
     useEffect(async () => {

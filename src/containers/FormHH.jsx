@@ -46,6 +46,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
       const { name, value } = e.target;
       setRegistroPerson({ ...registroPerson, [name]: value });
   };
+
   const handleChangeAddress = (e, json = false) => {
 
     if(json){
@@ -56,6 +57,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
 
     }
   };
+  
   const handleChangeJob = e => {
       const { name, value } = e.target;
       setRegistroJob({ ...registroJob, [name]: value });
@@ -177,7 +179,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                 
                   <Tab.Container id="left-tabs-example" activeKey={activeKey} defaultActiveKey="person">
                     <RowContainer>
-                      <ColumContainer m="3" x="3">
+                      <ColumContainer m="3" x="2">
                         <Nav variant="pills" className="flex-column">
                           <Nav.Item>
                             <Nav.Link disabled={disabled.disabledPerson} eventKey="person">Datos personales</Nav.Link>
@@ -190,7 +192,7 @@ const FormHH = ({ title, namebtn = 'Guardar registro', Data = objAgregar }) => {
                           </Nav.Item>
                         </Nav>
                       </ColumContainer>
-                      <ColumContainer m="9" x="9">
+                      <ColumContainer m="9" x="10">
                         <Tab.Content>
 
                           <Tab.Pane eventKey="person">

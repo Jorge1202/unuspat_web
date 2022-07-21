@@ -13,136 +13,14 @@ import Fetch from '../assets/js/fetch';
 import '../components/styles/Dropdown.css'
 import './styles/ListData.css';
 
-let dataCuentas = [
-    {
-        id:1,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:2,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:4,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 2,
-    },
-    {
-        id:3,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:5,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 3,
-    },
-    {
-        id:4,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 4,
-    },
-    {
-        id:5,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 5,
-    },
-    {
-        id:6,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:7,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:8,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:9,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:10,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:11,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:12,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:13,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:14,
-        nombre: 'nombre',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-    {
-        id:15,
-        nombre: 'nombre 12',
-        cedula: 'telefono',
-        Estado:1,
-        dateCreate:'email@email.com',
-        idEstatusUsuario: 1,
-    },
-];
 
 const ListAdmin = () => {
     const [lista, setLista] = useState([]);
     // const [ItemDropdoun, setItemDropdoun] = useState(["Modificar", "Eliminar"]);
     const [ItemDropdoun, setItemDropdoun] = useState([
-        {id:1,text:"Modificar", url:"modificar"},
-        {id:2,text:"Activar", url:"activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
-        {id:3,text:"Eliminar", url:"eliminar"}
+        {id:1,text:"Informacion", url:"Informacion"},
+        {id:2,text:"Activar", url:"Activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
+        // {id:3,text:"Desactivar", url:"desactivar"}
     ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
@@ -183,14 +61,15 @@ const ListAdmin = () => {
         setTimeout(() => {
             let url = window.location.hash.split('?')[1];
             let accion = url.split('/')[0];
+            accion = accion.toLocaleLowerCase()
 
-            if(accion === 'Modificar'){
+            if(accion === 'modificar'){
                 handleClickUpdate();
-            } else if(accion === 'Eliminar'){
+            } else if(accion === 'desactivar'){
                 handleClickDelete();
-            } else if(accion === 'Activar'){
+            } else if(accion === 'activar'){
                 handleClickActive();
-            } else if(accion === 'Estatus'){
+            } else if(accion === 'estatus'){
                 // console.log('Estatus');
             }
         },500);

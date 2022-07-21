@@ -1,9 +1,9 @@
 import React from 'react';
 import './styles/Table.css'
 
-const table = ({children, listThead}) => {
+const table = ({children, listThead, clases=''}) => {
     return (
-        <div className="listTable table-wrapper">
+        <div className={`listTable table-wrapper ${clases}`}>
             <table className="table table-striped ">
                 <thead>
                     <tr>

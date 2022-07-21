@@ -31,9 +31,9 @@ const ListHH = () => {
     const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
     const [lista, setLista] = useState([]);
     const [ItemDropdoun, setItemDropdoun] = useState([
-        {id:1,text:"Informacion", url:"informacion"},
+        {id:1,text:"Informacion", url:"Informacion"},
         {id:2,text:"Activar", url:"Activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
-        {id:3,text:"Desactivar", url:"Desactivar"}
+        // {id:3,text:"Desactivar", url:"Desactivar"}
     ]);
     const [estado, setEstado] = useState({ done: true, success: true, mensaje: '' });
 
@@ -77,9 +77,9 @@ const ListHH = () => {
 
             if(accion === 'informacion'){
                 handleClickUpdate();
-            } else if(accion === 'Desactivar'){
+            } else if(accion === 'desactivar'){
                 handleClickDelete();
-            } else if(accion === 'Activar'){
+            } else if(accion === 'activar'){
                 handleClickActive(item);
             } else if(accion === 'estatus'){
                 // console.log('Estatus');
@@ -94,11 +94,11 @@ const ListHH = () => {
     
     const handleClickActive = async (item)=>{
         console.log('Activar');
-        debugger
         setEstado({
             cargando: true,
         });
-
+        
+        debugger
         Fetch.POST({
             url: 'user/headhunter/aceptar',
             obj: {idUsuario: item.id}

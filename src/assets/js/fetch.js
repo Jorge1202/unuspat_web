@@ -32,7 +32,7 @@ export default Fetch;
 
 async function _FETCH(url, type, parameters = null, async = true) {
   let token = "";
-
+  //validar si
   if (localStorage.getItem(localStorage.getItem("idAuth"))) {
     let _token = localStorage.getItem(localStorage.getItem("idAuth"));
     token = _token ? `Bearer ${_token}` : "";
@@ -55,24 +55,26 @@ async function _FETCH(url, type, parameters = null, async = true) {
     if (parameters) opcions.body = JSON.stringify(parameters);
   }
 
-  let response = await fetch(URL + url, opcions);
-  let result = await response.json();
-
-  //Se agrega el codigo de error 419 , para indicar cuando un token ha sido invalidado
-
-  if (result.status == 419 && result.error) {
-    debugger;
-    console.log("cierre token fetch");
+  if (!localStorage.getItem("idAuth") && !url.includes("login")) {
+    //no existe idAuth y la url es diferente de login
     Funciones.deleteSession();
     location.href = `${location.origin}/#/login`;
   } else {
-    if (!response.ok) {
-      //valida algun error
-      console.log(JSON.stringify(response));
+    let response = await fetch(URL + url, opcions);
+
+    let result = await response.json();
+
+    if (result.status == 419 && result.error) {
+      Funciones.deleteSession();
+      location.href = `${location.origin}/#/login`;
+    } else {
+      if (!response.ok) {
+        //valida algun error
+        console.log(JSON.stringify(response));
+      }
+      return result;
     }
-    return result;
   }
-  // return  {body:'', error:false, code:200};
 }
 
 /** 
