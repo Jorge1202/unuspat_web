@@ -18,6 +18,14 @@ import AgendaPublic from '../pages/AgendaPublic';
 import Recovery from '../pages/Recovery';
 import Code from '../pages/Code';
 import FormularioDoctor from '../pages/FormularioDoctor';
+import Dashboard from '../pages/Doctor/Dashboard';
+import Colaboradores from '../pages/Doctor/Colaboradores';
+import Proveedores from '../pages/Doctor/Proveedores';
+import Reportes from '../pages/Doctor/Reportes';
+import Ingresos from '../pages/Doctor/Ingresos';
+import Egresos from '../pages/Doctor/Egresos';
+import Catalogos from '../pages/Doctor/Catalogos';
+import AgendaDoc from '../pages/Doctor/Agenda';
 
 import '../assets/css/index.css'
 import '../assets/css/Bootstrap.scss'
@@ -45,6 +53,16 @@ const App = () => {
                     <Route exact path="/formDoc" component={FormDoctor} />
                     <Route exact path="/Formulario" component={FormularioDoctor} />
                     
+                    <Route exact path="/dashboard" component={Dashboard} />
+                    <Route exact path="/colaboradores" component={Colaboradores} />
+                    <Route exact path="/proveedores" component={Proveedores} />
+                    <Route exact path="/reportes" component={Reportes} />
+                    <Route exact path="/ingresos" component={Ingresos} />
+                    <Route exact path="/egresos" component={Egresos} />
+                    <Route exact path="/calendario" component={AgendaDoc} />
+                    <Route exact path="/catalogos" component={Catalogos} />
+                    <Route exact path="/catalogos-puestos" component={Catalogos} />
+                    <Route exact path="/catalogos-tipoproveedor" component={Catalogos} />
 
                     <Route path="*" component={NotFound} />
                 </Switch>
