@@ -1,0 +1,30 @@
+.seccionMenu{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.seccionMenu .nav-link.active {
+    color: #00AFAA;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.cat__row.row{
+    height: auto;
+    max-height: 100%;
+    overflow: auto;
+    min-height: 50%;
+}
+.cat__row .table-wrapper {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    min-height: 100%;
+}
+
+@media (min-width: 1290px) {
+    .catalogo .dropdown-menu.show {
+        transform: translate(-11px, 19px) !important;
+    }
+}
