@@ -12,7 +12,6 @@ import Table from '../../components/Table';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import Modal from '../../components/Modal';
 import Modat_V2 from '../../components/Modal_V2'
-import ColumContainer from '../../components/ColumContainer'
 
 import '../styles/Catalogos.scss';
 
@@ -79,7 +78,7 @@ const VistaPuesto = ({handleload, handleAlert}) => {
     const [modalRegistro, setmodalRegistro] = useState(false);
     const [modalRegistroEdit, setmodalRegistroEdit] = useState(false);
     const [registro, setRegistro] = useState({puesto:''});
-    const [listPuestos, setlistPuestos] = useState({puestosBase:[], listaPuestos:[]});
+    const [listPuestos, setlistPuestos] = useState([]);
 
     useEffect(() => {
         getLista();
@@ -107,7 +106,7 @@ const VistaPuesto = ({handleload, handleAlert}) => {
 
     //#region Get lista
     const getLista = async () => {
-        handleload(true)
+        // handleload(true)
         await Fetch.GET({
             url: `puesto`
             })
@@ -118,16 +117,10 @@ const VistaPuesto = ({handleload, handleAlert}) => {
                     handleAlert(data.body, `info`)
                 }
             }).catch((e) => {
-                let valores = {
-                    done: true,
-                    form: false,
-                    success: false,
-                    mensaje: 'Error 500',
-                };
-                setEstado(valores);
+                console.log(e);
             }).finally(()=>{
             // setSowload(false)
-            handleload(false)
+            // handleload(false)
             })
     }
     //#endregion
@@ -143,8 +136,6 @@ const VistaPuesto = ({handleload, handleAlert}) => {
     }
 
     const handleClickModalSave = async () => {
-        console.log(registro);
-        // debugger
         handleload(true)
         await Fetch.POST({
             url: `user/doctores/puestos`,
@@ -152,8 +143,8 @@ const VistaPuesto = ({handleload, handleAlert}) => {
             })
             .then(data=>{
                 if(!data.error && data.status === 200){
+                    getLista()
                     handleAlert(data.body, `success`)
-                    
                     handleCloseModalNuevo()
                 } else {
                     handleAlert(data.body, `info`)
@@ -225,6 +216,7 @@ const VistaPuesto = ({handleload, handleAlert}) => {
             })
     }
     //#endregion
+    
     return (
         <>
         <div className='seccionBtn'>
@@ -239,46 +231,46 @@ const VistaPuesto = ({handleload, handleAlert}) => {
 
         <Table listThead={[ 'Puesto', 'Status', 'Fecha creacion', '']} clases="catalogo">
             {
-                listPuestos.puestosBase.map(item=>
+                listPuestos.map(item=>
                     <tr key={item.id}>
-                        <td>{item.puesto}</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>Puesto base</td>
-                    </tr> 
-                )
-            }
-            {
-                listPuestos.listaPuestos.map(item=>
-                    <tr key={item.id}>
-                        <td>{item.puesto}</td>
+                        {
+                            item.puestoBase == 1 ? 
+                            <td>{item.puesto}</td>
+                            :
+                            <td onClick={()=>{handleClickEdit(item)}} className="link">{item.puesto}</td>
+                        } 
                         <td>{item.status == 1 ? 'Activo': 'Inactivo'}</td>
                         <td>{fechas.local(item.dateCreate, 8) }</td>
                         <td>
-                            <DropdownButton id="dropdown-basic-button" title="" variant="principal">
-                                {
-                                    ItemDropdoun.map(itemDown => 
-                                        <Dropdown.Item key={itemDown.id} >
-                                            {
-                                                itemDown.id == 1 &&
-                                                <div  onClick={()=>{handleClickEdit(item)}} >{itemDown.text}</div>
-                                            }
-                                            {
-                                                itemDown.id == 2 && item.status == 0 &&
-                                                <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">    
-                                                    <div className='text-center'>¿Quieres activar el tipo de puesto?</div>
-                                                </Modal>
-                                            }
-                                            {
-                                                itemDown.id == 3 && item.status == 1 &&
-                                                <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
-                                                    {`¿Está seguro de que desea desactivar el registro?`}
-                                                </Modal>
-                                            }      
-                                        </Dropdown.Item>
-                                    )
-                                }
-                            </DropdownButton>
+                            {
+                                item.puestoBase == 1 ? 
+                                <>Puesto base</>
+                                :
+                                <DropdownButton id="dropdown-basic-button" title="" variant="principal">
+                                    {
+                                        ItemDropdoun.map(itemDown => 
+                                            <Dropdown.Item key={itemDown.id} >
+                                                {
+                                                    itemDown.id == 1 &&
+                                                    <div  onClick={()=>{handleClickEdit(item)}} >{itemDown.text}</div>
+                                                }
+                                                {
+                                                    itemDown.id == 2 && item.status == 0 &&
+                                                    <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">    
+                                                        <div className='text-center'>¿Quieres activar el tipo de puesto?</div>
+                                                    </Modal>
+                                                }
+                                                {
+                                                    itemDown.id == 3 && item.status == 1 &&
+                                                    <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
+                                                        {`¿Está seguro de que desea desactivar el registro?`}
+                                                    </Modal>
+                                                }      
+                                            </Dropdown.Item>
+                                        )
+                                    }
+                                </DropdownButton>
+                            }
                         </td>
                     </tr> 
                 )
@@ -290,7 +282,7 @@ const VistaPuesto = ({handleload, handleAlert}) => {
             <Input textarea={true} valor={registro.descripcion} name='descripcion' handleChange={handleChangePerson} label='Descripcion' />
             <div className='row'>
                 <div className="col-lg-6 col-md-6 label ">Modificado por</div>
-                <div className="col-lg-6 col-md-6">{registro.userUpdate}</div>
+                <div className="col-lg-6 col-md-6">{registro.userUpdateName} {registro.userUpdateApellido}</div>
             </div>
             <div className='row'>
                 <div className="col-lg-6 col-md-6 label ">Fecha de modificación</div>
@@ -309,8 +301,8 @@ const VistaProveedores = ({handleload, handleAlert}) => {
     ]);
     const [modalRegistro, setmodalRegistro] = useState(false);
     const [modalRegistroEdit, setmodalRegistroEdit] = useState(false);
-    const [registro, setRegistro] = useState({puesto:''});
-    const [listPuestos, setlistPuestos] = useState({puestosBase:[], listaPuestos:[]});
+    const [registro, setRegistro] = useState({});
+    const [listProveedores, setlistProveedores] = useState([]);
 
     useEffect(() => {
         getLista();
@@ -338,34 +330,28 @@ const VistaProveedores = ({handleload, handleAlert}) => {
 
     //#region Get lista
     const getLista = async () => {
-        handleload(true)
+        // handleload(true)
         await Fetch.GET({
-            url: `puesto`
+            url: `tipoProveedor`
             })
             .then(data=>{
                 if(!data.error && data.status === 200){
-                    setlistPuestos(data.body)
+                    setlistProveedores(data.body)
                 } else {
                     handleAlert(data.body, `info`)
                 }
             }).catch((e) => {
-                let valores = {
-                    done: true,
-                    form: false,
-                    success: false,
-                    mensaje: 'Error 500',
-                };
-                setEstado(valores);
+               console.log(e);
             }).finally(()=>{
             // setSowload(false)
-            handleload(false)
+            // handleload(false)
             })
     }
     //#endregion
 
     //#region Guardar nuevo
     const handleShowModalNuevo = () => {
-        setRegistro({puesto:'', descripcion:''});
+        setRegistro({tipo:'', descripcion:''});
         setmodalRegistro(true)
         
     }
@@ -374,17 +360,15 @@ const VistaProveedores = ({handleload, handleAlert}) => {
     }
 
     const handleClickModalSave = async () => {
-        console.log(registro);
-        // debugger
         handleload(true)
         await Fetch.POST({
-            url: `user/doctores/puestos`,
+            url: `user/doctores/tipoProveedor`,
             obj: registro
             })
             .then(data=>{
                 if(!data.error && data.status === 200){
+                    getLista()
                     handleAlert(data.body, `success`)
-                    
                     handleCloseModalNuevo()
                 } else {
                     handleAlert(data.body, `info`)
@@ -416,7 +400,7 @@ const VistaProveedores = ({handleload, handleAlert}) => {
     const handleEditarRegistro = async () => {
         handleload(true)
         await Fetch.PUT({
-            url: `puesto`,
+            url: `tipoProveedor`,
             obj: registro
             })
             .then((data)=>{
@@ -438,7 +422,7 @@ const VistaProveedores = ({handleload, handleAlert}) => {
     const handleEditarStatus = async (item) => {
         handleload(true)
         await Fetch.PUT({
-            url: `puesto`,
+            url: `tipoProveedor`,
             obj: item
             })
             .then((data)=>{
@@ -456,60 +440,61 @@ const VistaProveedores = ({handleload, handleAlert}) => {
             })
     }
     //#endregion
+    
     return (
         <>
         <div className='seccionBtn'>
             <div className="btn-group">
                 <Boton handleClick={handleShowModalNuevo} clases="btn-secondary">Nuevo</Boton>
                 <Modat_V2 form={true} title='Agregar puesto' show={modalRegistro} size="md" handleClick={handleClickModalSave} handleClose={handleCloseModalNuevo} btnNameAccion="Guardar">
-                    <Input valor={registro.puesto} name='puesto' handleChange={handleChangePerson} label='Puesto' required={true} />
+                    <Input valor={registro.tipo} name='tipo' handleChange={handleChangePerson} label='Tipo proveedor' required={true} />
                     <Input textarea={true} valor={registro.descripcion} name='descripcion' handleChange={handleChangePerson} label='Descripcion' />
                 </Modat_V2>
             </div>
         </div>
 
-        <Table listThead={[ 'Puesto', 'Status', 'Fecha creacion', '']} clases="catalogo">
+        <Table listThead={[ 'Tipo', 'Status', 'Fecha creacion', '']} clases="catalogo">
             {
-                listPuestos.puestosBase.map(item=>
+                listProveedores.map(item=>
                     <tr key={item.id}>
-                        <td>{item.puesto}</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>Puesto base</td>
-                    </tr> 
-                )
-            }
-            {
-                listPuestos.listaPuestos.map(item=>
-                    <tr key={item.id}>
-                        <td>{item.puesto}</td>
+                        {
+                            item.tipoBase == 1 ? 
+                            <td>{item.tipo}</td>
+                            :
+                            <td onClick={()=>{handleClickEdit(item)}} className="link">{item.tipo}</td>
+                        }
                         <td>{item.status == 1 ? 'Activo': 'Inactivo'}</td>
                         <td>{fechas.local(item.dateCreate, 8) }</td>
                         <td>
-                            <DropdownButton id="dropdown-basic-button" title="" variant="principal">
-                                {
-                                    ItemDropdoun.map(itemDown => 
-                                        <Dropdown.Item key={itemDown.id} >
-                                            {
-                                                itemDown.id == 1 &&
-                                                <div  onClick={()=>{handleClickEdit(item)}} >{itemDown.text}</div>
-                                            }
-                                            {
-                                                itemDown.id == 2 && item.status == 0 &&
-                                                <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">    
-                                                    <div className='text-center'>¿Quieres activar el tipo de puesto?</div>
-                                                </Modal>
-                                            }
-                                            {
-                                                itemDown.id == 3 && item.status == 1 &&
-                                                <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
-                                                    {`¿Está seguro de que desea desactivar el registro?`}
-                                                </Modal>
-                                            }      
-                                        </Dropdown.Item>
-                                    )
-                                }
-                            </DropdownButton>
+                            {
+                                item.tipoBase == 1 ? 
+                                <>Tipo proveedor base</>
+                                :
+                                <DropdownButton id="dropdown-basic-button" title="" variant="principal">
+                                    {
+                                        ItemDropdoun.map(itemDown => 
+                                            <Dropdown.Item key={itemDown.id} >
+                                                {
+                                                    itemDown.id == 1 &&
+                                                    <div  onClick={()=>{handleClickEdit(item)}} >{itemDown.text}</div>
+                                                }
+                                                {
+                                                    itemDown.id == 2 && item.status == 0 &&
+                                                    <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">    
+                                                        <div className='text-center'>¿Quieres activar el tipo de puesto?</div>
+                                                    </Modal>
+                                                }
+                                                {
+                                                    itemDown.id == 3 && item.status == 1 &&
+                                                    <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
+                                                        {`¿Está seguro de que desea desactivar el registro?`}
+                                                    </Modal>
+                                                }      
+                                            </Dropdown.Item>
+                                        )
+                                    }
+                                </DropdownButton>
+                            }
                         </td>
                     </tr> 
                 )
@@ -517,11 +502,11 @@ const VistaProveedores = ({handleload, handleAlert}) => {
         </Table>
 
         <Modat_V2 form={true} title='Editar puesto' show={modalRegistroEdit} size="md" handleClick={handleEditarRegistro} handleClose={handleCloseModalEdit} btnNameAccion="Guardar">
-            <Input valor={registro.puesto} name='puesto' handleChange={handleChangePerson} label='Puesto' required={true} />
+            <Input valor={registro.tipo} name='tipo' handleChange={handleChangePerson} label='Tipo proveedor' required={true} />
             <Input textarea={true} valor={registro.descripcion} name='descripcion' handleChange={handleChangePerson} label='Descripcion' />
             <div className='row'>
                 <div className="col-lg-6 col-md-6 label ">Modificado por</div>
-                <div className="col-lg-6 col-md-6">{registro.userUpdate}</div>
+                <div className="col-lg-6 col-md-6">{registro.userUpdateName} {registro.userUpdateApellido}</div>
             </div>
             <div className='row'>
                 <div className="col-lg-6 col-md-6 label ">Fecha de modificación</div>

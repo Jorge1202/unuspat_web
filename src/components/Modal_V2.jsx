@@ -18,6 +18,8 @@ const VentanaEmergente = (
         btnColorClose='secondary', 
         btnNameClose='Cerrar',
         handleClose,  
+
+        showFooter=true
     }) => {
 
     // const [show, setShow] = useState(false);
@@ -47,16 +49,19 @@ const VentanaEmergente = (
                         <Modal.Body>
                             {children}
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant={btnColorClose} onClick={handleClose}>
-                                {btnNameClose}
-                            </Button>
-                            {
-                                btnShowAccion
-                                ?<Button type="submit" variant={btnColorAccion}> {btnNameAccion} </Button>
-                                : ''
-                            }
-                        </Modal.Footer>
+                        {
+                            showFooter &&
+                            <Modal.Footer>
+                                <Button variant={btnColorClose} onClick={handleClose}>
+                                    {btnNameClose}
+                                </Button>
+                                {
+                                    btnShowAccion
+                                    ?<Button type="submit" variant={btnColorAccion}> {btnNameAccion} </Button>
+                                    : ''
+                                }
+                            </Modal.Footer>
+                        }
                     </form>
                     :
                     <>
@@ -66,16 +71,19 @@ const VentanaEmergente = (
                         <Modal.Body>
                             {children}
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant={btnColorClose} onClick={handleClose}>
-                                {btnNameClose}
-                            </Button>
-                            {
-                                btnShowAccion
-                                ?<Button variant={btnColorAccion} onClick={handleClick}> {btnNameAccion} </Button>
-                                : ''
-                            }
-                        </Modal.Footer>
+                        {
+                            showFooter &&
+                            <Modal.Footer>
+                                <Button variant={btnColorClose} onClick={handleClose}>
+                                    {btnNameClose}
+                                </Button>
+                                {
+                                    btnShowAccion
+                                    ?<Button variant={btnColorAccion} onClick={handleClick}> {btnNameAccion} </Button>
+                                    : ''
+                                }
+                            </Modal.Footer>
+                        }
                     </>
                 }
             </Modal>

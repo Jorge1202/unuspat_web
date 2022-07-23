@@ -30,6 +30,13 @@ input:focus {
 }
 /*#endregion*/
 
+/* SE MODIFICA ESTILOS DE BOOTSTRAP */
+.link {
+    color: $color-link !important;
+    text-decoration: underline;
+}
+
+
 
 /*#region*/
 
@@ -74,11 +81,6 @@ input:focus {
         max-width: 100% !important;
     }
 }
-
-
-
-
-
 
 /*#endregion*/
 
