@@ -19,10 +19,12 @@ import '../styles/ListData.css';
 const Colaboradores = () => {
     const [ItemDropdoun, setItemDropdoun] = useState([
         {id:1,text:"Editar", url:"Editar"},
-        {id:2,text:"Activar", url:"Activar"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
-        {id:3,text:"Desactivar", url:"desactivar"}
+        {id:2,text:"Activar", url:"activarLogin"}, //mostrar cuando estatuusuario sea 3 y se modifica el estatusUsuario a 4
+        {id:5,text:"Eliminar", url:"Eliminar"},
+        {id:3,text:"Desactivar", url:"desactivar"},
+        {id:4,text:"Activar", url:"Activar"}, 
     ]);
-    const [sowload, setSowload] = useState(false);
+    const [showload, setShowload] = useState(false);
     const [alert, setShowAlert] = useState({ show: false, mesagge: '', color: '' });
     const [modalRegistro, setmodalRegistro] = useState(false);
     const [modalRegistroEdit, setmodalRegistroEdit] = useState(false);
@@ -43,12 +45,14 @@ const Colaboradores = () => {
     //#region Accion Dropdown
     const getAction = (accion, item = {}) => {
         accion = accion.toLocaleLowerCase()
-       if(accion === 'desactivar'){
-            item.status = 0
-            handleEditarStatus(item);
+        if(accion === 'activarlogin'){
+            handleActivarLogin(item);
+        } else if(accion === 'desactivar'){
+            handleDesactivar(item);
         } else if(accion === 'activar'){
-            item.status = 1
-            handleEditarStatus(item);
+            handleActivar(item);
+        } else if(accion === 'eliminar'){
+            handleEliminar(item);
         } 
     }
     //#endregion
@@ -68,7 +72,7 @@ const Colaboradores = () => {
             }).catch((e) => {
                 console.log(e);
             }).finally(()=>{
-            // setSowload(false)
+            // setShowload(false)
             // handleload(false)
             })
     }
@@ -81,6 +85,89 @@ const Colaboradores = () => {
     }
     const handleCloseModalEdit = () => {
         setmodalRegistroEdit(false)
+    }
+    //#endregion
+
+    //#region Eliminar, Activar y Desactivar
+    const handleActivarLogin  = async (item) =>{
+        //enviar correo de usuario y contraseña
+        setShowload(true)
+        await Fetch.PUT({
+            url: 'user/colaboradorDoctor/aceptar',
+            obj: {idUsuario: item.idUsuario}
+        })
+        .then(async data=>{
+            if(!data.error && data.status === 200){
+                await getLista()
+                handleAlert(data.body, 'success')
+            } else {
+                handleAlert(data.body, 'warning')
+            }
+        }).catch((error) => {
+            console.warn(error);
+        }).finally(() =>{
+            setShowload(false)
+        })
+    }
+    const handleDesactivar = async (item) =>{
+        //cambiamos el status de auth y modificamos el idEstatusUsuario
+        setShowload(true)
+        await Fetch.PUT({
+            url: 'user/colaboradorDoctor/desactivar',
+            obj: {idUsuario: item.idUsuario}
+        })
+        .then(async data=>{
+            if(!data.error && data.status === 200){
+                await getLista()
+                handleAlert(data.body, 'success')
+            } else {
+                handleAlert(data.body, 'warning')
+            }
+        }).catch((error) => {
+            console.warn(error);
+        }).finally(() =>{
+            setShowload(false)
+        })
+    }
+    const handleActivar = async (item) =>{
+        //cambiamos el status de auth y modificamos el idEstatusUsuario
+        setShowload(true)
+        await Fetch.PUT({
+            url: 'user/colaboradorDoctor/activar',
+            obj: {idUsuario: item.idUsuario}
+        })
+        .then(async data=>{
+            if(!data.error && data.status === 200){
+                await getLista()
+                handleAlert(data.body, 'success')
+            } else {
+                handleAlert(data.body, 'warning')
+            }
+        }).catch((error) => {
+            console.warn(error);
+        }).finally(() =>{
+            setShowload(false)
+        })
+    }
+    const handleEliminar = async (item) =>{
+        //cambio de estatus de doctorColaborador y el status de auth y modificamos el idEstatusUsuario a 
+        setShowload(true)
+        await Fetch.DELETE({
+            url: 'user/colaboradorDoctor/eliminar',
+            obj: {idUsuario: item.idUsuario}
+        })
+        .then(async data=>{
+            if(!data.error && data.status === 200){
+                await getLista()
+                handleAlert(data.body, 'success')
+            } else {
+                handleAlert(data.body, 'warning')
+            }
+        }).catch((error) => {
+            console.warn(error);
+        }).finally(() =>{
+            setShowload(false)
+        })
     }
     //#endregion
 
@@ -102,7 +189,7 @@ const Colaboradores = () => {
     return (  
         <Contenedor title='Colaboradores'>
             <Alert visible={alert.show} color={alert.color}>{alert.mesagge}</Alert>
-            <Load show={sowload}/>
+            <Load show={showload}/>
             <div className='seccionBtn'>
                 <div className="btn-group">
                     <Link link="/colaboradores-registro" clases="btn btn-secondary">Nuevo</Link>
@@ -110,7 +197,7 @@ const Colaboradores = () => {
                 </div>
             </div>
 
-            <Table listThead={[ 'Nombre', 'Teléfono', 'Email', 'Puesto', 'Status', 'Fecha creacion', '']} clases="catalogo">
+            <Table listThead={[ 'Nombre', 'Teléfono', 'Email', 'Puesto', 'Status', 'Fecha creacion', '']}>
                 {
                     listaColaboradores.map(item=>
                         <tr key={item.id}>
@@ -132,29 +219,39 @@ const Colaboradores = () => {
                                             //idEstatusUsuario
                                             ItemDropdoun.map(itemDown => 
                                                 <Dropdown.Item key={itemDown.id} >  
-                                                    {
-                                                        itemDown.id == 1 &&
-                                                        <div  onClick={()=>{handleClickEdit(item)}} >{itemDown.text}</div>
-                                                    }
-                                                    {
-                                                        itemDown.id == 2 && item.idEstatusUsuario == 3 &&
-                                                        <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">                                                                
-                                                            <div className='text-center'>Al activar el colaborador le darás accedo a UNUSPAT</div>
-                                                            <div className='text-center'>¿Quieres activar el registro?</div>
-                                                        </Modal>
-                                                    }
-                                                    {
-                                                        itemDown.id == 3 && item.idEstatusUsuario == 4 &&
-                                                        <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
-                                                            {`¿Quieres desactivar el registro?`}
-                                                        </Modal>
-                                                    }      
-                                                    {
-                                                        itemDown.id == 3 && item.idEstatusUsuario == 5 &&
-                                                        <Modal handleClick={()=> {getAction(itemDown.text, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">                                               
-                                                            <div className='text-center'>¿Quieres activar el registro?</div>
-                                                        </Modal>
-                                                    }      
+                                                    <>
+                                                        {
+                                                            itemDown.id == 1 &&
+                                                            <div  onClick={()=>{handleClickEdit(item)}} >{itemDown.text} </div> 
+                                                        }
+                                                        {
+                                                            itemDown.id == 5 && 
+                                                            <Modal handleClick={()=> {getAction(itemDown.url, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Eliminar">                                               
+                                                                <div className='text-center'>¿Estás seguro de eliminar al colaborador <strong>{item.nombre} {item.apellidoPaterno}</strong>?</div>
+                                                            </Modal>
+                                                        }  
+                                                        {
+                                                            itemDown.id == 2 && item.idEstatusUsuario == 3 &&
+                                                            <Modal handleClick={()=> {getAction(itemDown.url, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">                                                                
+                                                                <div className='text-center'>Al activar el colaborador le darás accedo a UNUSPAT</div>
+                                                                <div className='text-center'>¿Quieres activar al colaborador <strong>{item.nombre} {item.apellidoPaterno}</strong>?</div>
+                                                            </Modal>
+                                                        }
+                                                        {
+                                                            itemDown.id == 3 && item.idEstatusUsuario == 4 &&
+                                                            <Modal handleClick={()=> {getAction(itemDown.url, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Desactivar">
+                                                                <div className='text-center'>¿Quieres desactivar al colaborador <strong>{item.nombre} {item.apellidoPaterno}</strong>?</div>
+                                                            </Modal>
+                                                        }      
+                                                        {
+                                                            itemDown.id == 4 && item.idEstatusUsuario == 5 &&
+                                                            <Modal handleClick={()=> {getAction(itemDown.url, item)}} nameBtn={itemDown.text}  title={itemDown.text} size='md' namebtnSave="Activar">    
+                                                                <div className='text-center'>Al activar el colaborador tendrá nuevamente accedo a UNUSPAT</div>                                           
+                                                                <div className='text-center'>¿Quieres activar al colaborador <strong>{item.nombre} {item.apellidoPaterno}</strong>?</div>
+                                                            </Modal>
+                                                        }        
+                                                             
+                                                    </>
                                                 </Dropdown.Item>
                                             )
                                         }
@@ -168,7 +265,7 @@ const Colaboradores = () => {
 
             <Modat_V2 title='Editar' show={modalRegistroEdit} size="lg" handleClose={handleCloseModalEdit} showFooter={false} >
                 
-                <FormDataPersonal idUsuario={registro.idUsuario} handleAlert={(message, color)=>{handleAlert(message, color)}} showLoad={(load)=>{setSowload(load)}} closeModal={()=>{closeModal()}}/>
+                <FormDataPersonal idUsuario={registro.idUsuario} handleAlert={(message, color)=>{handleAlert(message, color)}} showLoad={(load)=>{setShowload(load)}} closeModal={()=>{closeModal()}}/>
 
                 <div className='row'>
                     <div className="col-lg-6 col-md-6 label ">Modificado por</div>

@@ -14,9 +14,9 @@ const VentanaEmergente = ({children, handleClick, title, nameBtn, size='lg', nam
         setShow(true);
     } 
 
-    const handleAction = () =>{
-        handleClick();
-        setShow(true);
+    const handleAction = async () =>{
+        await handleClick();
+        setShow(false);
     } 
 
     return (

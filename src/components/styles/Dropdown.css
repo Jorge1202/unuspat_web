@@ -17,6 +17,19 @@
     transform: translate(-100px, 40px) !important;
   }
 }
+
+/* @media (min-width: 1290px){
+  .dropdown-menu.show {
+    transform: translate(-107px, 19px) !important;
+  }
+} */
+
+@media (min-width: 1290px) {
+  .catalogo .dropdown-menu.show {
+      transform: translate(-11px, 19px) !important;
+  }
+}
+
 @media (min-width: 1290px) {
   .dropdown-menu.show {
     transform: translate(-130px, 40px) !important;

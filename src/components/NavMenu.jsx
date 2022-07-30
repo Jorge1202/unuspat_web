@@ -54,6 +54,8 @@ const NavMenu = ({pc = true}) => {
             setitemsMenu(HH);
         } else if(user=="4"){
             setitemsMenu(DOC);
+        } else if(user=="5"){
+            setitemsMenu(DOC);
         }
     });
 
