@@ -4,7 +4,7 @@ import Title from './Title';
 
 const Contenedor = ({children, title}) => {
     return (
-        <div className='Contenedor'>
+        <div className='Contenedor h-100'>
             <Title title={title} />
             {children}
         </div>

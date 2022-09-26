@@ -13,6 +13,15 @@
 }
 
 
+.contScroll{
+    height: auto;
+    max-height: 90%;
+    overflow: auto;
+    overflow-x: hidden;
+    padding: 0 15px 0 0;
+}
+
+
 @media (max-width: 1280px){
     .Contenedor{
         width: 95%;

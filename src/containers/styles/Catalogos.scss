@@ -22,9 +22,3 @@
     overflow: auto;
     min-height: 100%;
 }
-
-@media (min-width: 1290px) {
-    .catalogo .dropdown-menu.show {
-        transform: translate(-11px, 19px) !important;
-    }
-}
