@@ -649,6 +649,7 @@ const FormDataPersonal = ({idUsuario, showLoad, handleAlert, closeModal}) => {
             <div className='text-end mt-4'>
                 <Boton type="submit" clases="btn_principal">Guardar</Boton>
             </div>
+            
         </form>
     );
 };

@@ -22,6 +22,7 @@ import Dashboard from '../pages/Doctor/Dashboard';
 import Colaboradores from '../pages/Doctor/Colaboradores';
 import FormDataPersonal from '../pages/Doctor/FormDataPersonal';
 import Proveedores from '../pages/Doctor/Proveedores';
+import FormProveedores from '../pages/Doctor/FormProveedores';
 import Reportes from '../pages/Doctor/Reportes';
 import Ingresos from '../pages/Doctor/Ingresos';
 import Egresos from '../pages/Doctor/Egresos';
@@ -58,6 +59,7 @@ const App = () => {
                     <Route exact path="/colaboradores" component={Colaboradores} />
                     <Route exact path="/colaboradores-registro" component={FormDataPersonal} />
                     <Route exact path="/proveedores" component={Proveedores} />
+                    <Route exact path="/proveedores-registro" component={FormProveedores} />
                     <Route exact path="/reportes" component={Reportes} />
                     <Route exact path="/ingresos" component={Ingresos} />
                     <Route exact path="/egresos" component={Egresos} />
