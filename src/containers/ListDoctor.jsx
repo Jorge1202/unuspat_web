@@ -231,7 +231,7 @@ const ListDoctor = () => {
                         {
                                 lista.map(item =>
                                     <tr key={item.id}>
-                                        <td>{item.nombre}</td>
+                                        <td>{item.nombre} {item.apellidoPaterno}</td>
                                         <td>{item.cedula}</td>
                                         <td className='tdEstatus'>
                                             {/* estatus de registro  */}

@@ -450,14 +450,6 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                             <div className="col-lg-3 col-md-4 label ">Fecha de creación</div>
                             <div className="col-lg-9 col-md-8">{fechas.local(DataUserPerfil.dateCreate, 8)}</div>
                         </div>
-                        {/* <div className='row'>
-                            <div className="col-lg-3 col-md-4 label ">Modificado por</div>
-                            <div className="col-lg-9 col-md-8">{DataUserPerfil.userUpdateName}</div>
-                        </div>
-                        <div className='row'>
-                            <div className="col-lg-3 col-md-4 label ">Fecha de modificación</div>
-                            <div className="col-lg-9 col-md-8">{!DataUserPerfil.dateUpdate ? '----': fechas.local(DataUserPerfil.dateUpdate, 8)}</div>
-                        </div> */}
                     </RowContainer>
                 </Tab>
 
@@ -580,7 +572,7 @@ const DatosUser = ({ id, typeUser, perfil = 'edit' }) => {
                         </Accordion.Item>
 
                         {
-                            typeUser != '1' && typeUser != '2' &&
+                            typeUser != '1' && typeUser != '2' && typeUser != '5' && typeUser != '6' &&
                             <>
                                 <Accordion.Item eventKey="2">
                                     <Accordion.Header>Datos laborales</Accordion.Header>
